@@ -14,6 +14,12 @@
 body {
     margin: 0;
 }
+h1 {
+    font-size: 6rem;
+}
+h2 {
+    font-size: 3rem;
+}
 nav.top {
     background-color: var(--secondary);
     color: var(--primary);
@@ -23,7 +29,7 @@ nav.top {
         background-color: var(--secondary);
         color: var(--primary);
         text-decoration: none;
-        padding: 1rem 1rem;
+        padding: 1rem;
         width: min-content;
     }
     .active {
@@ -36,16 +42,32 @@ main {
     flex-direction: column;
     margin: 2rem calc((100vw - 32rem) / 2);
     h1 {
-        font-size: 6rem;
         margin: 0 auto;
         width: max-content;
-    }
-    h2 {
-        font-size: 3rem;
     }
     p {
         span.orange {
             color: orange;
         }
+    }
+}
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 3rem;
+    }
+    h2 {
+        font-size: 1.5rem;
+    }
+    p, a {
+        font-size: 0.5rem;
+    }
+    nav.top {
+        padding-bottom: 2px;
+        a {
+            padding: 0.5rem;
+        }
+    }
+    main {
+        margin: 1rem calc((100vw - 20rem) / 2);
     }
 }
