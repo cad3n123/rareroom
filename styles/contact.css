@@ -1,0 +1,8 @@
+main {
+    ul {
+        padding: 0;
+        a {
+            display: block;
+        }
+    }
+}
