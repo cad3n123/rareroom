@@ -10,6 +10,7 @@
     font-family: EliteMath;
     background-color: var(--primary);
     color: var(--secondary);
+    font-size: calc(0.5vw + 8px);
 }
 button {
     font-family: EliteMath;
