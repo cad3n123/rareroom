@@ -1,3 +1,16 @@
+@font-face {
+    font-family: EliteMath;
+    src: url(../EliteMath/Elite\ Math\ Regular.ttf);
+}
+
+:root {
+    --primary: rgb(232,228,228);
+    --secondary: rgb(0, 0, 0);
+
+    font-family: EliteMath;
+    background-color: var(--primary);
+    color: var(--secondary);
+}
 body {
     margin: 0;
     width: 100vw;
