@@ -14,6 +14,7 @@
 }
 button {
     font-family: EliteMath;
+    color: var(--secondary);
 }
 body {
     margin: 0;
