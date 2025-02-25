@@ -9,9 +9,10 @@ const canvaWidthPercent = canvaBaseWidthPercent * canvaScale;
 const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
 const homeURL = 'https://www.canva.com/design/DAGgCFOLnQU/IghWNzf-q0ltWVUEDiCkvA/view?embed';
 const aboutURL = 'https://www.canva.com/design/DAGgDNNskO8/nrhCTo31fi1cd9J3DP1tqA/view?embed';
+const audioDelay = 500;
 
 // Elements
-const [ $canvaContent, $canvaIframeHome, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo' ].map(id => document.getElementById(id));
+const [ $canvaContent, $canvaIframeHome, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio' ].map(id => document.getElementById(id));
 const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
 
 function main() {
@@ -46,16 +47,33 @@ function setIframe(iframe) {
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
+window.addEventListener('load', () => {$homeAudio.play();});
 window.addEventListener('resize', updataCanvaContentPosition);
-$contactButton.addEventListener('click', () => { setIframe(contactURL); });
+$contactButton.addEventListener('click', () => {
+    [$homeAudio, $aboutAudio].forEach($audio => {
+        $audio.pause();
+        $audio.currentTime = 0;
+    });
+    setTimeout(() => {$contactAudio.play();}, audioDelay);
+});
 $aboutButton.addEventListener('click', () => { 
     $nav.style.display = 'none';
     $aboutText.style.display = 'block';
     console.log($aboutText);
     setIframe($canvaIframeAbout); 
+    [$homeAudio, $contactAudio].forEach($audio => {
+        $audio.pause();
+        $audio.currentTime = 0;
+    });
+    setTimeout(() => {$aboutAudio.play();}, audioDelay);
 });
 $homeLogo.addEventListener('click', () => { 
     $nav.style.display = 'block';
     $aboutText.style.display = 'none';
-    setIframe($canvaIframeHome); 
+    setIframe($canvaIframeHome);
+    [$aboutAudio, $contactAudio].forEach($audio => {
+        $audio.pause();
+        $audio.currentTime = 0;
+    });
+    setTimeout(() => {$homeAudio.play();}, audioDelay);
 });
