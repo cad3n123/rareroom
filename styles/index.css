@@ -114,6 +114,68 @@ main {
     background-color: rgba(61, 68, 83, 0.482);
 }
 #settings {
-    left: 12rem;
+    left: calc(2 * (8vw + 2rem));
     top: 0;
+    .content {
+        padding: 2rem;
+        > span {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            > span {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+
+                .switch {
+                    --bar-width: 2rem;
+                    --bar-height: 1rem;
+                    --node-size: 1.4rem;
+                    --node-polarity: -1;
+
+                    position: relative;
+
+                    display: flex;
+                    justify-content: center;
+                    .bar {
+                        width: var(--bar-width);
+                        height: var(--bar-height);
+                        background-color: white;
+                        border: 0.1rem grey solid;
+                        border-radius: calc(var(--bar-height) / 2);
+                        box-sizing: border-box;
+                        
+                        transition: all 250ms;
+                    }
+                    .node {
+                        position: absolute; 
+                        background-color: grey; 
+                        width: var(--node-size); 
+                        height: var(--node-size); 
+                        border-radius: calc(var(--node-size) / 2); 
+                        top: calc((var(--bar-height) - var(--node-size)) / 2); 
+                        margin-left: calc(var(--node-polarity) * var(--bar-width) / 2);
+
+                        transition: all 250ms;
+                    }
+                }
+                .switch.active {
+                    --node-polarity: 1;
+                    
+                    .bar {
+                        border-color: black;
+                    }
+                    .node {
+                        background-color: black; 
+                    }
+                }
+            }
+        }
+        p {
+            text-align: center;
+            font-size: 0.6rem;
+            color: grey;
+            margin-top: 1rem;
+        }
+    }
 }

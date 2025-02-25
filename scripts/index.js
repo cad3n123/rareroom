@@ -10,27 +10,28 @@ const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
 const homeURL = 'https://www.canva.com/design/DAGgCFOLnQU/IghWNzf-q0ltWVUEDiCkvA/view?embed';
 const aboutURL = 'https://www.canva.com/design/DAGgDNNskO8/nrhCTo31fi1cd9J3DP1tqA/view?embed';
 const audioDelay = 500;
-// const letterGap = 110;
-// const wordGap = 190;
-// const dot = 45;
-// const dash = 100;
+const flashDelay = 140;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
-const flashDelay = 175;
-//const wordGap = 190;
 
 // Global vars
 let flashing = false;
+let settings = {
+    light: true,
+    sound: true,
+}
 
 // Elements
 const [ $canvaContent, $canvaIframeHome, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash' ].map(id => document.getElementById(id));
 const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
+const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
 function main() {
     [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
         $audio.volume = 0.1;
     });
+    $$switch.forEach($switch => createSwitch($switch));
     
     updataCanvaContentPosition();
 }
@@ -69,13 +70,7 @@ $contactButton.addEventListener('click', () => {
         $audio.pause();
         $audio.currentTime = 0;
     });
-    setTimeout(async () => {
-        await $contactAudio.play();
-        await wait(flashDelay);
-        if (!flashing) {
-            await flashMorseCode(morseTiming("-.-. --- -. - .- -.-. -"));
-        }
-    }, audioDelay);
+    playMorse($contactAudio, "-.-. --- -. - .- -.-. -");
 });
 $aboutButton.addEventListener('click',() => { 
     $nav.style.display = 'none';
@@ -86,13 +81,7 @@ $aboutButton.addEventListener('click',() => {
         $audio.pause();
         $audio.currentTime = 0;
     });
-    setTimeout(async () => {
-        await $aboutAudio.play();
-        await wait(flashDelay);
-        if (!flashing) {
-            await flashMorseCode(morseTiming(".- -... --- ..- -"));
-        }
-    }, audioDelay);
+    playMorse($aboutAudio, ".- -... --- ..- -");
 });
 $homeLogo.addEventListener('click', () => {
     $nav.style.display = 'block';
@@ -102,15 +91,22 @@ $homeLogo.addEventListener('click', () => {
         $audio.pause();
         $audio.currentTime = 0;
     });
-
+    playMorse($homeAudio, ".-. .- .-. . .-. --- --- --");
+});
+function playMorse($audioElement, morse) {
     setTimeout(async () => {
-        await $homeAudio.play();
-        await wait(flashDelay);
-        if (!flashing) {
-            await flashMorseCode(morseTiming(".-. .- .-. . .-. --- --- --"));
+        if (settings.sound) {
+            await $audioElement.play();
+        }
+        if (settings.light) {
+            await wait(flashDelay);
+            if (!flashing) {
+                await flashMorseCode(morseTiming(morse));
+            }
         }
     }, audioDelay);
-});
+}
+
 async function flashMorseCode(times) {
     flashing = true;
     for (let i = 0; i < times.length; i++) {
@@ -148,4 +144,24 @@ function morseTiming(morse) {
     }
     
     return times;
+}
+/**
+ * 
+ * @param {HTMLElement} $switch 
+ */
+function createSwitch($switch) {
+    const $bar = document.createElement('div');
+    $bar.classList.add('bar');
+    const $node = document.createElement('div');
+    $node.classList.add('node');
+    [$bar, $node].forEach($ => $switch.appendChild($));
+    
+    $switch.addEventListener('click', e => {
+        $switch.classList.toggle('active');
+        [ 'sound', 'light' ].forEach(descriptor => {
+            if ($switch.classList.contains(descriptor)) {
+                settings[descriptor] = !settings[descriptor];
+            }
+        })
+    })
 }
