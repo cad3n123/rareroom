@@ -10,12 +10,23 @@ const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
 const homeURL = 'https://www.canva.com/design/DAGgCFOLnQU/IghWNzf-q0ltWVUEDiCkvA/view?embed';
 const aboutURL = 'https://www.canva.com/design/DAGgDNNskO8/nrhCTo31fi1cd9J3DP1tqA/view?embed';
 const audioDelay = 500;
+const letterGap = 120;
+const wordGap = 200;
+const dot = 45;
+const dash = 100;
+
+// Global vars
+let flashing = false;
 
 // Elements
-const [ $canvaContent, $canvaIframeHome, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio' ].map(id => document.getElementById(id));
+const [ $canvaContent, $canvaIframeHome, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash' ].map(id => document.getElementById(id));
 const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
 
 function main() {
+    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
+        $audio.volume = 0.1;
+    });
+    
     updataCanvaContentPosition();
 }
 
@@ -47,33 +58,108 @@ function setIframe(iframe) {
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
-window.addEventListener('load', () => {$homeAudio.play();});
 window.addEventListener('resize', updataCanvaContentPosition);
 $contactButton.addEventListener('click', () => {
-    [$homeAudio, $aboutAudio].forEach($audio => {
+    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
         $audio.pause();
         $audio.currentTime = 0;
     });
-    setTimeout(() => {$contactAudio.play();}, audioDelay);
+    setTimeout(async () => {
+        await $contactAudio.play();
+        /** @type {AudioElement} */
+        let test = $contactAudio;
+        if (!flashing) {
+        // -.-. --- -. - .- -.-. -
+        let times = [
+            [dash, letterGap], [dot, letterGap], [dash, letterGap], [dot, wordGap],
+            [dash, letterGap], [dash, letterGap], [dash, wordGap],
+            [dash, letterGap], [dot, wordGap],
+            [dash, wordGap],
+            [dot, letterGap], [dash, wordGap],
+            [dash, letterGap], [dot, letterGap], [dash, letterGap], [dot, wordGap],
+            [dash, wordGap],
+        ];
+            flashing = true;
+            for (let i = 0; i < times.length; i++) {
+                let pair = times[i];
+                $morseFlash.classList.add('active');
+                await wait(pair[0]);
+                $morseFlash.classList.remove('active');
+                await wait(pair[1]);
+            }
+            flashing = false;
+        }
+    }, audioDelay);
 });
-$aboutButton.addEventListener('click', () => { 
+$aboutButton.addEventListener('click',() => { 
     $nav.style.display = 'none';
     $aboutText.style.display = 'block';
     console.log($aboutText);
     setIframe($canvaIframeAbout); 
-    [$homeAudio, $contactAudio].forEach($audio => {
+    [$aboutAudio, $homeAudio, $contactAudio].forEach($audio => {
         $audio.pause();
         $audio.currentTime = 0;
     });
-    setTimeout(() => {$aboutAudio.play();}, audioDelay);
+    setTimeout(async () => {
+        await $aboutAudio.play();
+        if (!flashing) {
+        // .- -... --- ..- -
+        let times = [
+            [dot, letterGap], [dash, wordGap],
+            [dash, letterGap], [dot, letterGap], [dot, letterGap], [dot, wordGap],
+            [dash, letterGap], [dash, letterGap], [dash, wordGap],
+            [dot, letterGap], [dot, letterGap], [dash, wordGap],
+            [dash, wordGap],
+        ];
+            flashing = true;
+            for (let i = 0; i < times.length; i++) {
+                let pair = times[i];
+                $morseFlash.classList.add('active');
+                await wait(pair[0]);
+                $morseFlash.classList.remove('active');
+                await wait(pair[1]);
+            }
+            flashing = false;
+        }
+    }, audioDelay);
 });
-$homeLogo.addEventListener('click', () => { 
+$homeLogo.addEventListener('click', () => {     
+    console.log("Test!");
     $nav.style.display = 'block';
     $aboutText.style.display = 'none';
     setIframe($canvaIframeHome);
-    [$aboutAudio, $contactAudio].forEach($audio => {
+    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
         $audio.pause();
         $audio.currentTime = 0;
     });
-    setTimeout(() => {$homeAudio.play();}, audioDelay);
+
+    setTimeout(async () => {
+        await $homeAudio.play();
+        if (!flashing) {
+        let times = [
+            [dot, letterGap], [dash, letterGap], [dot, wordGap],
+            [dot, letterGap], [dash, wordGap],
+            [dot, letterGap], [dash, letterGap], [dot, wordGap],
+            [dot, wordGap],
+            [dot, letterGap], [dash, letterGap], [dot, wordGap],
+            [dash, letterGap], [dash, letterGap], [dash, wordGap],
+            [dash, letterGap], [dash, letterGap], [dash, wordGap],
+            [dash, letterGap], [dash, wordGap],
+        ];
+            flashing = true;
+            for (let i = 0; i < times.length; i++) {
+                let pair = times[i];
+                $morseFlash.classList.add('active');
+                await wait(pair[0]);
+                $morseFlash.classList.remove('active');
+                await wait(pair[1]);
+            }
+            flashing = false;
+        }
+    }, audioDelay);
 });
+function wait(milliseconds) {
+    return new Promise(resolve => {
+       setTimeout(resolve, milliseconds);
+    });
+ } 

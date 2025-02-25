@@ -101,3 +101,9 @@ main {
         
     }
 }
+#morse-flash {
+    background-color: transparent;
+}
+#morse-flash.active {
+    background-color: rgba(61, 68, 83, 0.482);
+}
