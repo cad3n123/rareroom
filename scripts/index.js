@@ -17,7 +17,7 @@ const audioDelay = 500;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
-const flashDelay = 100;
+const flashDelay = 175;
 //const wordGap = 190;
 
 // Global vars
