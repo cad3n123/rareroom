@@ -10,8 +10,8 @@ const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
 const homeURL = 'https://www.canva.com/design/DAGgCFOLnQU/IghWNzf-q0ltWVUEDiCkvA/view?embed';
 const aboutURL = 'https://www.canva.com/design/DAGgDNNskO8/nrhCTo31fi1cd9J3DP1tqA/view?embed';
 const audioDelay = 500;
-const letterGap = 120;
-const wordGap = 200;
+const letterGap = 110;
+const wordGap = 190;
 const dot = 45;
 const dash = 100;
 
@@ -79,15 +79,7 @@ $contactButton.addEventListener('click', () => {
             [dash, letterGap], [dot, letterGap], [dash, letterGap], [dot, wordGap],
             [dash, wordGap],
         ];
-            flashing = true;
-            for (let i = 0; i < times.length; i++) {
-                let pair = times[i];
-                $morseFlash.classList.add('active');
-                await wait(pair[0]);
-                $morseFlash.classList.remove('active');
-                await wait(pair[1]);
-            }
-            flashing = false;
+        await flashMorseCode(times);
         }
     }, audioDelay);
 });
@@ -111,20 +103,11 @@ $aboutButton.addEventListener('click',() => {
             [dot, letterGap], [dot, letterGap], [dash, wordGap],
             [dash, wordGap],
         ];
-            flashing = true;
-            for (let i = 0; i < times.length; i++) {
-                let pair = times[i];
-                $morseFlash.classList.add('active');
-                await wait(pair[0]);
-                $morseFlash.classList.remove('active');
-                await wait(pair[1]);
-            }
-            flashing = false;
+        await flashMorseCode(times);
         }
     }, audioDelay);
 });
-$homeLogo.addEventListener('click', () => {     
-    console.log("Test!");
+$homeLogo.addEventListener('click', () => {
     $nav.style.display = 'block';
     $aboutText.style.display = 'none';
     setIframe($canvaIframeHome);
@@ -146,18 +129,22 @@ $homeLogo.addEventListener('click', () => {
             [dash, letterGap], [dash, letterGap], [dash, wordGap],
             [dash, letterGap], [dash, wordGap],
         ];
-            flashing = true;
-            for (let i = 0; i < times.length; i++) {
-                let pair = times[i];
-                $morseFlash.classList.add('active');
-                await wait(pair[0]);
-                $morseFlash.classList.remove('active');
-                await wait(pair[1]);
-            }
-            flashing = false;
+        await flashMorseCode(times);
         }
     }, audioDelay);
 });
+async function flashMorseCode(times) {
+    flashing = true;
+    for (let i = 0; i < times.length; i++) {
+        let pair = times[i];
+        $morseFlash.classList.add('active');
+        await wait(pair[0]);
+        $morseFlash.classList.remove('active');
+        await wait(pair[1]);
+    }
+    flashing = false;
+}
+
 function wait(milliseconds) {
     return new Promise(resolve => {
        setTimeout(resolve, milliseconds);
