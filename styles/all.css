@@ -2,18 +2,22 @@
     font-family: EliteMath;
     src: url(../EliteMath/Elite\ Math\ Regular.ttf);
 }
+@font-face {
+    font-family: Alike;
+    src: url(../Alike/Alike-Regular.ttf);
+}
 
 :root {
     --primary: rgb(241, 241, 241);
     --secondary: rgb(0, 0, 0);
 
-    font-family: EliteMath;
+    font-family: Alike;
     background-color: var(--primary);
     color: var(--secondary);
     font-size: calc(0.5vw + 8px);
 }
 button {
-    font-family: EliteMath;
+    font-family: Alike;
     color: var(--secondary);
 }
 body {
@@ -87,11 +91,13 @@ main {
                 }
             }
             p {
+                font-family: EliteMath;
                 text-align: center;
                 font-size: 0.75rem;
             }
         }
         span.morse {
+            font-family: EliteMath;
             display: flex;
             justify-content: space-around;
             p {
