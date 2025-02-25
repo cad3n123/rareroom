@@ -17,20 +17,36 @@ const letterGap = 120;
 
 // Global vars
 let flashing = false;
+let localStorageSettings = localStorage.getItem('settings');
 let settings = {
     light: true,
     sound: true,
-}
+};
 
 // Elements
-const [ $canvaContent, $canvaIframeHome, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash' ].map(id => document.getElementById(id));
+const [ $canvaContent, $canvaIframeHome, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x' ].map(id => document.getElementById(id));
 const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
 const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
 function main() {
+    if (localStorageSettings) {
+        settings = JSON.parse(localStorageSettings);
+    }
     [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
         $audio.volume = 0.1;
     });
+    ['sound', 'light'].forEach(selector => {
+        /** @type {Element} */
+        const $switch = [].find.call($$switch, /** @param {Element} $switch */ $switch => {
+            return $switch.matches(`.${selector}`);
+        })
+        console.log($switch);
+        if (settings[selector]) {
+            $switch.classList.add('active');
+        } else {
+            $switch.classList.remove('active');
+        }
+    })
     $$switch.forEach($switch => createSwitch($switch));
     
     updataCanvaContentPosition();
@@ -52,6 +68,12 @@ function updataCanvaContentPosition() {
     
     $canvaContent.style.left = ((width - $canvaContent.offsetWidth) / 2) + "px";
     $canvaContent.style.top = ((height - $canvaContent.offsetHeight) / 2) + "px";
+
+    // Settings
+    $settings.style.setProperty('--closed-top', `-${$settings.offsetHeight}px`)
+
+    $settingsArrowDown.style.left = ($settings.offsetWidth - $settingsArrowDown.offsetWidth) / 2 + "px";
+    $settingsArrowDown.style.marginTop = $settings.offsetHeight + "px";
 }
 function setIframe(iframe) {
     [$canvaIframeHome, $canvaIframeAbout].forEach(iframe => {
@@ -61,38 +83,6 @@ function setIframe(iframe) {
     //iframe.style.display = 'block';
     iframe.style.zIndex = '0';
 }
-
-// Event Listeners
-window.addEventListener('DOMContentLoaded', main);
-window.addEventListener('resize', updataCanvaContentPosition);
-$contactButton.addEventListener('click', () => {
-    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.pause();
-        $audio.currentTime = 0;
-    });
-    playMorse($contactAudio, "-.-. --- -. - .- -.-. -");
-});
-$aboutButton.addEventListener('click',() => { 
-    $nav.style.display = 'none';
-    $aboutText.style.display = 'block';
-    console.log($aboutText);
-    setIframe($canvaIframeAbout); 
-    [$aboutAudio, $homeAudio, $contactAudio].forEach($audio => {
-        $audio.pause();
-        $audio.currentTime = 0;
-    });
-    playMorse($aboutAudio, ".- -... --- ..- -");
-});
-$homeLogo.addEventListener('click', () => {
-    $nav.style.display = 'block';
-    $aboutText.style.display = 'none';
-    setIframe($canvaIframeHome);
-    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.pause();
-        $audio.currentTime = 0;
-    });
-    playMorse($homeAudio, ".-. .- .-. . .-. --- --- --");
-});
 function playMorse($audioElement, morse) {
     setTimeout(async () => {
         if (settings.sound) {
@@ -163,5 +153,46 @@ function createSwitch($switch) {
                 settings[descriptor] = !settings[descriptor];
             }
         })
+        localStorage.setItem('settings', JSON.stringify(settings));
     })
 }
+
+// Event Listeners
+window.addEventListener('DOMContentLoaded', main);
+window.addEventListener('resize', updataCanvaContentPosition);
+$contactButton.addEventListener('click', () => {
+    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
+        $audio.pause();
+        $audio.currentTime = 0;
+    });
+    playMorse($contactAudio, "-.-. --- -. - .- -.-. -");
+});
+$aboutButton.addEventListener('click',() => { 
+    $nav.style.display = 'none';
+    $aboutText.style.display = 'block';
+    console.log($aboutText);
+    setIframe($canvaIframeAbout); 
+    [$aboutAudio, $homeAudio, $contactAudio].forEach($audio => {
+        $audio.pause();
+        $audio.currentTime = 0;
+    });
+    playMorse($aboutAudio, ".- -... --- ..- -");
+});
+$homeLogo.addEventListener('click', () => {
+    $nav.style.display = 'block';
+    $aboutText.style.display = 'none';
+    setIframe($canvaIframeHome);
+    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
+        $audio.pause();
+        $audio.currentTime = 0;
+    });
+    playMorse($homeAudio, ".-. .- .-. . .-. --- --- --");
+});
+$settingsArrowDown.addEventListener('click', () => {
+    $settings.classList.add('active');
+    $settingsArrowDown.classList.remove('active');
+});
+$settingsX.addEventListener('click', () => {
+    $settings.classList.remove('active');
+    $settingsArrowDown.classList.add('active');
+});

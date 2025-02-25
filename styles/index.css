@@ -114,10 +114,64 @@ main {
     background-color: rgba(61, 68, 83, 0.482);
 }
 #settings {
+    --closed-top: -20rem;
+
+    transition: top 500ms;
+
     left: calc(2 * (8vw + 2rem));
-    top: 0;
+    top: var(--closed-top);
+    #settings-arrow-down {
+        padding: 0.5rem;
+        > * {
+            display: inline-block;
+            height: 0.2rem;
+            width: 2rem;
+            background-color: transparent;
+            margin: 0;
+            
+            transition: background-color 250ms;
+        }
+        > .left {
+            transform: rotate(20deg);
+            margin-right: -0.45rem;
+        }
+        > .right {
+            transform: rotate(-20deg);
+        }
+        animation: 1500ms infinite normal backandforth;
+        animation-timing-function: linear;
+    }
+    #settings-arrow-down.active {
+        cursor: pointer;
+        > * {
+            background-color: black;
+        }
+    }
+    #settings-x {
+        cursor: pointer;
+        top: 0.75rem;
+        right: 1rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        > * {
+            position: absolute;
+            height: 0.1rem;
+            width: 1rem;
+            background-color: gray;
+        }
+        > .left {
+            transform: rotate(45deg);
+        }
+        > .right {
+            transform: rotate(-45deg);
+        }
+    }
     .content {
-        padding: 2rem;
+        padding: 2.25rem;
         > span {
             display: flex;
             justify-content: center;
@@ -132,6 +186,7 @@ main {
                     --bar-height: 1rem;
                     --node-size: 1.4rem;
                     --node-polarity: -1;
+                    --transition-time: 250ms;
 
                     position: relative;
 
@@ -145,7 +200,9 @@ main {
                         border-radius: calc(var(--bar-height) / 2);
                         box-sizing: border-box;
                         
-                        transition: all 250ms;
+                        -webkit-transition: background-color var(--transition-time);
+                        -ms-transition: background-color var(--transition-time);
+                        transition: background-color var(--transition-time);
                     }
                     .node {
                         position: absolute; 
@@ -156,7 +213,9 @@ main {
                         top: calc((var(--bar-height) - var(--node-size)) / 2); 
                         margin-left: calc(var(--node-polarity) * var(--bar-width) / 2);
 
-                        transition: all 250ms;
+                        -webkit-transition: background-color var(--transition-time);
+                        -ms-transition: background-color var(--transition-time);
+                        transition: margin-left var(--transition-time), background-color var(--transition-time);
                     }
                 }
                 .switch.active {
@@ -173,9 +232,13 @@ main {
         }
         p {
             text-align: center;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: grey;
-            margin-top: 1rem;
+            margin-top: 0.9rem;
         }
     }
 }
+#settings.active {
+    top: 0;
+}
+@keyframes backandforth {0%{top:0;} 25%{top:0.25rem;} 50%{top:0;} 75%{top:-0.25rem;} 100%{top:0;}}
