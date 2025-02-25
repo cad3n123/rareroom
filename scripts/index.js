@@ -10,10 +10,15 @@ const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
 const homeURL = 'https://www.canva.com/design/DAGgCFOLnQU/IghWNzf-q0ltWVUEDiCkvA/view?embed';
 const aboutURL = 'https://www.canva.com/design/DAGgDNNskO8/nrhCTo31fi1cd9J3DP1tqA/view?embed';
 const audioDelay = 500;
-const letterGap = 110;
-const wordGap = 190;
-const dot = 45;
-const dash = 100;
+// const letterGap = 110;
+// const wordGap = 190;
+// const dot = 45;
+// const dash = 100;
+const dot = 120;
+const dash = 240;
+const letterGap = 120;
+const flashDelay = 100;
+//const wordGap = 190;
 
 // Global vars
 let flashing = false;
@@ -66,20 +71,9 @@ $contactButton.addEventListener('click', () => {
     });
     setTimeout(async () => {
         await $contactAudio.play();
-        /** @type {AudioElement} */
-        let test = $contactAudio;
+        await wait(flashDelay);
         if (!flashing) {
-        // -.-. --- -. - .- -.-. -
-        let times = [
-            [dash, letterGap], [dot, letterGap], [dash, letterGap], [dot, wordGap],
-            [dash, letterGap], [dash, letterGap], [dash, wordGap],
-            [dash, letterGap], [dot, wordGap],
-            [dash, wordGap],
-            [dot, letterGap], [dash, wordGap],
-            [dash, letterGap], [dot, letterGap], [dash, letterGap], [dot, wordGap],
-            [dash, wordGap],
-        ];
-        await flashMorseCode(times);
+            await flashMorseCode(morseTiming("-.-. --- -. - .- -.-. -"));
         }
     }, audioDelay);
 });
@@ -94,16 +88,9 @@ $aboutButton.addEventListener('click',() => {
     });
     setTimeout(async () => {
         await $aboutAudio.play();
+        await wait(flashDelay);
         if (!flashing) {
-        // .- -... --- ..- -
-        let times = [
-            [dot, letterGap], [dash, wordGap],
-            [dash, letterGap], [dot, letterGap], [dot, letterGap], [dot, wordGap],
-            [dash, letterGap], [dash, letterGap], [dash, wordGap],
-            [dot, letterGap], [dot, letterGap], [dash, wordGap],
-            [dash, wordGap],
-        ];
-        await flashMorseCode(times);
+            await flashMorseCode(morseTiming(".- -... --- ..- -"));
         }
     }, audioDelay);
 });
@@ -118,18 +105,9 @@ $homeLogo.addEventListener('click', () => {
 
     setTimeout(async () => {
         await $homeAudio.play();
+        await wait(flashDelay);
         if (!flashing) {
-        let times = [
-            [dot, letterGap], [dash, letterGap], [dot, wordGap],
-            [dot, letterGap], [dash, wordGap],
-            [dot, letterGap], [dash, letterGap], [dot, wordGap],
-            [dot, wordGap],
-            [dot, letterGap], [dash, letterGap], [dot, wordGap],
-            [dash, letterGap], [dash, letterGap], [dash, wordGap],
-            [dash, letterGap], [dash, letterGap], [dash, wordGap],
-            [dash, letterGap], [dash, wordGap],
-        ];
-        await flashMorseCode(times);
+            await flashMorseCode(morseTiming(".-. .- .-. . .-. --- --- --"));
         }
     }, audioDelay);
 });
@@ -144,9 +122,30 @@ async function flashMorseCode(times) {
     }
     flashing = false;
 }
-
 function wait(milliseconds) {
     return new Promise(resolve => {
        setTimeout(resolve, milliseconds);
     });
- } 
+} 
+/**
+ * 
+ * @param {string} morse 
+ * @returns {Array[Array[number]]}
+ */
+function morseTiming(morse) {
+    morse += " ";
+    let times = [];
+    for (let i = 0; i < morse.length - 1; i++) {
+        let char = morse[i];
+        let nextChar = morse[i + 1];
+        let length1 = char == '.' ? dot/2 : dash/2;
+        let length2 = length1 + (nextChar == ' ' ? letterGap : 0);
+        times.push([length1, length2]);
+
+        if (nextChar == " ") {
+            i++;
+        }
+    }
+    
+    return times;
+}
