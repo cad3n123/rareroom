@@ -80,7 +80,7 @@ function updataCanvaContentPosition() {
     $settingsArrowDown.style.setProperty('--margin-left', `${$settings.offsetWidth}px`);
 }
 function setIframe(iframe) {
-    [$canvaIframeHome, $canvaIframeAbout].forEach(iframe => {
+    [$canvaIframeHome, $canvaIframeContact, $canvaIframeAbout].forEach(iframe => {
         //iframe.style.display = 'none';
         iframe.style.zIndex = '-2';
     });
