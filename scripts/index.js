@@ -14,16 +14,12 @@ const letterGap = 120;
 const audioDelay = 2 * letterGap;
 
 // TODO
-// Default sound on, lights off
-// Make arrow thinner, and closer to top
 // Try only the logo flashes (inverted or the current one only on the logo)
-// Have the settings go away when page switches
-// Mobile arrow closer to edge
 
 // Global vars
 let localStorageSettings = localStorage.getItem('settings');
 let settings = {
-    light: true,
+    light: false,
     sound: true,
 };
 let flashingInterval = null;
@@ -45,7 +41,6 @@ function main() {
         const $switch = [].find.call($$switch, /** @param {Element} $switch */ $switch => {
             return $switch.matches(`.${selector}`);
         })
-        console.log($switch);
         if (settings[selector]) {
             $switch.classList.add('active');
         } else {
@@ -73,6 +68,10 @@ function updataCanvaContentPosition() {
     
     $canvaContent.style.left = ((width - $canvaContent.offsetWidth) / 2) + "px";
     $canvaContent.style.top = ((height - $canvaContent.offsetHeight) / 2) + "px";
+
+    // Flash
+    $morseFlash.style.width = `${$homeLogo.offsetWidth}px`;
+    $morseFlash.style.height = `${$homeLogo.offsetHeight}px`;
 
     // Settings
     $settings.style.setProperty('--closed-top', `-${$settings.offsetHeight}px`)
@@ -191,36 +190,39 @@ function createSwitch($switch) {
 window.addEventListener('DOMContentLoaded', main);
 window.addEventListener('resize', updataCanvaContentPosition);
 $contactButton.addEventListener('click', () => {
-    $nav.style.display = 'none';
-    $aboutText.style.display = 'none';
-    $socialMediaIcons.style.display = 'block';
-    setIframe($canvaIframeContact); 
-    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.pause();
-        $audio.currentTime = 0;
-    });
+    switchPage(
+        $canvaIframeContact, 
+        [
+            {
+                element: $socialMediaIcons,
+                displayMode: "block"
+            }
+        ]
+    );
     playMorse($contactAudio, "-.-. --- -. - .- -.-. -");
 });
 $aboutButton.addEventListener('click',() => { 
-    $nav.style.display = 'none';
-    $socialMediaIcons.style.display = 'none';
-    $aboutText.style.display = 'block';
-    setIframe($canvaIframeAbout); 
-    [$aboutAudio, $homeAudio, $contactAudio].forEach($audio => {
-        $audio.pause();
-        $audio.currentTime = 0;
-    });
+    switchPage(
+        $canvaIframeAbout, 
+        [
+            {
+                element: $aboutText,
+                displayMode: "block"
+            }
+        ]
+    );
     playMorse($aboutAudio, ".- -... --- ..- -");
 });
 $homeLogo.addEventListener('click', () => {
-    $aboutText.style.display = 'none';
-    $socialMediaIcons.style.display = 'none';
-    $nav.style.display = 'block';
-    setIframe($canvaIframeHome);
-    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.pause();
-        $audio.currentTime = 0;
-    });
+    switchPage(
+        $canvaIframeHome, 
+        [
+            {
+                element: $nav,
+                displayMode: "block"
+            }
+        ]
+    );
     playMorse($homeAudio, ".-. .- .-. . .-. --- --- --");
 });
 $settingsArrowDown.addEventListener('click', () => {
@@ -231,3 +233,29 @@ $settingsX.addEventListener('click', () => {
     $settings.classList.remove('active');
     $settingsArrowDown.classList.add('active');
 });
+/**
+ * @typedef {Object} ElementSettings
+ * @property {HTMLElement} element
+ * @property {String} displayMode
+ */
+/**
+ * 
+ * @param {HTMLIFrameElement} iframe 
+ * @param {ElementSettings[]} elementSettings 
+ */
+function switchPage(iframe, elementSettings) {
+    [$nav, $aboutText, $socialMediaIcons].forEach(element => {
+        element.style.display = 'none';
+    });
+    elementSettings.forEach(elementSetting => {
+        elementSetting.element.style.display = elementSetting.displayMode;
+    });
+    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
+        $audio.pause();
+        $audio.currentTime = 0;
+    });
+    $settings.classList.remove('active');
+    $settingsArrowDown.classList.add('active');
+    setIframe(iframe);
+}
+
