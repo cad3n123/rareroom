@@ -158,10 +158,15 @@ main {
         justify-content: center;
         align-items: center;
         > * {
+            --scalage: 0.15;
+
             position: absolute;
-            height: 0.1rem;
-            width: 1rem;
-            background-color: gray;
+            height: 1px;
+            width: 1.3rem;
+            background-color: black;
+            border-radius: 100%;
+
+            clip-path: ellipse(50% 20% at 50% 50%);
         }
         > .left {
             transform: rotate(45deg);
