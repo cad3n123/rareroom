@@ -12,6 +12,7 @@ const dot = 120;
 const dash = 240;
 const letterGap = 120;
 const audioDelay = 2 * letterGap;
+const volume = 0.075;
 
 // TODO
 // Try only the logo flashes (inverted or the current one only on the logo)
@@ -33,9 +34,7 @@ function main() {
     if (localStorageSettings) {
         settings = JSON.parse(localStorageSettings);
     }
-    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.volume = 0.075;
-    });
+    setVolume(settings.sound ? volume : 0);
     ['sound', 'light'].forEach(selector => {
         /** @type {Element} */
         const $switch = [].find.call($$switch, /** @param {Element} $switch */ $switch => {
@@ -50,6 +49,12 @@ function main() {
     $$switch.forEach($switch => createSwitch($switch));
     
     updataCanvaContentPosition();
+}
+
+function setVolume(volume) {
+    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
+        $audio.volume = volume;
+    });
 }
 
 // Functions
@@ -100,13 +105,11 @@ function playMorse($audioElement, morse) {
         flashingInterval = null;
     }
     setTimeout(async () => {
-        if (settings.sound) {
-            await $audioElement.play();
-        }
-        if (settings.light) {
-            await wait(flashDelay);
-            await flashMorseCode(morseTiming(morse));
-        }
+        await $audioElement.play();
+        
+        await wait(flashDelay);
+        await flashMorseCode(morseTiming(morse));
+        
     }, audioDelay);
 }
 
@@ -116,7 +119,9 @@ async function flashMorseCode(times) {
     const startDate = Date.now();
     let offset = 0;
 
-    $morseFlash.classList.add('active');
+    if (settings.light) 
+        $morseFlash.classList.add('active');
+    
     flashingInterval = setInterval(() => {
         const currentDate = Date.now()
 
@@ -130,7 +135,8 @@ async function flashMorseCode(times) {
                 flashingInterval = null;
                 break;
             } else {
-                $morseFlash.classList.add('active');
+                if (settings.light)
+                    $morseFlash.classList.add('active');
                 i++;
             }
             j = 1 - j;
@@ -180,6 +186,7 @@ function createSwitch($switch) {
         [ 'sound', 'light' ].forEach(descriptor => {
             if ($switch.classList.contains(descriptor)) {
                 settings[descriptor] = !settings[descriptor];
+                setVolume(settings.sound ? volume : 0);
             }
         })
         localStorage.setItem('settings', JSON.stringify(settings));
@@ -244,18 +251,20 @@ $settingsX.addEventListener('click', () => {
  * @param {ElementSettings[]} elementSettings 
  */
 function switchPage(iframe, elementSettings) {
-    [$nav, $aboutText, $socialMediaIcons].forEach(element => {
-        element.style.display = 'none';
-    });
-    elementSettings.forEach(elementSetting => {
-        elementSetting.element.style.display = elementSetting.displayMode;
-    });
     [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
         $audio.pause();
         $audio.currentTime = 0;
     });
-    $settings.classList.remove('active');
-    $settingsArrowDown.classList.add('active');
-    setIframe(iframe);
+    if (iframe.style.zIndex != 0) {
+        [$nav, $aboutText, $socialMediaIcons].forEach(element => {
+            element.style.display = 'none';
+        });
+        elementSettings.forEach(elementSetting => {
+            elementSetting.element.style.display = elementSetting.displayMode;
+        });
+        $settings.classList.remove('active');
+        $settingsArrowDown.classList.add('active');
+        setIframe(iframe);
+    }
 }
 
