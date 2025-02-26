@@ -7,7 +7,7 @@ const canvaBaseHeightPercent = 56.2225;
 const canvaScale = 1.1;
 const canvaWidthPercent = canvaBaseWidthPercent * canvaScale;
 const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
-const flashDelay = 130;
+const flashDelay = 125;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
@@ -31,7 +31,7 @@ function main() {
         settings = JSON.parse(localStorageSettings);
     }
     [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.volume = 0.1;
+        $audio.volume = 0.075;
     });
     ['sound', 'light'].forEach(selector => {
         /** @type {Element} */
