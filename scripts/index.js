@@ -22,7 +22,7 @@ let settings = {
 let flashingInterval = null;
 
 // Elements
-const [ $canvaContent, $canvaIframeHome, $canvaIframeContact, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-contact', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons' ].map(id => document.getElementById(id));
+const [ $canvaContent, $canvaIframeHome, $canvaIframeContact, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons, $settingsBorder ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-contact', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons', 'settings-border' ].map(id => document.getElementById(id));
 const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
 const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
@@ -69,9 +69,15 @@ function updataCanvaContentPosition() {
 
     // Settings
     $settings.style.setProperty('--closed-top', `-${$settings.offsetHeight}px`)
+    $settings.style.setProperty('--closed-left', `-${$settings.offsetWidth}px`)
 
-    $settingsArrowDown.style.left = ($settings.offsetWidth - $settingsArrowDown.offsetWidth) / 2 + "px";
-    $settingsArrowDown.style.marginTop = $settings.offsetHeight + "px";
+    $settingsBorder.style.setProperty('--top', `${($settings.offsetHeight - $settingsBorder.offsetHeight) / 2}px`)
+    $settingsBorder.style.setProperty('--left', `${($settings.offsetWidth - $settingsBorder.offsetWidth) / 2}px`)
+
+    $settingsArrowDown.style.setProperty('--left', `${($settings.offsetWidth - $settingsArrowDown.offsetWidth) / 2}px`);
+    $settingsArrowDown.style.setProperty('--top', `${($settings.offsetHeight - $settingsArrowDown.offsetHeight) / 2}px`);
+    $settingsArrowDown.style.setProperty('--margin-top', `${$settings.offsetHeight}px`);
+    $settingsArrowDown.style.setProperty('--margin-left', `${$settings.offsetWidth}px`);
 }
 function setIframe(iframe) {
     [$canvaIframeHome, $canvaIframeAbout].forEach(iframe => {

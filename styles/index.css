@@ -134,11 +134,26 @@ main {
 #settings {
     --closed-top: -20rem;
 
-    transition: top 500ms;
+    transition: top 500ms, left 500ms;
 
-    left: calc(2 * (8vw + 2rem));
+    left: calc(32vw - 16rem);
     top: var(--closed-top);
+
+    display: flex;
+    img {
+        --left: 0;
+
+        /*left: var(--left);*/
+    }
     #settings-arrow-down {
+        --margin-top: 0;
+        --margin-left: 0;
+        --top: 0;
+        --left: 0;
+
+        width: max-content;
+        margin-top: var(--margin-top);
+        margin-left: var(--left);
         padding: 0.5rem;
         > * {
             display: inline-block;
@@ -167,8 +182,8 @@ main {
     }
     #settings-x {
         cursor: pointer;
-        top: 0.75rem;
-        right: 1rem;
+        top: 1rem;
+        right: 1.25rem;
         width: 1.5rem;
         height: 1.5rem;
         
@@ -194,6 +209,7 @@ main {
         }
     }
     .content {
+        margin-top: 0.5rem;
         padding: 2.25rem;
         > span {
             display: flex;
@@ -264,4 +280,33 @@ main {
 #settings.active {
     top: 0;
 }
+
+@media only screen and (max-width: 600px) {
+    #settings {
+        --closed-left: -20rem;
+        
+        left: var(--closed-left);
+        top: 14rem;
+        img {
+            --left: 0;
+    
+            /*top: var(--top);
+            left: 0;*/
+        }
+        #settings-arrow-down {
+            transform: rotate(-90deg);
+            animation: 1500ms infinite normal leftandright;
+            animation-timing-function: linear;
+
+            margin-left: var(--margin-left);
+            margin-top: var(--top);
+        }
+    }
+    #settings.active {
+        left: 0;
+        top: 14rem;
+    }
+}
+
 @keyframes backandforth {0%{top:0;} 25%{top:0.25rem;} 50%{top:0;} 75%{top:-0.25rem;} 100%{top:0;}}
+@keyframes leftandright {0%{left:0;} 25%{left:0.25rem;} 50%{left:0;} 75%{left:-0.25rem;} 100%{left:0;}}
