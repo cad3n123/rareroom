@@ -98,15 +98,32 @@ function playMorse($audioElement, morse) {
 }
 
 async function flashMorseCode(times) {
+    let i = 0;
+    let j = 0;
+    const startDate = Date.now();
+    let offset = 0;
+
     flashing = true;
-    for (let i = 0; i < times.length; i++) {
-        let pair = times[i];
-        $morseFlash.classList.add('active');
-        await wait(pair[0]);
-        $morseFlash.classList.remove('active');
-        await wait(pair[1]);
-    }
-    flashing = false;
+    $morseFlash.classList.add('active');
+    const interval = setInterval(() => {
+        const currentDate = Date.now()
+
+        while (currentDate - (startDate + offset) > times[i][j]) {
+            offset += times[i][j]
+            if (j == 0) {
+                $morseFlash.classList.remove('active');
+            } else if (i + 1 >= times.length) {
+                $morseFlash.classList.remove('active');
+                flashing = false;
+                clearInterval(interval);
+                break;
+            } else {
+                $morseFlash.classList.add('active');
+                i++;
+            }
+            j = 1 - j;
+        }
+    }, 1);
 }
 function wait(milliseconds) {
     return new Promise(resolve => {
