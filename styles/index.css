@@ -224,8 +224,8 @@ main {
 
                 .switch {
                     --bar-width: 2rem;
-                    --bar-height: 1rem;
-                    --node-size: 1.4rem;
+                    --bar-height: 0.9rem;
+                    --node-size: 1.3rem;
                     --node-polarity: -1;
                     --transition-time: 250ms;
 
@@ -273,10 +273,10 @@ main {
         }
         p {
             text-align: center;
-            font-size: 0.45rem;
+            font-size: 0.6rem;
             color: grey;
-            margin-top: 0.9rem;
-            padding: 0 1rem;
+            margin-top: 0.8rem;
+            padding: 0 0.5rem;
         }
     }
 }
