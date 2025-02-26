@@ -7,19 +7,19 @@ const canvaBaseHeightPercent = 56.2225;
 const canvaScale = 1.1;
 const canvaWidthPercent = canvaBaseWidthPercent * canvaScale;
 const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
-const audioDelay = 500;
 const flashDelay = 130;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
+const audioDelay = 2 * letterGap;
 
 // Global vars
-let flashing = false;
 let localStorageSettings = localStorage.getItem('settings');
 let settings = {
     light: true,
     sound: true,
 };
+let flashingInterval = null;
 
 // Elements
 const [ $canvaContent, $canvaIframeHome, $canvaIframeContact, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-contact', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons' ].map(id => document.getElementById(id));
@@ -82,15 +82,18 @@ function setIframe(iframe) {
     iframe.style.zIndex = '0';
 }
 function playMorse($audioElement, morse) {
+    $morseFlash.classList.remove('active');
+    if (flashingInterval) {
+        clearInterval(flashingInterval);
+        flashingInterval = null;
+    }
     setTimeout(async () => {
         if (settings.sound) {
             await $audioElement.play();
         }
         if (settings.light) {
             await wait(flashDelay);
-            if (!flashing) {
-                await flashMorseCode(morseTiming(morse));
-            }
+            await flashMorseCode(morseTiming(morse));
         }
     }, audioDelay);
 }
@@ -101,9 +104,8 @@ async function flashMorseCode(times) {
     const startDate = Date.now();
     let offset = 0;
 
-    flashing = true;
     $morseFlash.classList.add('active');
-    const interval = setInterval(() => {
+    flashingInterval = setInterval(() => {
         const currentDate = Date.now()
 
         while (currentDate - (startDate + offset) > times[i][j]) {
@@ -112,8 +114,8 @@ async function flashMorseCode(times) {
                 $morseFlash.classList.remove('active');
             } else if (i + 1 >= times.length) {
                 $morseFlash.classList.remove('active');
-                flashing = false;
-                clearInterval(interval);
+                clearInterval(flashingInterval);
+                flashingInterval = null;
                 break;
             } else {
                 $morseFlash.classList.add('active');
