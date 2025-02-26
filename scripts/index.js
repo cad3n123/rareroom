@@ -7,10 +7,8 @@ const canvaBaseHeightPercent = 56.2225;
 const canvaScale = 1.1;
 const canvaWidthPercent = canvaBaseWidthPercent * canvaScale;
 const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
-const homeURL = 'https://www.canva.com/design/DAGgCFOLnQU/IghWNzf-q0ltWVUEDiCkvA/view?embed';
-const aboutURL = 'https://www.canva.com/design/DAGgDNNskO8/nrhCTo31fi1cd9J3DP1tqA/view?embed';
 const audioDelay = 500;
-const flashDelay = 140;
+const flashDelay = 130;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
@@ -24,7 +22,7 @@ let settings = {
 };
 
 // Elements
-const [ $canvaContent, $canvaIframeHome, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x' ].map(id => document.getElementById(id));
+const [ $canvaContent, $canvaIframeHome, $canvaIframeContact, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-contact', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons' ].map(id => document.getElementById(id));
 const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
 const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
@@ -178,6 +176,10 @@ function createSwitch($switch) {
 window.addEventListener('DOMContentLoaded', main);
 window.addEventListener('resize', updataCanvaContentPosition);
 $contactButton.addEventListener('click', () => {
+    $nav.style.display = 'none';
+    $aboutText.style.display = 'none';
+    $socialMediaIcons.style.display = 'block';
+    setIframe($canvaIframeContact); 
     [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
         $audio.pause();
         $audio.currentTime = 0;
@@ -186,8 +188,8 @@ $contactButton.addEventListener('click', () => {
 });
 $aboutButton.addEventListener('click',() => { 
     $nav.style.display = 'none';
+    $socialMediaIcons.style.display = 'none';
     $aboutText.style.display = 'block';
-    console.log($aboutText);
     setIframe($canvaIframeAbout); 
     [$aboutAudio, $homeAudio, $contactAudio].forEach($audio => {
         $audio.pause();
@@ -196,8 +198,9 @@ $aboutButton.addEventListener('click',() => {
     playMorse($aboutAudio, ".- -... --- ..- -");
 });
 $homeLogo.addEventListener('click', () => {
-    $nav.style.display = 'block';
     $aboutText.style.display = 'none';
+    $socialMediaIcons.style.display = 'none';
+    $nav.style.display = 'block';
     setIframe($canvaIframeHome);
     [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
         $audio.pause();
