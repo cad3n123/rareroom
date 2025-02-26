@@ -13,6 +13,13 @@ const dash = 240;
 const letterGap = 120;
 const audioDelay = 2 * letterGap;
 
+// TODO
+// Default sound on, lights off
+// Make arrow thinner, and closer to top
+// Try only the logo flashes (inverted or the current one only on the logo)
+// Have the settings go away when page switches
+// Mobile arrow closer to edge
+
 // Global vars
 let localStorageSettings = localStorage.getItem('settings');
 let settings = {
