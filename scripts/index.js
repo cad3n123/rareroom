@@ -26,7 +26,7 @@ let settings = {
 let flashingInterval = null;
 
 // Elements
-const [ $canvaContent, $canvaIframeHome, $canvaIframeContact, $canvaIframeAbout, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons, $settingsBorder ] = [ 'canva-content', 'canva-iframe-home', 'canva-iframe-contact', 'canva-iframe-about', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons', 'settings-border' ].map(id => document.getElementById(id));
+const [ $backgroundContent, $homeBackground, $contactBackground, $aboutBackground, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons, $settingsBorder ] = [ 'background-content', 'home-background', 'contact-background', 'about-background', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons', 'settings-border' ].map(id => document.getElementById(id));
 const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
 const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
@@ -62,17 +62,17 @@ function updataCanvaContentPosition() {
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    if (width / height > canvaRatioPixel) {
-        $canvaContent.style.width = `${canvaWidthPercent}%`;
-        $canvaContent.style.paddingTop = `${canvaHeightPercent}%`;
-    } else {
-        $canvaContent.style.width = `${100 * canvaRatioPixel / (width / height)}%`;
-        $canvaContent.style.paddingTop = `${100 * canvaRatioPixel / (width / height)}%`;
+        // if (width / height > canvaRatioPixel) {
+        //     $backgroundContent.style.width = `${canvaWidthPercent}%`;
+        //     $backgroundContent.style.paddingTop = `${canvaHeightPercent}%`;
+        // } else {
+        //     $backgroundContent.style.width = `${100 * canvaRatioPixel / (width / height)}%`;
+        //     $backgroundContent.style.paddingTop = `${100 * canvaRatioPixel / (width / height)}%`;
 
-    }
-    
-    $canvaContent.style.left = ((width - $canvaContent.offsetWidth) / 2) + "px";
-    $canvaContent.style.top = ((height - $canvaContent.offsetHeight) / 2) + "px";
+        // }
+        
+        // $backgroundContent.style.left = ((width - $backgroundContent.offsetWidth) / 2) + "px";
+        // $backgroundContent.style.top = ((height - $backgroundContent.offsetHeight) / 2) + "px";
 
     // Flash
     $morseFlash.style.width = `${$homeLogo.offsetWidth}px`;
@@ -90,13 +90,13 @@ function updataCanvaContentPosition() {
     $settingsArrowDown.style.setProperty('--margin-top', `${$settings.offsetHeight}px`);
     $settingsArrowDown.style.setProperty('--margin-left', `${$settings.offsetWidth}px`);
 }
-function setIframe(iframe) {
-    [$canvaIframeHome, $canvaIframeContact, $canvaIframeAbout].forEach(iframe => {
+function setBackground(background) {
+    [$homeBackground, $contactBackground, $aboutBackground].forEach(background => {
         //iframe.style.display = 'none';
-        iframe.style.zIndex = '-2';
+        background.style.zIndex = '-2';
     });
     //iframe.style.display = 'block';
-    iframe.style.zIndex = '0';
+    background.style.zIndex = '0';
 }
 function playMorse($audioElement, morse) {
     $morseFlash.classList.remove('active');
@@ -198,7 +198,7 @@ window.addEventListener('DOMContentLoaded', main);
 window.addEventListener('resize', updataCanvaContentPosition);
 $contactButton.addEventListener('click', () => {
     switchPage(
-        $canvaIframeContact, 
+        $contactBackground, 
         [
             {
                 element: $socialMediaIcons,
@@ -210,7 +210,7 @@ $contactButton.addEventListener('click', () => {
 });
 $aboutButton.addEventListener('click',() => { 
     switchPage(
-        $canvaIframeAbout, 
+        $aboutBackground, 
         [
             {
                 element: $aboutText,
@@ -222,7 +222,7 @@ $aboutButton.addEventListener('click',() => {
 });
 $homeLogo.addEventListener('click', () => {
     switchPage(
-        $canvaIframeHome, 
+        $homeBackground, 
         [
             {
                 element: $nav,
@@ -247,15 +247,15 @@ $settingsX.addEventListener('click', () => {
  */
 /**
  * 
- * @param {HTMLIFrameElement} iframe 
+ * @param {HTMLIFrameElement} background 
  * @param {ElementSettings[]} elementSettings 
  */
-function switchPage(iframe, elementSettings) {
+function switchPage(background, elementSettings) {
     [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
         $audio.pause();
         $audio.currentTime = 0;
     });
-    if (iframe.style.zIndex != 0) {
+    if (background.style.zIndex != 0) {
         [$nav, $aboutText, $socialMediaIcons].forEach(element => {
             element.style.display = 'none';
         });
@@ -264,7 +264,7 @@ function switchPage(iframe, elementSettings) {
         });
         $settings.classList.remove('active');
         $settingsArrowDown.classList.add('active');
-        setIframe(iframe);
+        setBackground(background);
     }
 }
 

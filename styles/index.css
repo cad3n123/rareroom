@@ -26,7 +26,7 @@ body {
     height: 100dvh;
     overflow: hidden;
 }
-#canva-content {
+#background-content {
     position: absolute;
     left: 0;
     top: 0;
@@ -44,6 +44,9 @@ body {
         border: none;
         padding: 0;
         margin: 0;
+    }
+    img {
+        object-fit: cover;
     }
 }
 main {
