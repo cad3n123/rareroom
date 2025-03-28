@@ -59,21 +59,6 @@ function setVolume(volume) {
 
 // Functions
 function updataCanvaContentPosition() {
-    // let width = window.innerWidth;
-    // let height = window.innerHeight;
-
-    // if (width / height > canvaRatioPixel) {
-    //     $backgroundContent.style.width = `${canvaWidthPercent}%`;
-    //     $backgroundContent.style.paddingTop = `${canvaHeightPercent}%`;
-    // } else {
-    //     $backgroundContent.style.width = `${100 * canvaRatioPixel / (width / height)}%`;
-    //     $backgroundContent.style.paddingTop = `${100 * canvaRatioPixel / (width / height)}%`;
-
-    // }
-    
-    // $backgroundContent.style.left = ((width - $backgroundContent.offsetWidth) / 2) + "px";
-    // $backgroundContent.style.top = ((height - $backgroundContent.offsetHeight) / 2) + "px";
-
     // Flash
     $morseFlash.style.width = `${$homeLogo.offsetWidth}px`;
     $morseFlash.style.height = `${$homeLogo.offsetHeight}px`;
