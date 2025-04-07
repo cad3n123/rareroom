@@ -48,7 +48,7 @@ function main() {
     })
     $$switch.forEach($switch => createSwitch($switch));
     
-    updataCanvaContentPosition();
+    updataContentPosition();
 }
 
 function setVolume(volume) {
@@ -58,7 +58,7 @@ function setVolume(volume) {
 }
 
 // Functions
-function updataCanvaContentPosition() {
+function updataContentPosition() {
     // Flash
     $morseFlash.style.width = `${$homeLogo.offsetWidth}px`;
     $morseFlash.style.height = `${$homeLogo.offsetHeight}px`;
@@ -180,7 +180,8 @@ function createSwitch($switch) {
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
-window.addEventListener('resize', updataCanvaContentPosition);
+window.addEventListener('load', updataContentPosition);
+window.addEventListener('resize', updataContentPosition);
 $contactButton.addEventListener('click', () => {
     switchPage(
         $contactBackground, 
