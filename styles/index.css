@@ -66,15 +66,14 @@ main {
         flex-direction: column;
         gap: 0.75rem;
         > span {
-            img {
+            img:not(.morse) {
                 position: absolute;
                 width: 12rem;
             }
-            span.morse {
-                font-size: .45rem;
-                p {
-                    margin-top: 0;
-                }
+            img.morse {
+                margin-top: 0.25rem;
+                height: 0.325rem;
+                object-fit: contain;
             }
         }
         #content {
@@ -82,24 +81,24 @@ main {
             nav {
                 margin: auto;
                 width: max-content;
-                > span:not(.morse) {
-                    display: block;
-                }
-                span.button {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.1rem;
-                    button {
-                        border: none;
-                        background-color: transparent;
-                        font-size: 1.15rem;
+                > span {
+                    > span {
+                        display: inline-flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 0.1rem;
+                        
+                        button {
+                            border: none;
+                            background-color: transparent;
+                            font-size: 1.15rem;
+                        }
+                        img {
+                            height: 0.4rem;
+                            object-fit: contain;
+                        }
                     }
-                }
-                span.morse {
-                    p {
-                        font-size: 0.35rem;
-                        color: red;
-                    }
+                    
                 }
             }
             p {
@@ -138,10 +137,11 @@ main {
 #settings {
     --closed-top: -20rem;
 
-    transition: top 500ms, left 500ms;
-
-    left: calc(32vw - 16rem);
-    top: var(--closed-top);
+    position: absolute;
+    transition: transform 500ms;
+    transform: translate(calc(32vw - 16rem), var(--closed-top));
+    top: 0;
+    left: 0;
 
     display: flex;
     img {
@@ -221,10 +221,44 @@ main {
             justify-content: center;
             gap: 1rem;
             > span {
+                --image-size: 4rem;
+
                 display: flex;
                 flex-direction: column;
                 gap: 0.6rem;
 
+                .image-container {
+                    position: relative;
+                    display: flex;
+
+                    img {
+                        object-fit: cover;
+                    }
+                    img:first-child {
+                        width: var(--image-size);
+                    }
+                    *:not(:first-child) {
+                        --size: 55%;
+
+                        position: absolute;
+                        left: calc((100% - var(--size)) / 2);
+                        width: var(--size);
+                        align-self: center;
+                    }
+                }
+                .image-container.light {
+                    *:not(:first-child) {
+                        transform: translateY(15%);
+                    }
+                }
+                .image-container.sound {
+                    img:first-child {
+                        width: calc(0.9 * var(--image-size));
+                    }
+                    *:not(:first-child) {
+                        --size: 60%;
+                    }
+                }
                 .switch {
                     --bar-width: 2rem;
                     --bar-height: 0.9rem;
@@ -284,7 +318,7 @@ main {
     }
 }
 #settings.active {
-    top: 0;
+    transform: translate(calc(32vw - 16rem), 0);
 }
 
 @media only screen and (max-width: 600px) {
@@ -296,13 +330,9 @@ main {
     #settings {
         --closed-left: -20rem;
         
-        left: var(--closed-left);
-        top: 14rem;
+        transform: translate(var(--closed-left), 14rem);
         img {
             --left: 0;
-    
-            /*top: var(--top);
-            left: 0;*/
         }
         #settings-arrow-down {
             transform: rotate(-90deg);
@@ -315,10 +345,19 @@ main {
         }
     }
     #settings.active {
-        left: 0;
-        top: 14rem;
+        transform: translate(0, 14rem);
     }
 }
 
-@keyframes backandforth {0%{top:0;} 25%{top:0.25rem;} 50%{top:0;} 75%{top:-0.25rem;} 100%{top:0;}}
-@keyframes leftandright {0%{left:0;} 25%{left:0.25rem;} 50%{left:0;} 75%{left:-0.25rem;} 100%{left:0;}}
+@keyframes backandforth {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(0.25rem); }
+    75% { transform: translateY(-0.25rem); }
+  }
+  
+  @keyframes leftandright {
+    0%, 100% { transform: rotate(-90deg) translateY(0); }
+    25% { transform: rotate(-90deg) translateY(0.25rem); }
+    75% { transform: rotate(-90deg) translateY(-0.25rem); }
+  }
+  

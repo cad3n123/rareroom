@@ -18,9 +18,10 @@
 <body>
     <div id='background-content' style=" width: 100%; height: 100%;
  padding-bottom: 0; overflow: hidden;">
-        <img id='home-background' src='./images/home.png' style="z-index: 0;">
-        <img id='about-background' src='./images/about.png' style="z-index: -2;">
-        <img id='contact-background' src='./images/contact.png' style="z-index: -2;">
+        <img id='background' src='./images/background.jpg' style="z-index: -1;">
+        <img id='home-background' src='./images/home_transparent.png' style="z-index: 0;">
+        <img id='about-background' src='./images/about_transparent.png' style="z-index: -2;">
+        <img id='contact-background' src='./images/contact_transparent.png' style="z-index: -2;">
         <!--
         <iframe id='canva-iframe-home' loading="lazy" style="z-index: 0;"
             src="https://www.canva.com/design/DAGgCFOLnQU/IghWNzf-q0ltWVUEDiCkvA/view?embed">
@@ -45,20 +46,17 @@
                     </div>
                 </span>
                 <span class='morse'>
-                    <p>.-. .- .-. .</p>
-                    <p>.-. --- --- --</p>
+                    <img src='./images/rare-morse.png' class='morse'>
+                    <img src='./images/room-morse.png' class='morse'>
                 </span>
             </span>
             <div id='content'>
                 <nav>
-                    <span class='button'>
-                        <button id='contact-button'>CONTACT</button><span>|</span><button
-                            id='about-button'>ABOUT</button onclick="setURL()">
-                    </span>
-                    <span class='morse'>
-                        <p>-.-. --- -. - .- -.-. -</p>
-                        <p> </p>
-                        <p>.- -... --- ..- -</p>
+                    <span>
+                        <span><button id='contact-button'>CONTACT</button><img
+                                src='./images/contact-morse.png'></span><span>|</span><span><button
+                                id='about-button'>ABOUT</button onclick="setURL()"><img
+                                src='./images/about-morse.png'></span>
                     </span>
                 </nav>
                 <p style='display: none; '>RAREROOM operates as a hub of music, art, culture and marketing, a hybrid
@@ -78,7 +76,7 @@
             </div>
         </div>
     </main>
-    <div id='settings' style='position: absolute; z-index: 1; width: 14rem;'>
+    <div id='settings' style='z-index: 1; width: 14rem;'>
         <img id='settings-border' src='./images/settings_border.png'
             style='position: absolute; width: 100%; object-fit: cover;'>
         <div id='settings-arrow-down' class='active' style='position: absolute;'>
@@ -92,12 +90,18 @@
         <div class='content' style='position: relative;'>
             <span>
                 <span>
-                    <img src='./images/light_button.png' style='object-fit: cover; width: 4rem;'>
+                    <div class='image-container light'>
+                        <img src='./images/light-button-background.png'>
+                        <img src='./images/light-button.png'>
+                    </div>
                     <div class='switch light'>
                     </div>
                 </span>
                 <span>
-                    <img src='./images/sound_button.png' style='object-fit: cover; width: 3.5rem;'>
+                    <div class='image-container sound'>
+                        <img src='./images/sound-button-background.png'>
+                        <img src='./images/sound-button.png'>
+                    </div>
                     <div class='switch sound active'></div>
                 </span>
             </span>
