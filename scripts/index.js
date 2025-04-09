@@ -34,7 +34,7 @@ function main() {
     if (localStorageSettings) {
         settings = JSON.parse(localStorageSettings);
     }
-    setVolume(settings.sound ? volume : 0);
+    setAudioStatus(settings.sound);
     ['sound', 'light'].forEach(selector => {
         /** @type {Element} */
         const $switch = [].find.call($$switch, /** @param {Element} $switch */ $switch => {
@@ -51,9 +51,13 @@ function main() {
     updataContentPosition();
 }
 
-function setVolume(volume) {
+/**
+ * 
+ * @param {boolean} isOn 
+ */
+function setAudioStatus(isOn) {
     [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.volume = volume;
+        $audio.muted = !isOn;
     });
 }
 
@@ -171,7 +175,7 @@ function createSwitch($switch) {
         [ 'sound', 'light' ].forEach(descriptor => {
             if ($switch.classList.contains(descriptor)) {
                 settings[descriptor] = !settings[descriptor];
-                setVolume(settings.sound ? volume : 0);
+                setAudioStatus(settings.sound);
             }
         })
         localStorage.setItem('settings', JSON.stringify(settings));
