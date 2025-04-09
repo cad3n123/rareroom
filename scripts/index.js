@@ -12,6 +12,10 @@ const dot = 120;
 const dash = 240;
 const letterGap = 120;
 const volume = 0.075;
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const gainNode = audioCtx.createGain();
+gainNode.connect(audioCtx.destination);
+const [homeAudio, aboutAudio, contactAudio] = ["RAREROOM", "ABOUT", "CONTACT"].map(name => `./audios/${name} MORSE.m4a`);
 
 // TODO
 // Try only the logo flashes (inverted or the current one only on the logo)
@@ -19,13 +23,15 @@ const volume = 0.075;
 // Global vars
 let localStorageSettings = localStorage.getItem('settings');
 let settings = {
-    light: false,
+    light: true,
     sound: true,
 };
 let flashingInterval = null;
+/** @type {AudioBufferSourceNode} */
+let currentAudioBufferSource = null;
 
 // Elements
-const [ $backgroundContent, $homeBackground, $contactBackground, $aboutBackground, $content, $contactButton, $aboutButton, $homeLogo, $homeAudio, $aboutAudio, $contactAudio, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons, $settingsBorder ] = [ 'background-content', 'home-background', 'contact-background', 'about-background', 'content', 'contact-button', 'about-button', 'home-logo', 'home-audio', 'about-audio', 'contact-audio','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons', 'settings-border' ].map(id => document.getElementById(id));
+const [ $backgroundContent, $homeBackground, $contactBackground, $aboutBackground, $content, $contactButton, $aboutButton, $homeLogo, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons, $settingsBorder ] = [ 'background-content', 'home-background', 'contact-background', 'about-background', 'content', 'contact-button', 'about-button', 'home-logo','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons', 'settings-border' ].map(id => document.getElementById(id));
 const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
 const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
@@ -55,9 +61,10 @@ function main() {
  * @param {boolean} isOn 
  */
 function setAudioStatus(isOn) {
-    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.muted = !isOn;
-    });
+    // [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
+    //     $audio.muted = !isOn;
+    // });
+    gainNode.gain.setValueAtTime(isOn ? 1 : 0, audioCtx.currentTime);
 }
 
 // Functions
@@ -88,20 +95,48 @@ function setBackground(background) {
 }
 /**
  * 
- * @param {HTMLAudioElement} $audioElement 
- * @param {String} morse 
+ * @param {String} audioUrl - URL of the morse audio file
+ * @param {String} morse - Morse string to animate
  */
-function playMorse($audioElement, morse) {
+async function playMorse(audioUrl, morse) {
     $morseFlash.classList.remove('active');
     if (flashingInterval) {
         clearInterval(flashingInterval);
         flashingInterval = null;
     }
-    $audioElement.play();
-    $audioElement.onplaying = () => {
+
+    if (currentAudioBufferSource) {
+        currentAudioBufferSource.stop();
+        currentAudioBufferSource.disconnect();
+        currentAudioBufferSource = null;
+    }
+
+    // Fetch and decode the audio file
+    const response = await fetch(audioUrl);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+    // Create audio source and connect to destination
+    const source = audioCtx.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(gainNode);
+
+    // Schedule playback a short moment into the future
+    const startTime = audioCtx.currentTime + 0.3; // small delay for sync
+    source.start(startTime);
+
+    // Schedule the flashing to start in sync
+    const delayMs = (startTime - audioCtx.currentTime) * 1000;
+    setTimeout(() => {
+        $morseFlash.classList.remove('active');
+        if (flashingInterval) {
+            clearInterval(flashingInterval);
+            flashingInterval = null;
+        }
         flashMorseCode(morseTiming(morse));
-        $audioElement.onplaying = () => {};
-    };
+    }, delayMs);
+
+    currentAudioBufferSource = source;
 }
 
 async function flashMorseCode(times) {
@@ -198,7 +233,7 @@ $contactButton.addEventListener('click', () => {
             }
         ]
     );
-    playMorse($contactAudio, "-.-. --- -. - .- -.-. -");
+    playMorse(contactAudio, "-.-. --- -. - .- -.-. -");
 });
 $aboutButton.addEventListener('click',() => { 
     switchPage(
@@ -210,7 +245,7 @@ $aboutButton.addEventListener('click',() => {
             }
         ]
     );
-    playMorse($aboutAudio, ".- -... --- ..- -");
+    playMorse(aboutAudio, ".- -... --- ..- -");
 });
 $homeLogo.addEventListener('click', () => {
     switchPage(
@@ -222,7 +257,7 @@ $homeLogo.addEventListener('click', () => {
             }
         ]
     );
-    playMorse($homeAudio, ".-. .- .-. . .-. --- --- --");
+    playMorse(homeAudio, ".-. .- .-. . .-. --- --- --");
 });
 $settingsArrowDown.addEventListener('click', () => {
     $settings.classList.add('active');
@@ -243,10 +278,10 @@ $settingsX.addEventListener('click', () => {
  * @param {ElementSettings[]} elementSettings 
  */
 function switchPage(background, elementSettings) {
-    [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-        $audio.pause();
-        $audio.currentTime = 0;
-    });
+    // [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
+    //     $audio.pause();
+    //     $audio.currentTime = 0;
+    // });
     if (background.style.zIndex != 0) {
         [$nav, $aboutText, $socialMediaIcons].forEach(element => {
             element.style.display = 'none';
