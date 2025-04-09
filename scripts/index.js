@@ -11,7 +11,6 @@ const flashDelay = 125;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
-const audioDelay = 2 * letterGap;
 const volume = 0.075;
 
 // TODO
@@ -87,19 +86,22 @@ function setBackground(background) {
     //iframe.style.display = 'block';
     background.style.zIndex = '0';
 }
+/**
+ * 
+ * @param {HTMLAudioElement} $audioElement 
+ * @param {String} morse 
+ */
 function playMorse($audioElement, morse) {
     $morseFlash.classList.remove('active');
     if (flashingInterval) {
         clearInterval(flashingInterval);
         flashingInterval = null;
     }
-    setTimeout(async () => {
-        await $audioElement.play();
-        
-        await wait(flashDelay);
-        await flashMorseCode(morseTiming(morse));
-        
-    }, audioDelay);
+    $audioElement.play();
+    $audioElement.onplaying = () => {
+        flashMorseCode(morseTiming(morse));
+        $audioElement.onplaying = () => {};
+    };
 }
 
 async function flashMorseCode(times) {
