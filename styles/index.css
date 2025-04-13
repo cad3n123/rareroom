@@ -107,6 +107,7 @@ main {
             }
             img {
                 width: 100%;
+                transform: translateX(8%);
             }
             ul {
                 width: max-content;
