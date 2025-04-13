@@ -17,9 +17,6 @@ const gainNode = audioCtx.createGain();
 gainNode.connect(audioCtx.destination);
 const [homeAudio, aboutAudio, contactAudio] = ["RAREROOM", "ABOUT", "CONTACT"].map(name => `/audios/${name} MORSE.m4a`);
 
-// TODO
-// Try only the logo flashes (inverted or the current one only on the logo)
-
 // Global vars
 let localStorageSettings = localStorage.getItem('settings');
 let settings = {
@@ -54,6 +51,7 @@ function main() {
     $$switch.forEach($switch => createSwitch($switch));
     
     updataContentPosition();
+    stateChanged();
 }
 
 /**
