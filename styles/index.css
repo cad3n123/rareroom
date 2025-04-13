@@ -25,6 +25,10 @@ body {
     width: 100vw;
     height: 100dvh;
     overflow: hidden;
+
+    div img {
+        user-select: none;
+    }
 }
 #background-content {
     position: absolute;
@@ -101,10 +105,8 @@ main {
                     
                 }
             }
-            p {
-                font-family: EliteMath;
-                text-align: center;
-                font-size: 0.75rem;
+            img {
+                width: 100%;
             }
             ul {
                 width: max-content;

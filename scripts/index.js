@@ -32,7 +32,7 @@ let currentAudioBufferSource = null;
 
 // Elements
 const [ $backgroundContent, $homeBackground, $contactBackground, $aboutBackground, $content, $contactButton, $aboutButton, $homeLogo, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons, $settingsBorder ] = [ 'background-content', 'home-background', 'contact-background', 'about-background', 'content', 'contact-button', 'about-button', 'home-logo','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons', 'settings-border' ].map(id => document.getElementById(id));
-const [ [ $nav ], [ $aboutText ] ] = [ 'nav', ':scope > p' ].map(descriptor => $content.querySelectorAll(descriptor));
+const [ [ $nav ], [ $aboutParagraphImg ] ] = [ 'nav', ':scope > img' ].map(descriptor => $content.querySelectorAll(descriptor));
 const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
 function main() {
@@ -218,46 +218,65 @@ function createSwitch($switch) {
         localStorage.setItem('settings', JSON.stringify(settings));
     })
 }
+function stateChanged() {
+    const path = window.location.pathname;
+    if (path === '/about') {
+        switchPage(
+            $aboutBackground, 
+            [
+                {
+                    element: $aboutParagraphImg,
+                    displayMode: "block"
+                }
+            ]
+        );
+        playMorse(aboutAudio, ".- -... --- ..- -");
+    } else if (path === '/contact') {
+        switchPage(
+            $contactBackground, 
+            [
+                {
+                    element: $socialMediaIcons,
+                    displayMode: "block"
+                }
+            ]
+        );
+        playMorse(contactAudio, "-.-. --- -. - .- -.-. -");
+    } else {
+        switchPage(
+            $homeBackground, 
+            [
+                {
+                    element: $nav,
+                    displayMode: "block"
+                }
+            ]
+        );
+        playMorse(homeAudio, ".-. .- .-. . .-. --- --- --");
+    }
+}
+/**
+ * 
+ * @param {String} stateName 
+ */
+function changeState(stateName) {
+    window.history.pushState({}, '', `/${stateName}`);
+    stateChanged();
+}
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
 window.addEventListener('load', updataContentPosition);
 window.addEventListener('resize', updataContentPosition);
+window.addEventListener('popstate', stateChanged)
 $contactButton.addEventListener('click', () => {
-    switchPage(
-        $contactBackground, 
-        [
-            {
-                element: $socialMediaIcons,
-                displayMode: "block"
-            }
-        ]
-    );
-    playMorse(contactAudio, "-.-. --- -. - .- -.-. -");
+    changeState('contact');
 });
 $aboutButton.addEventListener('click',() => { 
-    switchPage(
-        $aboutBackground, 
-        [
-            {
-                element: $aboutText,
-                displayMode: "block"
-            }
-        ]
-    );
-    playMorse(aboutAudio, ".- -... --- ..- -");
+    changeState('about');
 });
 $homeLogo.addEventListener('click', () => {
-    switchPage(
-        $homeBackground, 
-        [
-            {
-                element: $nav,
-                displayMode: "block"
-            }
-        ]
-    );
-    playMorse(homeAudio, ".-. .- .-. . .-. --- --- --");
+    changeState('');
 });
 $settingsArrowDown.addEventListener('click', () => {
     $settings.classList.add('active');
@@ -278,12 +297,8 @@ $settingsX.addEventListener('click', () => {
  * @param {ElementSettings[]} elementSettings 
  */
 function switchPage(background, elementSettings) {
-    // [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-    //     $audio.pause();
-    //     $audio.currentTime = 0;
-    // });
     if (background.style.zIndex != 0) {
-        [$nav, $aboutText, $socialMediaIcons].forEach(element => {
+        [$nav, $aboutParagraphImg, $socialMediaIcons].forEach(element => {
             element.style.display = 'none';
         });
         elementSettings.forEach(elementSetting => {
