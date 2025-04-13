@@ -15,7 +15,7 @@ const volume = 0.075;
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const gainNode = audioCtx.createGain();
 gainNode.connect(audioCtx.destination);
-const [homeAudio, aboutAudio, contactAudio] = ["RAREROOM", "ABOUT", "CONTACT"].map(name => `./audios/${name} MORSE.m4a`);
+const [homeAudio, aboutAudio, contactAudio] = ["RAREROOM", "ABOUT", "CONTACT"].map(name => `/audios/${name} MORSE.m4a`);
 
 // TODO
 // Try only the logo flashes (inverted or the current one only on the logo)
