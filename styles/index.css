@@ -81,7 +81,7 @@ main {
             }
         }
         #content {
-            width: 22rem;
+            width: max-content;
             nav {
                 margin: auto;
                 width: max-content;
@@ -105,9 +105,14 @@ main {
                     
                 }
             }
-            img {
-                width: 100%;
-                transform: translateX(8%);
+            img.about.title {
+                width: 4rem;
+                margin: auto;
+            }
+            img.about:not(.title) {
+                margin-top: 0.5rem;
+                width: 24rem;
+                transform: translateX(25%);
             }
             ul {
                 width: max-content;

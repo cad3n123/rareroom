@@ -29,7 +29,7 @@ let currentAudioBufferSource = null;
 
 // Elements
 const [ $backgroundContent, $homeBackground, $contactBackground, $aboutBackground, $content, $contactButton, $aboutButton, $homeLogo, $morseFlash, $settings, $settingsArrowDown, $settingsX, $socialMediaIcons, $settingsBorder ] = [ 'background-content', 'home-background', 'contact-background', 'about-background', 'content', 'contact-button', 'about-button', 'home-logo','morse-flash', 'settings', 'settings-arrow-down', 'settings-x', 'social-media-icons', 'settings-border' ].map(id => document.getElementById(id));
-const [ [ $nav ], [ $aboutParagraphImg ] ] = [ 'nav', ':scope > img' ].map(descriptor => $content.querySelectorAll(descriptor));
+const [ [ $nav ], $aboutParagraphImgs ] = [ 'nav', ':scope > img' ].map(descriptor => Array.from($content.querySelectorAll(descriptor)));
 const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
 function main() {
@@ -59,9 +59,6 @@ function main() {
  * @param {boolean} isOn 
  */
 function setAudioStatus(isOn) {
-    // [$homeAudio, $aboutAudio, $contactAudio].forEach($audio => {
-    //     $audio.muted = !isOn;
-    // });
     gainNode.gain.setValueAtTime(isOn ? 1 : 0, audioCtx.currentTime);
 }
 
@@ -221,12 +218,12 @@ function stateChanged() {
     if (path === '/about') {
         switchPage(
             $aboutBackground, 
-            [
-                {
-                    element: $aboutParagraphImg,
+            $aboutParagraphImgs.map($img => {
+                return {
+                    element: $img,
                     displayMode: "block"
                 }
-            ]
+            })
         );
         playMorse(aboutAudio, ".- -... --- ..- -");
     } else if (path === '/contact') {
@@ -296,7 +293,7 @@ $settingsX.addEventListener('click', () => {
  */
 function switchPage(background, elementSettings) {
     if (background.style.zIndex != 0) {
-        [$nav, $aboutParagraphImg, $socialMediaIcons].forEach(element => {
+        [$nav, ...$aboutParagraphImgs, $socialMediaIcons].forEach(element => {
             element.style.display = 'none';
         });
         elementSettings.forEach(elementSetting => {
