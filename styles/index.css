@@ -111,8 +111,9 @@ main {
             }
             img.about:not(.title) {
                 margin-top: 0.5rem;
-                width: 24rem;
-                transform: translateX(25%);
+                width: 20rem;
+                /* transform: translateX(25%); */
+                transform: translateX(5%);
             }
             ul {
                 width: max-content;
