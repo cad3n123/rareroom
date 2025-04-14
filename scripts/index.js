@@ -11,10 +11,11 @@ const flashDelay = 125;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
-const volume = 0.075;
+const volume = 0.5;
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const gainNode = audioCtx.createGain();
 gainNode.connect(audioCtx.destination);
+gainNode.gain.value = volume;
 const [homeAudio, aboutAudio, contactAudio] = ["RAREROOM", "ABOUT", "CONTACT"].map(name => `/audios/${name} MORSE.m4a`);
 
 // Global vars
@@ -59,7 +60,7 @@ function main() {
  * @param {boolean} isOn 
  */
 function setAudioStatus(isOn) {
-    gainNode.gain.setValueAtTime(isOn ? 1 : 0, audioCtx.currentTime);
+    gainNode.gain.value = isOn ? volume : 0;
 }
 
 // Functions
