@@ -83,10 +83,8 @@ function updataContentPosition() {
 }
 function setBackground(background) {
     [$homeBackground, $contactBackground, $aboutBackground].forEach(background => {
-        //iframe.style.display = 'none';
         background.style.zIndex = '-2';
     });
-    //iframe.style.display = 'block';
     background.style.zIndex = '0';
 }
 /**
@@ -233,7 +231,7 @@ function stateChanged() {
             [
                 {
                     element: $socialMediaIcons,
-                    displayMode: "block"
+                    displayMode: "flex"
                 }
             ]
         );

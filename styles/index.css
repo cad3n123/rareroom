@@ -119,15 +119,16 @@ main {
                 width: max-content;
                 padding: 0;
                 margin: auto;
-                margin-top: 0.25rem;
-                display: flex;
                 a {
                     color: var(--secondary);
                     font-size: 1.75rem;
-                    margin: 0.25rem;
+                    padding: 0.25rem;
 
                     svg {
+                        display: block;
                         height: 1.75rem;
+                        width: 1.75rem;
+                        line-height: 1;
                     }
                 }
             }
