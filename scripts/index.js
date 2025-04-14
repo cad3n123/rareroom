@@ -11,7 +11,7 @@ const flashDelay = 125;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
-const volume = 0.5;
+const volume = 0.35;
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const gainNode = audioCtx.createGain();
 gainNode.connect(audioCtx.destination);
