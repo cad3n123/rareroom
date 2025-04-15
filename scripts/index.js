@@ -52,7 +52,7 @@ function main() {
     $$switch.forEach($switch => createSwitch($switch));
     
     updataContentPosition();
-    stateChanged();
+    stateChanged(false);
 }
 
 /**
@@ -93,6 +93,10 @@ function setBackground(background) {
  * @param {String} morse - Morse string to animate
  */
 async function playMorse(audioUrl, morse) {
+    if (audioCtx.state === 'suspended') {
+        await audioCtx.resume();
+    }
+    
     $morseFlash.classList.remove('active');
     if (flashingInterval) {
         clearInterval(flashingInterval);
@@ -212,7 +216,11 @@ function createSwitch($switch) {
         localStorage.setItem('settings', JSON.stringify(settings));
     })
 }
-function stateChanged() {
+/**
+ * 
+ * @param {boolean} withMorse 
+ */
+function stateChanged(withMorse) {
     const path = window.location.pathname;
     if (path === '/about') {
         switchPage(
@@ -224,7 +232,9 @@ function stateChanged() {
                 }
             })
         );
-        playMorse(aboutAudio, ".- -... --- ..- -");
+        if (withMorse) {
+            playMorse(aboutAudio, ".- -... --- ..- -");
+        }
     } else if (path === '/contact') {
         switchPage(
             $contactBackground, 
@@ -235,7 +245,9 @@ function stateChanged() {
                 }
             ]
         );
-        playMorse(contactAudio, "-.-. --- -. - .- -.-. -");
+        if (withMorse) {
+            playMorse(contactAudio, "-.-. --- -. - .- -.-. -");
+        }
     } else {
         switchPage(
             $homeBackground, 
@@ -246,7 +258,9 @@ function stateChanged() {
                 }
             ]
         );
-        playMorse(homeAudio, ".-. .- .-. . .-. --- --- --");
+        if (withMorse) {
+            playMorse(homeAudio, ".-. .- .-. . .-. --- --- --");
+        }
     }
 }
 /**
@@ -255,14 +269,14 @@ function stateChanged() {
  */
 function changeState(stateName) {
     window.history.pushState({}, '', `/${stateName}`);
-    stateChanged();
+    stateChanged(true);
 }
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
 window.addEventListener('load', updataContentPosition);
 window.addEventListener('resize', updataContentPosition);
-window.addEventListener('popstate', stateChanged)
+window.addEventListener('popstate', () => { stateChanged(true) })
 $contactButton.addEventListener('click', () => {
     changeState('contact');
 });
