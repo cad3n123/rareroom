@@ -20,10 +20,7 @@ const [homeAudio, aboutAudio, contactAudio] = ["RAREROOM", "ABOUT", "CONTACT"].m
 
 // Global vars
 let localStorageSettings = localStorage.getItem('settings');
-let settings = {
-    light: true,
-    sound: true,
-};
+let settings;
 let flashingInterval = null;
 /** @type {AudioBufferSourceNode} */
 let currentAudioBufferSource = null;
@@ -34,9 +31,7 @@ const [ [ $nav ], $aboutParagraphImgs ] = [ 'nav', ':scope > img' ].map(descript
 const [ $$switch ] = [ '.switch' ].map(descriptor => document.querySelectorAll(descriptor));
 
 function main() {
-    if (localStorageSettings) {
-        settings = JSON.parse(localStorageSettings);
-    }
+    settings = new Settings(JSON.parse(localStorageSettings ?? "{}"))
     setAudioStatus(settings.sound);
     ['sound', 'light'].forEach(selector => {
         /** @type {Element} */
@@ -53,6 +48,12 @@ function main() {
     
     updataContentPosition();
     stateChanged(false);
+
+    if (!settings.previouslyVisited) {
+        $settingsArrowDown.click();
+        settings.previouslyVisited = true;
+        localStorage.setItem('settings', JSON.stringify(settings));
+    }
 }
 
 /**
@@ -317,4 +318,17 @@ function switchPage(background, elementSettings) {
         setBackground(background);
     }
 }
-
+/**
+ * let settings = {
+    light: true,
+    sound: true,
+};
+ */
+// Classes
+class Settings {
+    constructor({ light = true, sound = true, previouslyVisited = false } = {}) {
+        this.light = light;
+        this.sound = sound;
+        this.previouslyVisited = previouslyVisited;
+    }
+}
