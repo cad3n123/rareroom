@@ -50,7 +50,7 @@ function main() {
     stateChanged(false);
 
     if (!settings.previouslyVisited) {
-        $settingsArrowDown.click();
+        // $settingsArrowDown.click();
         settings.previouslyVisited = true;
         localStorage.setItem('settings', JSON.stringify(settings));
     }
