@@ -19,7 +19,8 @@ button {
   color: var(--secondary);
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden;
 }
 
@@ -124,7 +125,7 @@ main > div #content img.about.title {
 main > div #content img.about:not(.title) {
   margin-top: 0.5rem;
   width: 20rem;
-  /* transform: translateX(25%); */;
+  /* transform: translateX(25%); */
   transform: translateX(5%);
 }
 
@@ -334,7 +335,9 @@ main > div span.morse p {
   margin-left: calc(var(--node-polarity) * var(--bar-width) / 2);
   -webkit-transition: background-color var(--transition-time);
   -ms-transition: background-color var(--transition-time);
-  transition: margin-left var(--transition-time), background-color var(--transition-time);
+  transition:
+    margin-left var(--transition-time),
+    background-color var(--transition-time);
 }
 
 #settings .content > span > span .switch.active {
@@ -386,13 +389,27 @@ main > div span.morse p {
 }
 
 @keyframes backandforth {
-  0%, 100% { transform: translateY(0); }
-  25% { transform: translateY(0.25rem); }
-  75% { transform: translateY(-0.25rem); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(0.25rem);
+  }
+  75% {
+    transform: translateY(-0.25rem);
+  }
 }
 
 @keyframes leftandright {
-  0%, 100% { transform: rotate(-90deg) translateY(0); }
-  25% { transform: rotate(-90deg) translateY(0.25rem); }
-  75% { transform: rotate(-90deg) translateY(-0.25rem); }
+  0%,
+  100% {
+    transform: rotate(-90deg) translateY(0);
+  }
+  25% {
+    transform: rotate(-90deg) translateY(0.25rem);
+  }
+  75% {
+    transform: rotate(-90deg) translateY(-0.25rem);
+  }
 }
