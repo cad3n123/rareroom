@@ -2,4 +2,4 @@
 
 The [official website](https://www.rareroomeast.com/) for musician and producer Logan Gladden's studio, RAREROOM.
 
-Website created by Caden Crowson.
+Website designed by Logan Gladden and programmed by Caden Crowson.
