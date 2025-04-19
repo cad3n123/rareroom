@@ -373,15 +373,9 @@ function switchPage(background, elementSettings) {
     setBackground(background);
   }
 }
-/**
- * let settings = {
-    light: true,
-    sound: true,
-};
- */
 // Classes
 class Settings {
-  constructor({ light = true, sound = true, previouslyVisited = false } = {}) {
+  constructor({ light = false, sound = true, previouslyVisited = false } = {}) {
     this.light = light;
     this.sound = sound;
     this.previouslyVisited = previouslyVisited;
