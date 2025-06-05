@@ -6,7 +6,7 @@
 }
 
 :root {
-  --primary: rgb(241, 241, 241);
+  --primary: #cacbcf;
   --secondary: rgb(0, 0, 0);
   font-family: Alike;
   background-color: var(--primary);
