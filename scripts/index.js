@@ -98,7 +98,7 @@ function main() {
 
   setTimeout(() => {
     document.getElementById('curtain').classList.remove('active');
-  }, 300);
+  }, 100);
 }
 
 /**
