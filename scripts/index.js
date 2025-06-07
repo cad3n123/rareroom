@@ -95,6 +95,10 @@ function main() {
     settings.previouslyVisited = true;
     localStorage.setItem("settings", JSON.stringify(settings));
   }
+
+  setTimeout(() => {
+    document.getElementById('curtain').classList.remove('active');
+  }, 300);
 }
 
 /**

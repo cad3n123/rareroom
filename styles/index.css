@@ -35,6 +35,27 @@ body div img {
   user-select: none;
 }
 
+#curtain {
+    --transition-time: 0.3s;
+
+    position: fixed;
+    background-color: #fbfbf9;
+    visibility: hidden;
+    opacity: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    
+    transition: opacity var(--transition-time) ease, visibility 0s linear var(--transition-time);
+    
+}
+
+#curtain.active {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity var(--transition-time) ease;
+}
+
 #background-content {
   position: absolute;
   left: 0;
