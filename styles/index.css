@@ -429,6 +429,10 @@ main > div > span > span.morse p {
   main > div {
     margin: 0;
   }
+  main > div > span > span:not(.morse) {
+    width: 80vw;
+    max-width: 12rem;
+  }
   #settings {
     --closed-left: -20rem;
     transform: translate(var(--closed-left), 14rem);
