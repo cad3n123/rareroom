@@ -384,7 +384,6 @@ function removeCurtainAfterImagesLoad() {
     }
   });
 
-  // list all image widths and heights _after_ the images have loaded:
   Promise.all(proms).then(_ => {
     document.getElementById('curtain').classList.remove('active');
   });
