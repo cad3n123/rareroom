@@ -100,20 +100,37 @@ main > div {
   gap: 0.75rem;
 }
 
-main > div > span img.morse {
+#home-logo-morse-container {
+  background-color: red;
+}
+#home-logo-container {
+  background-color: orange;
+}
+#home-logo-shadow {
+  background-color: yellow;
+}
+#home-logo {
+  background-color: green;
+}
+
+#home-logo-morse-container > span.morse {
+  background-color: blue;
+}
+
+#home-logo-morse-container img.morse {
   margin-top: 0.25rem;  
   height: 0.325rem;
   object-fit: contain;
 }
 
-main > div > span > span {
+#home-logo-morse-container > span {
   position: relative;
   height: min-content;
   display: block;
   min-height: 0;
 }
 
-main > div > span > span:not(.morse) {
+#home-logo-container {
   width: 12rem;
   min-width: 0;
   min-height: 0;
@@ -121,7 +138,7 @@ main > div > span > span:not(.morse) {
   max-height: 100vh;
 }
 
-main > div > span > span > img {
+#home-logo-morse-container > span img {
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -203,13 +220,13 @@ main > div > span {
   min-width: 0;
 }
 
-main > div > span > span.morse {
+#home-logo-morse-container span.morse {
   font-family: EliteMath;
   display: flex;
   justify-content: space-around;
 }
 
-main > div > span > span.morse p {
+#home-logo-morse-container span.morse p {
   font-weight: bold;
 }
 
@@ -428,10 +445,6 @@ main > div > span > span.morse p {
 @media only screen and (max-width: 600px) {
   main > div {
     margin: 0;
-  }
-  main > div > span > span:not(.morse) {
-    width: 80vw;
-    max-width: 12rem;
   }
   #settings {
     --closed-left: -20rem;
