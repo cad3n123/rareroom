@@ -39,12 +39,13 @@ const [
   $contactButton,
   $aboutButton,
   $homeLogo,
-  $morseFlash,
+  $homeLogoShadow,
   $settings,
   $settingsArrowDown,
   $settingsX,
   $socialMediaIcons,
   $settingsBorder,
+  $pollishLink,
 ] = [
   "background-content",
   "home-background",
@@ -54,14 +55,15 @@ const [
   "contact-button",
   "about-button",
   "home-logo",
-  "morse-flash",
+  "home-logo-shadow",
   "settings",
   "settings-arrow-down",
   "settings-x",
   "social-media-icons",
   "settings-border",
+  'pollish-link',
 ].map((id) => document.getElementById(id));
-const [[$nav], $aboutParagraphImgs] = ["nav", ":scope > img"].map(
+const [[$nav], $aboutParagraphImgs, [$aboutLink]] = ["nav", ":scope > img", ":scope > a"].map(
   (descriptor) => Array.from($content.querySelectorAll(descriptor)),
 );
 const [$$switch] = [".switch"].map((descriptor) =>
@@ -112,8 +114,8 @@ function setAudioStatus(isOn) {
 // Functions
 function updataContentPosition() {
   // Flash
-  $morseFlash.style.width = `${$homeLogo.offsetWidth}px`;
-  $morseFlash.style.height = `${$homeLogo.offsetHeight}px`;
+  $homeLogoShadow.style.width = `${$homeLogo.offsetWidth}px`;
+  $homeLogoShadow.style.height = `${$homeLogo.offsetHeight}px`;
 
   // Settings
   $settings.style.setProperty("--closed-top", `-${$settings.offsetHeight}px`);
@@ -163,7 +165,7 @@ async function playMorse(audioUrl, morse) {
     await audioCtx.resume();
   }
 
-  $morseFlash.classList.remove("active");
+  $homeLogoShadow.classList.remove("active");
   if (flashingInterval) {
     clearInterval(flashingInterval);
     flashingInterval = null;
@@ -192,7 +194,7 @@ async function playMorse(audioUrl, morse) {
   // Schedule the flashing to start in sync
   const delayMs = (startTime - audioCtx.currentTime) * 1000;
   setTimeout(() => {
-    $morseFlash.classList.remove("active");
+    $homeLogoShadow.classList.remove("active");
     if (flashingInterval) {
       clearInterval(flashingInterval);
       flashingInterval = null;
@@ -209,7 +211,7 @@ async function flashMorseCode(times) {
   const startDate = Date.now();
   let offset = 0;
 
-  if (settings.light) $morseFlash.classList.add("active");
+  if (settings.light) $homeLogoShadow.classList.add("active");
 
   flashingInterval = setInterval(() => {
     const currentDate = Date.now();
@@ -217,14 +219,14 @@ async function flashMorseCode(times) {
     while (currentDate - (startDate + offset) > times[i][j]) {
       offset += times[i][j];
       if (j == 0) {
-        $morseFlash.classList.remove("active");
+        $homeLogoShadow.classList.remove("active");
       } else if (i + 1 >= times.length) {
-        $morseFlash.classList.remove("active");
+        $homeLogoShadow.classList.remove("active");
         clearInterval(flashingInterval);
         flashingInterval = null;
         break;
       } else {
-        if (settings.light) $morseFlash.classList.add("active");
+        if (settings.light) $homeLogoShadow.classList.add("active");
         i++;
       }
       j = 1 - j;
@@ -289,9 +291,9 @@ function stateChanged(withMorse) {
   if (path === "/about") {
     switchPage(
       $aboutBackground,
-      $aboutParagraphImgs.map(($img) => {
+      [...$aboutParagraphImgs, $aboutLink].map(($element) => {
         return {
-          element: $img,
+          element: $element,
           displayMode: "block",
         };
       }),
@@ -366,7 +368,7 @@ $settingsX.addEventListener("click", () => {
  */
 function switchPage(background, elementSettings) {
   if (background.style.zIndex != 0) {
-    [$nav, ...$aboutParagraphImgs, $socialMediaIcons].forEach((element) => {
+    [$nav, ...$aboutParagraphImgs, $aboutLink, $socialMediaIcons].forEach((element) => {
       element.style.display = "none";
     });
     elementSettings.forEach((elementSetting) => {

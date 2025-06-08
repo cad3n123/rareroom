@@ -100,18 +100,26 @@ main > div {
   gap: 0.75rem;
 }
 
-main > div > span img:not(.morse) {
-  position: absolute;
-  width: 12rem;
+main > div > span #home-logo {
+  width: 171px;
+  height: 87px;
 }
 
 main > div > span img.morse {
-  margin-top: 0.25rem;
+  margin-top: 0.25rem;  
   height: 0.325rem;
   object-fit: contain;
 }
 
+main > div > span > span {
+  position: relative;
+  height: min-content;
+  display: block;
+  min-height: 0;
+}
+
 main > div #content {
+  position: relative;
   width: max-content;
 }
 
@@ -150,6 +158,14 @@ main > div #content img.about:not(.title) {
   transform: translateX(5%);
 }
 
+main > div #content #pollish-link {
+    right: -4%;
+    position: absolute;
+    color: transparent;
+    font-size: 0.8rem;
+    top: 51.25%;  
+}
+
 main > div #content ul {
   width: max-content;
   padding: 0;
@@ -179,12 +195,19 @@ main > div span.morse p {
   font-weight: bold;
 }
 
-#morse-flash {
-  background-color: transparent;
+#home-logo-shadow {
+  opacity: 0;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  top: 0;
+  left: 0;
 }
 
-#morse-flash.active {
-  background-color: rgba(61, 68, 83, 0.482);
+#home-logo-shadow.active {
+  opacity: 0.4;
 }
 
 #settings {
@@ -219,7 +242,7 @@ main > div span.morse p {
   position: relative;
   top: -0.5rem;
   display: inline-block;
-  height: 0.15rem;
+  height: 0.1rem;
   width: 2rem;
   background-color: transparent;
   margin: 0;
@@ -285,6 +308,7 @@ main > div span.morse p {
 
 #settings .content > span > span {
   --image-size: 4rem;
+
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
