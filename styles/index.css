@@ -101,24 +101,6 @@ main > div {
 }
 
 #home-logo-morse-container {
-  background-color: red;
-}
-#home-logo-container {
-  background-color: orange;
-}
-#home-logo-shadow {
-  background-color: yellow;
-}
-#home-logo {
-  background-color: green;
-}
-
-#home-logo-morse-container > span.morse {
-  background-color: blue;
-}
-
-#home-logo-morse-container {
-  max-width: 20rem;
   width: min-content;
   min-width: 0;
 }
