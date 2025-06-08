@@ -431,6 +431,10 @@ main > div span.morse p {
   #settings.active {
     transform: translate(0, 14rem);
   }
+  main > div > span #home-logo {
+    width: 154px;
+    height: 78px;
+  }
 }
 
 @keyframes backandforth {
