@@ -113,10 +113,6 @@ function setAudioStatus(isOn) {
 
 // Functions
 function updataContentPosition() {
-  // Flash
-  $homeLogoShadow.style.width = `${$homeLogo.offsetWidth}px`;
-  $homeLogoShadow.style.height = `${$homeLogo.offsetHeight}px`;
-
   // Settings
   $settings.style.setProperty("--closed-top", `-${$settings.offsetHeight}px`);
   $settings.style.setProperty("--closed-left", `-${$settings.offsetWidth}px`);
