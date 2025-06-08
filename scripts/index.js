@@ -98,9 +98,7 @@ function main() {
     localStorage.setItem("settings", JSON.stringify(settings));
   }
 
-  setTimeout(() => {
-    document.getElementById('curtain').classList.remove('active');
-  }, 100);
+  removeCurtainAfterImagesLoad();
 }
 
 /**
@@ -374,6 +372,22 @@ function switchPage(background, elementSettings) {
     $settingsArrowDown.classList.add("active");
     setBackground(background);
   }
+}
+function removeCurtainAfterImagesLoad() {
+  const $$images = [...document.querySelectorAll("img")];
+
+  const proms=$$images.map($image => {
+    if ($image.complete) {
+      return new Promise(res => res());
+    } else {
+      return new Promise(res=>$image.onload=()=>res());
+    }
+  });
+
+  // list all image widths and heights _after_ the images have loaded:
+  Promise.all(proms).then(_ => {
+    document.getElementById('curtain').classList.remove('active');
+  });
 }
 // Classes
 class Settings {
