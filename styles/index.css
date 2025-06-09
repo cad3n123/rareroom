@@ -36,18 +36,18 @@ body div img {
 }
 
 #curtain {
-    --transition-time: 0.5s;
+  --transition-time: 0.5s;
 
-    position: fixed;
-    background-color: black;
-    visibility: hidden;
-    opacity: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 100;
-    
-    transition: opacity var(--transition-time) ease, visibility 0s linear var(--transition-time);
-    
+  position: fixed;
+  background-color: black;
+  visibility: hidden;
+  opacity: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  
+  transition: opacity var(--transition-time) ease, visibility 0s linear var(--transition-time);
+  
 }
 
 #curtain.active {
@@ -258,7 +258,7 @@ main > div #content ul a svg {
   position: relative;
   top: -0.5rem;
   display: inline-block;
-  height: 0.1rem;
+  height: 0.075rem;
   width: 2rem;
   background-color: transparent;
   margin: 0;
