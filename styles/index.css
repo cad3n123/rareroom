@@ -197,9 +197,11 @@ main > div #content ul a {
 }
 
 main > div #content ul a svg {
+  --size: 1.25rem;
+
   display: block;
-  height: 1.75rem;
-  width: 1.75rem;
+  height: var(--size);
+  width: var(--size);
   line-height: 1;
 }
 
