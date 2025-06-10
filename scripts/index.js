@@ -309,6 +309,7 @@ function createSwitch($switch) {
  */
 function stateChanged(withMorse) {
   const path = window.location.pathname;
+  console.log(path);
   if (path === "/about") {
     switchPage(
       $aboutBackground,
