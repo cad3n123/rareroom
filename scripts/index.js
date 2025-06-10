@@ -100,7 +100,7 @@ function main() {
       (async () => {
         if (settings.sound) {
           // Fetch and decode the audio file
-          const response = await fetch('audios/switch.wav');
+          const response = await fetch('/audios/switch.wav');
           const arrayBuffer = await response.arrayBuffer();
           const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
 
@@ -402,21 +402,37 @@ function switchPage(background, elementSettings) {
 }
 function removeCurtainAfterImagesLoad() {
   const $$images = [...document.querySelectorAll("img")];
-
-  const proms=$$images.map($image => {
+  const proms = $$images.map(($image) => {
     if ($image.complete) {
-      return new Promise(res => res());
-    } else {
-      return new Promise(res=>$image.onload=()=>res());
+      return Promise.resolve();
     }
+    return new Promise((res) => {
+      $image.onload = res;
+      $image.onerror = res;
+    });
   });
 
-  Promise.all(proms).then(_ => {
-    const $curtain = document.getElementById('curtain');
-    $curtain.classList.remove('active');
-    const milliseconds = secondsToMilliseconds(getComputedStyle($curtain).getPropertyValue('--transition-time').trim());
-    setTimeout(() => { $curtain.remove() }, milliseconds * 1.1);
-  });
+  const $curtain = document.getElementById("curtain");
+
+  const finish = (() => {
+    let done = false;
+    return () => {
+      if (done) return;
+      done = true;
+      $curtain.classList.remove("active");
+      const milliseconds = secondsToMilliseconds(
+        getComputedStyle($curtain)
+          .getPropertyValue("--transition-time")
+          .trim(),
+      );
+      setTimeout(() => {
+        $curtain.remove();
+      }, milliseconds * 1.1);
+    };
+  })();
+
+  Promise.all(proms).then(finish);
+  setTimeout(finish, 4000);
 }
 function secondsToMilliseconds(timeStr) {
     const match = timeStr.match(/^([\d.]+)s$/);
