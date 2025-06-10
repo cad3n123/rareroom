@@ -182,8 +182,8 @@ main > div #content #pollish-link {
   color: transparent;
   font-size: 0.8rem;
   top: 51.25%;  
-  background-color: rgb(25, 9, 25);
-  mix-blend-mode: color;
+  background-color: rgb(38, 13, 37);
+  mix-blend-mode: screen;
 }
 
 main > div #content ul {
