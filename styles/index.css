@@ -177,11 +177,13 @@ main > div #content img.about:not(.title) {
 }
 
 main > div #content #pollish-link {
-    right: -4%;
-    position: absolute;
-    color: transparent;
-    font-size: 0.8rem;
-    top: 51.25%;  
+  right: -3%;
+  position: absolute;
+  color: transparent;
+  font-size: 0.8rem;
+  top: 51.25%;  
+  background-color: rgb(25, 9, 25);
+  mix-blend-mode: color;
 }
 
 main > div #content ul {
