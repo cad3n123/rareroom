@@ -412,8 +412,16 @@ function removeCurtainAfterImagesLoad() {
   });
 
   Promise.all(proms).then(_ => {
-    document.getElementById('curtain').classList.remove('active');
+    const $curtain = document.getElementById('curtain');
+    $curtain.classList.remove('active');
+    const milliseconds = secondsToMilliseconds(getComputedStyle($curtain).getPropertyValue('--transition-time').trim());
+    setTimeout(() => { $curtain.remove() }, milliseconds * 1.1);
   });
+}
+function secondsToMilliseconds(timeStr) {
+    const match = timeStr.match(/^([\d.]+)s$/);
+    if (!match) throw new Error("Invalid time format. Must end in 's'.");
+    return Math.round(parseFloat(match[1]) * 1000);
 }
 // Classes
 class Settings {
