@@ -87,7 +87,34 @@ function main() {
       $switch.classList.remove("active");
     }
   });
-  $$switch.forEach(($switch) => createSwitch($switch));
+  $$switch.forEach($switch => {
+    $switch.addEventListener("click", () => {
+      $switch.classList.toggle("active");
+      ["sound", "light"].forEach((descriptor) => {
+        if ($switch.classList.contains(descriptor)) {
+          settings[descriptor] = !settings[descriptor];
+          setAudioStatus(settings.sound);
+        }
+      });
+      localStorage.setItem("settings", JSON.stringify(settings));
+      (async () => {
+        if (settings.sound) {
+          // Fetch and decode the audio file
+          const response = await fetch('audios/switch.wav');
+          const arrayBuffer = await response.arrayBuffer();
+          const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+          // Create audio source and connect to destination
+          const source = audioCtx.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(gainNode);
+
+          // Schedule playback a short moment into the future
+          source.start(audioCtx.currentTime);
+        }
+      })();
+    });
+  });
 
   updataContentPosition();
   stateChanged(false);

@@ -4,6 +4,10 @@
   font-family: Alike;
   src: url(/Alike/Alike-Regular.ttf);
 }
+@font-face {
+    font-family: Source_Code_Pro;
+    src: url(/Source_Code_Pro/static/SourceCodePro-Regular.ttf);
+}
 
 :root {
   --primary: #cacbcf;
@@ -317,7 +321,7 @@ main > div #content ul a svg {
 
 #settings .content {
   margin-top: 0.5rem;
-  padding: 2.25rem;
+  padding: 2rem;
 }
 
 #settings .content > span {
@@ -331,7 +335,8 @@ main > div #content ul a svg {
 
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.3rem;
+  align-items: center;
 }
 
 #settings .content > span > span .image-container {
@@ -368,61 +373,39 @@ main > div #content ul a svg {
 }
 
 #settings .content > span > span .switch {
-  --bar-width: 2rem;
-  --bar-height: 0.9rem;
-  --node-size: 1.3rem;
-  --node-polarity: -1;
-  --transition-time: 250ms;
   position: relative;
   display: flex;
   justify-content: center;
+  width: 1.6rem;
+  margin-top: 0.3rem;
 }
 
-#settings .content > span > span .switch .bar {
-  width: var(--bar-width);
-  height: var(--bar-height);
-  background-color: white;
-  border: 0.1rem grey solid;
-  border-radius: calc(var(--bar-height) / 2);
-  box-sizing: border-box;
-  -webkit-transition: background-color var(--transition-time);
-  -ms-transition: background-color var(--transition-time);
-  transition: background-color var(--transition-time);
+#settings .content > span > span .switch img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
-
-#settings .content > span > span .switch .node {
-  position: absolute;
-  background-color: grey;
-  width: var(--node-size);
-  height: var(--node-size);
-  border-radius: calc(var(--node-size) / 2);
-  top: calc((var(--bar-height) - var(--node-size)) / 2);
-  margin-left: calc(var(--node-polarity) * var(--bar-width) / 2);
-  -webkit-transition: background-color var(--transition-time);
-  -ms-transition: background-color var(--transition-time);
-  transition:
-    margin-left var(--transition-time),
-    background-color var(--transition-time);
+#settings .content > span > span .switch img[data-state='off'] {
+  display: block;
 }
-
-#settings .content > span > span .switch.active {
-  --node-polarity: 1;
+#settings .content > span > span .switch img[data-state='on'] {
+  display: none;
 }
-
-#settings .content > span > span .switch.active .bar {
-  border-color: black;
+#settings .content > span > span .switch.active img[data-state='off'] {
+  display: none;
 }
-
-#settings .content > span > span .switch.active .node {
-  background-color: black;
+#settings .content > span > span .switch.active img[data-state='on'] {
+  display: block;
 }
 
 #settings .content p {
   text-align: center;
-  font-size: 0.6rem;
+  font-size: 0.5rem;
   color: grey;
-  margin-top: 0.8rem;
-  padding: 0 0.5rem;
+  margin-top: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding: 0 0rem;
+  font-family: Source_Code_Pro;
 }
 
 #settings.active {
