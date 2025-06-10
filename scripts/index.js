@@ -310,7 +310,7 @@ function createSwitch($switch) {
 function stateChanged(withMorse) {
   const path = window.location.pathname;
   console.log(path);
-  if (path === "/about") {
+  if (path === "/about" || path == "/about/") {
     switchPage(
       $aboutBackground,
       [...$aboutParagraphImgs, $aboutLink].map(($element) => {
@@ -323,7 +323,7 @@ function stateChanged(withMorse) {
     if (withMorse) {
       playMorse(aboutAudio, ".- -... --- ..- -");
     }
-  } else if (path === "/contact") {
+  } else if (path === "/contact" || path == "/contact/") {
     switchPage($contactBackground, [
       {
         element: $socialMediaIcons,
