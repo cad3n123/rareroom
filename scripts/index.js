@@ -309,7 +309,6 @@ function createSwitch($switch) {
  */
 function stateChanged(withMorse) {
   const path = window.location.pathname;
-  console.log(path);
   if (path === "/about" || path == "/about/") {
     switchPage(
       $aboutBackground,
@@ -433,7 +432,7 @@ function removeCurtainAfterImagesLoad() {
   })();
 
   Promise.all(proms).then(finish);
-  setTimeout(finish, 4000);
+  setTimeout(finish, 10000);
 }
 function secondsToMilliseconds(timeStr) {
     const match = timeStr.match(/^([\d.]+)s$/);
