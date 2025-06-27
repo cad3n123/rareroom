@@ -183,10 +183,13 @@ main > div #content img.about:not(.title) {
 main > div #content #pollish-link {
   right: -3%;
   position: absolute;
-  color: transparent;
   font-size: 0.8rem;
-  top: 51.25%;  
+  top: 51.25%;
+}
+
+.image-a {
   background-color: rgb(38, 13, 37);
+  color: transparent;
   mix-blend-mode: screen;
 }
 
@@ -209,6 +212,20 @@ main > div #content ul a svg {
   height: var(--size);
   width: var(--size);
   line-height: 1;
+}
+
+main > div #content img.contact {
+  margin-top: 0.5rem;
+  width: 15rem;
+  object-fit: contain;
+}
+
+main > div #content a.contact {
+  bottom: 0;
+  font-size: 60%;
+  letter-spacing: 0.115rem;
+  position: absolute;
+  right: 10.5%;
 }
 
 #home-logo-morse-container span.morse {

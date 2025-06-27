@@ -63,7 +63,7 @@ const [
   "settings-border",
   'pollish-link',
 ].map((id) => document.getElementById(id));
-const [[$nav], $aboutParagraphImgs, [$aboutLink]] = ["nav", ":scope > img", ":scope > a"].map(
+const [[$nav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = ["nav", ":scope > img.about", ":scope > .contact", ":scope > a"].map(
   (descriptor) => Array.from($content.querySelectorAll(descriptor)),
 );
 const [$$switch] = [".switch"].map((descriptor) =>
@@ -312,7 +312,7 @@ function stateChanged(withMorse) {
   if (path === "/about" || path == "/about/") {
     switchPage(
       $aboutBackground,
-      [...$aboutParagraphImgs, $aboutLink].map(($element) => {
+      [...$$aboutParagraphImgs, $aboutLink].map(($element) => {
         return {
           element: $element,
           displayMode: "block",
@@ -324,6 +324,12 @@ function stateChanged(withMorse) {
     }
   } else if (path === "/contact" || path == "/contact/") {
     switchPage($contactBackground, [
+      ...Array.from($$contacts).map($ => {
+        return {
+          element: $,
+          displayMode: 'block',
+        }
+      }),
       {
         element: $socialMediaIcons,
         displayMode: "flex",
@@ -389,7 +395,7 @@ $settingsX.addEventListener("click", () => {
  */
 function switchPage(background, elementSettings) {
   if (background.style.zIndex != 0) {
-    [$nav, ...$aboutParagraphImgs, $aboutLink, $socialMediaIcons].forEach((element) => {
+    [$nav, ...$$aboutParagraphImgs, $aboutLink, ...$$contacts].forEach((element) => {
       element.style.display = "none";
     });
     elementSettings.forEach((elementSetting) => {
