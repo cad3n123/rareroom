@@ -171,7 +171,7 @@ main.inverted img {
   filter: invert(100%);
 }
 
-main.inverted #content > nav button {
+main.inverted #content nav button, main.inverted > div #content nav > span > span {
   color: white;
 }
 
