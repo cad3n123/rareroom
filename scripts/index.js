@@ -225,7 +225,7 @@ function preloadArtistImages(bands) {
   bands.forEach((band) => {
     const filename = wordsToFilename(band);
     const img = new Image();
-    img.src = `./images/${filename}_artist.jpg`; // This starts the download and caches the image.
+    img.src = `/images/${filename}_artist.jpg`; // This starts the download and caches the image.
   });
 }
 
@@ -537,13 +537,13 @@ function addBandButtons() {
         const $band = document.createElement('span'); // document.createElement('button');
 
         const $img = document.createElement('img');
-        $img.src = `./images/${bandFileName}.png`;
+        $img.src = `/images/${bandFileName}.png`;
         // $span.innerHTML = band + (i == lastIndex ? '' : ',');
 
         $band.onmouseover = (e) => {
           $backgroundPicture.classList.add('active');
 
-          $backgroundPictureImg.src = `./images/${bandFileName}_artist.jpg`;
+          $backgroundPictureImg.src = `/images/${bandFileName}_artist.jpg`;
           $main.classList.add('inverted');
         };
         $band.onmouseleave = (e) => {
