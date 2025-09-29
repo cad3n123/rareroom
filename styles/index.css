@@ -167,6 +167,14 @@ main > div {
   max-height: 100vh;
 }
 
+main.inverted img {
+  filter: invert(100%);
+}
+
+main.inverted #content > nav button {
+  color: white;
+}
+
 main > div #content {
   position: relative;
   width: max-content;

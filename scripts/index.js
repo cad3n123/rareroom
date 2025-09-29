@@ -21,7 +21,7 @@ const [homeAudio, aboutAudio, contactAudio] = [
   'ABOUT',
   'CONTACT',
 ].map((name) => `/audios/${name} MORSE.m4a`);
-const bands = ['Pollish', 'Kelsi Kee'];
+const bands = ['POLLISH', 'KELSI KEE'];
 
 // Global vars
 let localStorageSettings = localStorage.getItem('settings');
@@ -72,7 +72,7 @@ const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
   ':scope > .contact',
   ':scope > a',
 ].map((descriptor) => Array.from($content.querySelectorAll(descriptor)));
-const [$$switch] = ['.switch'].map((descriptor) =>
+const [[$main], $$switch] = ['main', '.switch'].map((descriptor) =>
   document.querySelectorAll(descriptor)
 );
 const [[$bandsNavSpan]] = ['span'].map((descriptor) =>
@@ -434,9 +434,11 @@ function addBandButtons() {
         $band.onmouseenter = (e) => {
           $backgroundPicture.style.visibility = 'visible';
           $backgroundPictureImg.src = `./images/${wordsToFilename(band)}.png`;
+          $main.classList.add('inverted');
         };
         $band.onmouseleave = (e) => {
           $backgroundPicture.style.visibility = 'hidden';
+          $main.classList.remove('inverted');
         };
 
         return $band;
