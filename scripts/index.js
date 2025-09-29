@@ -17,13 +17,14 @@ const gainNode = audioCtx.createGain();
 gainNode.connect(audioCtx.destination);
 gainNode.gain.value = volume;
 const [homeAudio, aboutAudio, contactAudio] = [
-  "RAREROOM",
-  "ABOUT",
-  "CONTACT",
+  'RAREROOM',
+  'ABOUT',
+  'CONTACT',
 ].map((name) => `/audios/${name} MORSE.m4a`);
+const bands = ['Pollish', 'Kelsi Kee'];
 
 // Global vars
-let localStorageSettings = localStorage.getItem("settings");
+let localStorageSettings = localStorage.getItem('settings');
 let settings;
 let flashingInterval = null;
 /** @type {AudioBufferSourceNode} */
@@ -32,6 +33,7 @@ let currentAudioBufferSource = null;
 // Elements
 const [
   $backgroundContent,
+  $backgroundPicture,
   $homeBackground,
   $contactBackground,
   $aboutBackground,
@@ -47,56 +49,67 @@ const [
   $settingsBorder,
   $pollishLink,
 ] = [
-  "background-content",
-  "home-background",
-  "contact-background",
-  "about-background",
-  "content",
-  "contact-button",
-  "about-button",
-  "home-logo",
-  "home-logo-shadow",
-  "settings",
-  "settings-arrow-down",
-  "settings-x",
-  "social-media-icons",
-  "settings-border",
+  'background-content',
+  'background-picture',
+  'home-background',
+  'contact-background',
+  'about-background',
+  'content',
+  'contact-button',
+  'about-button',
+  'home-logo',
+  'home-logo-shadow',
+  'settings',
+  'settings-arrow-down',
+  'settings-x',
+  'social-media-icons',
+  'settings-border',
   'pollish-link',
 ].map((id) => document.getElementById(id));
-const [[$nav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = ["nav", ":scope > img.about", ":scope > .contact", ":scope > a"].map(
-  (descriptor) => Array.from($content.querySelectorAll(descriptor)),
+const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
+  'nav',
+  ':scope > img.about',
+  ':scope > .contact',
+  ':scope > a',
+].map((descriptor) => Array.from($content.querySelectorAll(descriptor)));
+const [$$switch] = ['.switch'].map((descriptor) =>
+  document.querySelectorAll(descriptor)
 );
-const [$$switch] = [".switch"].map((descriptor) =>
-  document.querySelectorAll(descriptor),
+const [[$bandsNavSpan]] = ['span'].map((descriptor) =>
+  Array.from($bandsNav.querySelectorAll(descriptor))
 );
+const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
+  Array.from($backgroundPicture.querySelectorAll(descriptor))
+);
+console.log($bandsNavSpan);
 
 function main() {
-  settings = new Settings(JSON.parse(localStorageSettings ?? "{}"));
+  settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
   setAudioStatus(settings.sound);
-  ["sound", "light"].forEach((selector) => {
+  ['sound', 'light'].forEach((selector) => {
     /** @type {Element} */
     const $switch = [].find.call(
       $$switch,
       /** @param {Element} $switch */ ($switch) => {
         return $switch.matches(`.${selector}`);
-      },
+      }
     );
     if (settings[selector]) {
-      $switch.classList.add("active");
+      $switch.classList.add('active');
     } else {
-      $switch.classList.remove("active");
+      $switch.classList.remove('active');
     }
   });
-  $$switch.forEach($switch => {
-    $switch.addEventListener("click", () => {
-      $switch.classList.toggle("active");
-      ["sound", "light"].forEach((descriptor) => {
+  $$switch.forEach(($switch) => {
+    $switch.addEventListener('click', () => {
+      $switch.classList.toggle('active');
+      ['sound', 'light'].forEach((descriptor) => {
         if ($switch.classList.contains(descriptor)) {
           settings[descriptor] = !settings[descriptor];
           setAudioStatus(settings.sound);
         }
       });
-      localStorage.setItem("settings", JSON.stringify(settings));
+      localStorage.setItem('settings', JSON.stringify(settings));
       (async () => {
         if (settings.sound) {
           // Fetch and decode the audio file
@@ -122,8 +135,10 @@ function main() {
   if (!settings.previouslyVisited) {
     // $settingsArrowDown.click();
     settings.previouslyVisited = true;
-    localStorage.setItem("settings", JSON.stringify(settings));
+    localStorage.setItem('settings', JSON.stringify(settings));
   }
+
+  addBandButtons();
 
   removeCurtainAfterImagesLoad();
 }
@@ -139,42 +154,42 @@ function setAudioStatus(isOn) {
 // Functions
 function updataContentPosition() {
   // Settings
-  $settings.style.setProperty("--closed-top", `-${$settings.offsetHeight}px`);
-  $settings.style.setProperty("--closed-left", `-${$settings.offsetWidth}px`);
+  $settings.style.setProperty('--closed-top', `-${$settings.offsetHeight}px`);
+  $settings.style.setProperty('--closed-left', `-${$settings.offsetWidth}px`);
 
   $settingsBorder.style.setProperty(
-    "--top",
-    `${($settings.offsetHeight - $settingsBorder.offsetHeight) / 2}px`,
+    '--top',
+    `${($settings.offsetHeight - $settingsBorder.offsetHeight) / 2}px`
   );
   $settingsBorder.style.setProperty(
-    "--left",
-    `${($settings.offsetWidth - $settingsBorder.offsetWidth) / 2}px`,
+    '--left',
+    `${($settings.offsetWidth - $settingsBorder.offsetWidth) / 2}px`
   );
 
   $settingsArrowDown.style.setProperty(
-    "--left",
-    `${($settings.offsetWidth - $settingsArrowDown.offsetWidth) / 2}px`,
+    '--left',
+    `${($settings.offsetWidth - $settingsArrowDown.offsetWidth) / 2}px`
   );
   $settingsArrowDown.style.setProperty(
-    "--top",
-    `${($settings.offsetHeight - $settingsArrowDown.offsetHeight) / 2}px`,
+    '--top',
+    `${($settings.offsetHeight - $settingsArrowDown.offsetHeight) / 2}px`
   );
   $settingsArrowDown.style.setProperty(
-    "--margin-top",
-    `${$settings.offsetHeight}px`,
+    '--margin-top',
+    `${$settings.offsetHeight}px`
   );
   $settingsArrowDown.style.setProperty(
-    "--margin-left",
-    `${$settings.offsetWidth}px`,
+    '--margin-left',
+    `${$settings.offsetWidth}px`
   );
 }
 function setBackground(background) {
   [$homeBackground, $contactBackground, $aboutBackground].forEach(
     (background) => {
-      background.style.zIndex = "-2";
-    },
+      background.style.zIndex = '-2';
+    }
   );
-  background.style.zIndex = "0";
+  background.style.zIndex = '0';
 }
 /**
  *
@@ -182,11 +197,11 @@ function setBackground(background) {
  * @param {String} morse - Morse string to animate
  */
 async function playMorse(audioUrl, morse) {
-  if (audioCtx.state === "suspended") {
+  if (audioCtx.state === 'suspended') {
     await audioCtx.resume();
   }
 
-  $homeLogoShadow.classList.remove("active");
+  $homeLogoShadow.classList.remove('active');
   if (flashingInterval) {
     clearInterval(flashingInterval);
     flashingInterval = null;
@@ -215,7 +230,7 @@ async function playMorse(audioUrl, morse) {
   // Schedule the flashing to start in sync
   const delayMs = (startTime - audioCtx.currentTime) * 1000;
   setTimeout(() => {
-    $homeLogoShadow.classList.remove("active");
+    $homeLogoShadow.classList.remove('active');
     if (flashingInterval) {
       clearInterval(flashingInterval);
       flashingInterval = null;
@@ -232,7 +247,7 @@ async function flashMorseCode(times) {
   const startDate = Date.now();
   let offset = 0;
 
-  if (settings.light) $homeLogoShadow.classList.add("active");
+  if (settings.light) $homeLogoShadow.classList.add('active');
 
   flashingInterval = setInterval(() => {
     const currentDate = Date.now();
@@ -240,14 +255,14 @@ async function flashMorseCode(times) {
     while (currentDate - (startDate + offset) > times[i][j]) {
       offset += times[i][j];
       if (j == 0) {
-        $homeLogoShadow.classList.remove("active");
+        $homeLogoShadow.classList.remove('active');
       } else if (i + 1 >= times.length) {
-        $homeLogoShadow.classList.remove("active");
+        $homeLogoShadow.classList.remove('active');
         clearInterval(flashingInterval);
         flashingInterval = null;
         break;
       } else {
-        if (settings.light) $homeLogoShadow.classList.add("active");
+        if (settings.light) $homeLogoShadow.classList.add('active');
         i++;
       }
       j = 1 - j;
@@ -265,16 +280,16 @@ function wait(milliseconds) {
  * @returns {Array[Array[number]]}
  */
 function morseTiming(morse) {
-  morse += " ";
+  morse += ' ';
   let times = [];
   for (let i = 0; i < morse.length - 1; i++) {
     let char = morse[i];
     let nextChar = morse[i + 1];
-    let length1 = char == "." ? dot / 2 : dash / 2;
-    let length2 = length1 + (nextChar == " " ? letterGap : 0);
+    let length1 = char == '.' ? dot / 2 : dash / 2;
+    let length2 = length1 + (nextChar == ' ' ? letterGap : 0);
     times.push([length1, length2]);
 
-    if (nextChar == " ") {
+    if (nextChar == ' ') {
       i++;
     }
   }
@@ -286,21 +301,21 @@ function morseTiming(morse) {
  * @param {HTMLElement} $switch
  */
 function createSwitch($switch) {
-  const $bar = document.createElement("div");
-  $bar.classList.add("bar");
-  const $node = document.createElement("div");
-  $node.classList.add("node");
+  const $bar = document.createElement('div');
+  $bar.classList.add('bar');
+  const $node = document.createElement('div');
+  $node.classList.add('node');
   [$bar, $node].forEach(($) => $switch.appendChild($));
 
-  $switch.addEventListener("click", (e) => {
-    $switch.classList.toggle("active");
-    ["sound", "light"].forEach((descriptor) => {
+  $switch.addEventListener('click', (e) => {
+    $switch.classList.toggle('active');
+    ['sound', 'light'].forEach((descriptor) => {
       if ($switch.classList.contains(descriptor)) {
         settings[descriptor] = !settings[descriptor];
         setAudioStatus(settings.sound);
       }
     });
-    localStorage.setItem("settings", JSON.stringify(settings));
+    localStorage.setItem('settings', JSON.stringify(settings));
   });
 }
 /**
@@ -309,44 +324,44 @@ function createSwitch($switch) {
  */
 function stateChanged(withMorse) {
   const path = window.location.pathname;
-  if (path === "/about" || path == "/about/") {
+  if (path === '/about' || path == '/about/') {
     switchPage(
       $aboutBackground,
       [...$$aboutParagraphImgs, $aboutLink].map(($element) => {
         return {
           element: $element,
-          displayMode: "block",
+          displayMode: 'block',
         };
-      }),
+      })
     );
     if (withMorse) {
-      playMorse(aboutAudio, ".- -... --- ..- -");
+      playMorse(aboutAudio, '.- -... --- ..- -');
     }
-  } else if (path === "/contact" || path == "/contact/") {
+  } else if (path === '/contact' || path == '/contact/') {
     switchPage($contactBackground, [
-      ...Array.from($$contacts).map($ => {
+      ...Array.from($$contacts).map(($) => {
         return {
           element: $,
           displayMode: 'block',
-        }
+        };
       }),
       {
         element: $socialMediaIcons,
-        displayMode: "flex",
+        displayMode: 'flex',
       },
     ]);
     if (withMorse) {
-      playMorse(contactAudio, "-.-. --- -. - .- -.-. -");
+      playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
   } else {
     switchPage($homeBackground, [
       {
         element: $nav,
-        displayMode: "block",
+        displayMode: 'block',
       },
     ]);
     if (withMorse) {
-      playMorse(homeAudio, ".-. .- .-. . .-. --- --- --");
+      playMorse(homeAudio, '.-. .- .-. . .-. --- --- --');
     }
   }
 }
@@ -355,33 +370,33 @@ function stateChanged(withMorse) {
  * @param {String} stateName
  */
 function changeState(stateName) {
-  window.history.pushState({}, "", `/${stateName}`);
+  window.history.pushState({}, '', `/${stateName}`);
   stateChanged(true);
 }
 
 // Event Listeners
-window.addEventListener("DOMContentLoaded", main);
-window.addEventListener("load", updataContentPosition);
-window.addEventListener("resize", updataContentPosition);
-window.addEventListener("popstate", () => {
+window.addEventListener('DOMContentLoaded', main);
+window.addEventListener('load', updataContentPosition);
+window.addEventListener('resize', updataContentPosition);
+window.addEventListener('popstate', () => {
   stateChanged(true);
 });
-$contactButton.addEventListener("click", () => {
-  changeState("contact");
+$contactButton.addEventListener('click', () => {
+  changeState('contact');
 });
-$aboutButton.addEventListener("click", () => {
-  changeState("about");
+$aboutButton.addEventListener('click', () => {
+  changeState('about');
 });
-$homeLogo.addEventListener("click", () => {
-  changeState("");
+$homeLogo.addEventListener('click', () => {
+  changeState('');
 });
-$settingsArrowDown.addEventListener("click", () => {
-  $settings.classList.add("active");
-  $settingsArrowDown.classList.remove("active");
+$settingsArrowDown.addEventListener('click', () => {
+  $settings.classList.add('active');
+  $settingsArrowDown.classList.remove('active');
 });
-$settingsX.addEventListener("click", () => {
-  $settings.classList.remove("active");
-  $settingsArrowDown.classList.add("active");
+$settingsX.addEventListener('click', () => {
+  $settings.classList.remove('active');
+  $settingsArrowDown.classList.add('active');
 });
 /**
  * @typedef {Object} ElementSettings
@@ -395,19 +410,42 @@ $settingsX.addEventListener("click", () => {
  */
 function switchPage(background, elementSettings) {
   if (background.style.zIndex != 0) {
-    [$nav, ...$$aboutParagraphImgs, $aboutLink, ...$$contacts].forEach((element) => {
-      element.style.display = "none";
-    });
+    [$nav, ...$$aboutParagraphImgs, $aboutLink, ...$$contacts].forEach(
+      (element) => {
+        element.style.display = 'none';
+      }
+    );
     elementSettings.forEach((elementSetting) => {
       elementSetting.element.style.display = elementSetting.displayMode;
     });
-    $settings.classList.remove("active");
-    $settingsArrowDown.classList.add("active");
+    $settings.classList.remove('active');
+    $settingsArrowDown.classList.add('active');
     setBackground(background);
   }
 }
+function addBandButtons() {
+  const lastIndex = bands.length - 1;
+  bands.forEach((band, i) => {
+    $bandsNavSpan.appendChild(
+      (() => {
+        const $band = document.createElement('button');
+        $band.innerHTML = band + (i == lastIndex ? '' : ',');
+
+        $band.onmouseenter = (e) => {
+          $backgroundPicture.style.visibility = 'visible';
+          $backgroundPictureImg.src = `./images/${wordsToFilename(band)}.png`;
+        };
+        $band.onmouseleave = (e) => {
+          $backgroundPicture.style.visibility = 'hidden';
+        };
+
+        return $band;
+      })()
+    );
+  });
+}
 function removeCurtainAfterImagesLoad() {
-  const $$images = [...document.querySelectorAll("img")];
+  const $$images = [...document.querySelectorAll('img')];
   const proms = $$images.map(($image) => {
     if ($image.complete) {
       return Promise.resolve();
@@ -418,18 +456,16 @@ function removeCurtainAfterImagesLoad() {
     });
   });
 
-  const $curtain = document.getElementById("curtain");
+  const $curtain = document.getElementById('curtain');
 
   const finish = (() => {
     let done = false;
     return () => {
       if (done) return;
       done = true;
-      $curtain.classList.remove("active");
+      $curtain.classList.remove('active');
       const milliseconds = secondsToMilliseconds(
-        getComputedStyle($curtain)
-          .getPropertyValue("--transition-time")
-          .trim(),
+        getComputedStyle($curtain).getPropertyValue('--transition-time').trim()
       );
       setTimeout(() => {
         $curtain.remove();
@@ -441,9 +477,16 @@ function removeCurtainAfterImagesLoad() {
   setTimeout(finish, 10000);
 }
 function secondsToMilliseconds(timeStr) {
-    const match = timeStr.match(/^([\d.]+)s$/);
-    if (!match) throw new Error("Invalid time format. Must end in 's'.");
-    return Math.round(parseFloat(match[1]) * 1000);
+  const match = timeStr.match(/^([\d.]+)s$/);
+  if (!match) throw new Error("Invalid time format. Must end in 's'.");
+  return Math.round(parseFloat(match[1]) * 1000);
+}
+/**
+ *
+ * @param {string} words
+ */
+function wordsToFilename(words) {
+  return words.trim().replace(/\s/g, '-').toLowerCase();
 }
 // Classes
 class Settings {
