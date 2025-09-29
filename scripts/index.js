@@ -51,6 +51,7 @@ const [
   $settingsBorder,
   $pollishLink,
   $artistsDiv,
+  $rareroomTitle,
 ] = [
   'background-content',
   'background-picture',
@@ -70,6 +71,7 @@ const [
   'settings-border',
   'pollish-link',
   'artists-div',
+  'rareroom-title',
 ].map((id) => document.getElementById(id));
 const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
   'nav',
@@ -385,6 +387,10 @@ function stateChanged(withMorse) {
         element: $nav,
         displayMode: 'block',
       },
+      {
+        element: $rareroomTitle,
+        displayMode: 'none',
+      },
     ]);
     if (withMorse) {
       playMorse(homeAudio, '.-. .- .-. . .-. --- --- --');
@@ -443,6 +449,7 @@ function switchPage(selectedNavButton, elementSettings) {
       element.style.display = 'none';
     }
   );
+  [$rareroomTitle].forEach((element) => (element.style.display = 'block'));
   elementSettings.forEach((elementSetting) => {
     elementSetting.element.style.display = elementSetting.displayMode;
   });

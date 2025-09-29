@@ -236,13 +236,13 @@ main.inverted #bands-nav img {
   filter: invert(100%);
 }
 
-main > div #content img.about.title {
+main > div #content #rareroom-title {
   width: 4rem;
   margin: auto;
+  margin-bottom: 0.5rem;
 }
 
-main > div #content img.about:not(.title) {
-  margin-top: 0.5rem;
+main > div #content img.about {
   width: 20rem;
   /* transform: translateX(25%); */
   transform: translateX(5%);
