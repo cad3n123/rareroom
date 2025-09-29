@@ -459,6 +459,16 @@ main > div #content a.contact {
     width: 100%;
 }
 
+#settings .content button {
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  font-size: 0.5rem;
+  padding: 0 0.125rem;
+}
+
 #settings .content > div {
   height: 0.9rem;
   display: flex;
@@ -480,16 +490,6 @@ main > div #content a.contact {
 
 #settings .content > div span * {
   display: inline-block;
-}
-
-#settings .content > div span button {
-  box-sizing: border-box;
-  margin: 0;
-  height: 100%;
-  border: none;
-  background-color: transparent;
-  font-size: 0.5rem;
-  padding: 0 0.125rem;
 }
 
 #settings .content > div span button img {

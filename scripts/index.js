@@ -79,11 +79,17 @@ const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
   ':scope > .contact',
   ':scope > a',
 ].map((descriptor) => Array.from($content.querySelectorAll(descriptor)));
-const [[$main], $$switch] = ['main', '.switch'].map((descriptor) =>
+const [[$main]] = ['main'].map((descriptor) =>
   document.querySelectorAll(descriptor)
 );
 const [$$navButtons] = [':scope button'].map((descriptor) =>
   $nav.querySelectorAll(descriptor)
+);
+const [[$settingsContent]] = ['.content'].map((descriptor) =>
+  $settings.querySelectorAll(descriptor)
+);
+const [$$settingsSections] = [':scope > div'].map((descriptor) =>
+  $settingsContent.querySelectorAll(descriptor)
 );
 const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
   Array.from($backgroundPicture.querySelectorAll(descriptor))
@@ -106,34 +112,82 @@ function main() {
   //     $switch.classList.remove('active');
   //   }
   // });
-  $$switch.forEach(($switch) => {
-    $switch.addEventListener('click', () => {
-      $switch.classList.toggle('active');
-      // ['sound', 'light'].forEach((descriptor) => {
-      //   if ($switch.classList.contains(descriptor)) {
-      //     settings[descriptor] = !settings[descriptor];
-      //     setAudioStatus(settings.sound);
-      //   }
-      // });
-      localStorage.setItem('settings', JSON.stringify(settings));
-      (async () => {
-        if (settings.sound) {
-          // Fetch and decode the audio file
-          const response = await fetch('/audios/switch.wav');
-          const arrayBuffer = await response.arrayBuffer();
-          const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+  $$settingsSections.forEach(($settingsSection) => {
+    const [$$buttons] = ['button'].map((descriptor) =>
+      $settingsSection.querySelectorAll(descriptor)
+    );
+    if ($$buttons.length < 2) {
+      return;
+    }
+    const [$on, $off] = $$buttons;
+    /**
+     *
+     * @param {HTMLButtonElement} $target
+     * @param {HTMLButtonElement} $other
+     */
+    function addButtonClickedEventListener($target, $other) {
+      $target.onclick = (e) => {
+        $target.classList.add('active');
+        $other.classList.remove('active');
 
-          // Create audio source and connect to destination
-          const source = audioCtx.createBufferSource();
-          source.buffer = audioBuffer;
-          source.connect(gainNode);
+        ['sound', 'light'].forEach((descriptor) => {
+          if ($settingsSection.classList.contains(descriptor)) {
+            settings[descriptor] = $target === $on;
+            setAudioStatus(settings.sound);
+          }
+        });
 
-          // Schedule playback a short moment into the future
-          source.start(audioCtx.currentTime);
-        }
-      })();
-    });
+        localStorage.setItem('settings', JSON.stringify(settings));
+
+        (async () => {
+          if (settings.sound) {
+            // Fetch and decode the audio file
+            const response = await fetch('/audios/switch.wav');
+            const arrayBuffer = await response.arrayBuffer();
+            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+            // Create audio source and connect to destination
+            const source = audioCtx.createBufferSource();
+            source.buffer = audioBuffer;
+            source.connect(gainNode);
+
+            // Schedule playback a short moment into the future
+            source.start(audioCtx.currentTime);
+          }
+        })();
+      };
+    }
+    addButtonClickedEventListener($on, $off);
+    addButtonClickedEventListener($off, $on);
   });
+  // $$switch.forEach(($switch) => {
+  //   $switch.addEventListener('click', () => {
+  //     $switch.classList.toggle('active');
+  //     // ['sound', 'light'].forEach((descriptor) => {
+  //     //   if ($switch.classList.contains(descriptor)) {
+  //     //     settings[descriptor] = !settings[descriptor];
+  //     //     setAudioStatus(settings.sound);
+  //     //   }
+  //     // });
+  //     localStorage.setItem('settings', JSON.stringify(settings));
+  //     (async () => {
+  //       if (settings.sound) {
+  //         // Fetch and decode the audio file
+  //         const response = await fetch('/audios/switch.wav');
+  //         const arrayBuffer = await response.arrayBuffer();
+  //         const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+  //         // Create audio source and connect to destination
+  //         const source = audioCtx.createBufferSource();
+  //         source.buffer = audioBuffer;
+  //         source.connect(gainNode);
+
+  //         // Schedule playback a short moment into the future
+  //         source.start(audioCtx.currentTime);
+  //       }
+  //     })();
+  //   });
+  // });
 
   updataContentPosition();
   stateChanged(false);
@@ -202,16 +256,6 @@ function updataContentPosition() {
     `${$settings.offsetWidth}px`
   );
 }
-// function setBackground(background) {
-//   [$homeBackground, $contactBackground, $aboutBackground].forEach(
-//     (background) => {
-//       background.style.zIndex = '-2';
-//     }
-//   );
-//   if (background != null) {
-//     background.style.zIndex = '0';
-//   }
-// }
 /**
  *
  * @param {String} audioUrl - URL of the morse audio file
