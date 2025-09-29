@@ -251,8 +251,9 @@ main > div #content img.about {
 main > div #content #pollish-link {
   right: -3%;
   position: absolute;
-  font-size: 0.8rem;
-  top: 51.25%;
+  font-size: 85%;
+  top: 65%;
+  letter-spacing: 0.015rem;
 }
 
 main button span, main button span::before, main #bands-nav span   {
