@@ -427,7 +427,7 @@ $settingsX.addEventListener('click', () => {
 function switchPage(background, elementSettings) {
   if (background == null || background.style.zIndex != 0) {
     [
-      $nav,
+      // $nav,
       ...$$aboutParagraphImgs,
       $aboutLink,
       ...$$contacts,
