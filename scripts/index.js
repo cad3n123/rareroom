@@ -376,7 +376,14 @@ function stateChanged(withMorse) {
     }
   } else if (path === '/artists' || path == '/artists/') {
     switchPage($artistsButton, [
-      { element: $artistsDiv, displayMode: 'block' },
+      {
+        element: $artistsDiv,
+        displayMode: 'block',
+      },
+      {
+        element: $rareroomTitle,
+        displayMode: 'none',
+      },
     ]);
     if (withMorse) {
       playMorse(artistsAudio, '.- .-. - .. ... - ...');

@@ -244,7 +244,6 @@ main > div #content #rareroom-title {
 
 main > div #content img.about {
   width: 20rem;
-  /* transform: translateX(25%); */
   transform: translateX(5%);
 }
 
@@ -454,83 +453,49 @@ main > div #content a.contact {
 }
 
 #settings .content {
-  margin-top: 0.5rem;
-  padding: 2rem;
+    margin-top: 0.5rem;
+    padding: 2rem;
+    padding-top: 2.5rem;
+    width: 100%;
 }
 
-#settings .content > span {
+#settings .content > div {
+  height: 0.9rem;
   display: flex;
-  justify-content: center;
-  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.5rem;
 }
 
-#settings .content > span > span {
-  --image-size: 4rem;
-
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  align-items: center;
-}
-
-#settings .content > span > span .image-container {
-  position: relative;
-  display: flex;
-}
-
-#settings .content > span > span .image-container img {
+#settings .content > div img {
+  height: 100%;
+  width: auto;
   object-fit: cover;
 }
 
-#settings .content > span > span .image-container img:first-child {
-  width: var(--image-size);
-}
-
-#settings .content > span > span .image-container *:not(:first-child) {
-  --size: 55%;
-  position: absolute;
-  left: calc((100% - var(--size)) / 2);
-  width: var(--size);
-  align-self: center;
-}
-
-#settings .content > span > span .image-container.light *:not(:first-child) {
-  transform: translateY(15%);
-}
-
-#settings .content > span > span .image-container.sound img:first-child {
-  width: calc(0.9 * var(--image-size));
-}
-
-#settings .content > span > span .image-container.sound *:not(:first-child) {
-  --size: 60%;
-}
-
-#settings .content > span > span .switch {
-  position: relative;
+#settings .content > div span {
   display: flex;
-  justify-content: center;
-  width: 1.6rem;
-  margin-top: 0.3rem;
-  cursor: pointer;
+  gap: 0.5rem;
 }
 
-#settings .content > span > span .switch img {
-  width: 100%;
+#settings .content > div span * {
+  display: inline-block;
+}
+
+#settings .content > div span button {
+  box-sizing: border-box;
+  margin: 0;
   height: 100%;
-  object-fit: contain;
+  border: none;
+  background-color: transparent;
+  font-size: 0.5rem;
+  padding: 0 0.125rem;
 }
-#settings .content > span > span .switch img[data-state='off'] {
-  display: block;
-}
-#settings .content > span > span .switch img[data-state='on'] {
-  display: none;
-}
-#settings .content > span > span .switch.active img[data-state='off'] {
-  display: none;
-}
-#settings .content > span > span .switch.active img[data-state='on'] {
-  display: block;
+
+#settings .content > div span button img {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
 }
 
 #settings .content p {
