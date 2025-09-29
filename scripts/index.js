@@ -90,29 +90,29 @@ const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
 function main() {
   settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
   setAudioStatus(settings.sound);
-  ['sound', 'light'].forEach((selector) => {
-    /** @type {Element} */
-    const $switch = [].find.call(
-      $$switch,
-      /** @param {Element} $switch */ ($switch) => {
-        return $switch.matches(`.${selector}`);
-      }
-    );
-    if (settings[selector]) {
-      $switch.classList.add('active');
-    } else {
-      $switch.classList.remove('active');
-    }
-  });
+  // ['sound', 'light'].forEach((selector) => {
+  //   /** @type {Element} */
+  //   const $switch = [].find.call(
+  //     $$switch,
+  //     /** @param {Element} $switch */ ($switch) => {
+  //       return $switch.matches(`.${selector}`);
+  //     }
+  //   );
+  //   if (settings[selector]) {
+  //     $switch.classList.add('active');
+  //   } else {
+  //     $switch.classList.remove('active');
+  //   }
+  // });
   $$switch.forEach(($switch) => {
     $switch.addEventListener('click', () => {
       $switch.classList.toggle('active');
-      ['sound', 'light'].forEach((descriptor) => {
-        if ($switch.classList.contains(descriptor)) {
-          settings[descriptor] = !settings[descriptor];
-          setAudioStatus(settings.sound);
-        }
-      });
+      // ['sound', 'light'].forEach((descriptor) => {
+      //   if ($switch.classList.contains(descriptor)) {
+      //     settings[descriptor] = !settings[descriptor];
+      //     setAudioStatus(settings.sound);
+      //   }
+      // });
       localStorage.setItem('settings', JSON.stringify(settings));
       (async () => {
         if (settings.sound) {
