@@ -227,6 +227,10 @@ main > div #content #pollish-link {
   top: 51.25%;
 }
 
+main .nav-button {
+  transition: color 250ms ease, filter 250ms ease;
+}
+
 main .nav-button:hover {
   color: white;
   filter: brightness(var(--brightness));
