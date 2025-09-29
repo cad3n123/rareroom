@@ -166,7 +166,7 @@ main > div {
   max-height: 100vh;
 }
 
-main.inverted {
+main {
   --brightness: 95%;
 }
 
@@ -233,7 +233,7 @@ main .nav-button {
 
 main .nav-button:hover {
   color: white;
-  filter: brightness(var(--brightness));
+  filter: brightness(calc(0.9 * var(--brightness)));
 }
 
 .image-a {
