@@ -332,7 +332,7 @@ main > div #content img.contact {
 }
 
 main > div #content a.contact {
-  bottom: 0;
+  bottom: 30%;
   font-size: 80%;
   letter-spacing: 0.15rem;
   position: absolute;
