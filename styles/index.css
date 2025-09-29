@@ -11,7 +11,7 @@
 
 :root {
   --primary: #cacbcf;
-  --secondary: rgb(0, 0, 0);
+  --secondary: rgb(45, 36, 35);
   font-family: Alike;
   background-color: black;
   color: var(--secondary);
