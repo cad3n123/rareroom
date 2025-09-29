@@ -104,7 +104,7 @@ body div img {
 
 #background-picture img {
   object-fit: cover;
-  height: 50%;
+  height: 75%;
 }
 
 #background-picture.active {
@@ -178,9 +178,8 @@ main.inverted img {
   transition: filter 250ms ease;
 }
 
-main.inverted #content nav button, main.inverted > div #content nav > span > span {
-  color: white;
-  filter: brightness(var(--brightness));
+main.inverted #content nav button, main.inverted > div #content nav span {
+  color: rgba(255 255 255 / var(--brightness));
 }
 
 main > div #content {
@@ -231,7 +230,7 @@ main > div #content #pollish-link {
   top: 51.25%;
 }
 
-main button span {
+main button span, main button span::before   {
   transition: color 250ms ease; 
   position: relative;
 }
@@ -244,16 +243,18 @@ main button span::before {
   position: absolute;
   bottom: 0px;
   transition: width 0.25s ease;
-  background-color: var(--primary);
+  background-color: var(--secondary);
 }
 
 main.inverted button span:hover::before {
   width: 100%;
-  color:white
+  background-color: rgb(255 255 255 / calc(0.9 * var(--brightness)));
 }
 
 main .nav-button:hover {
-  color: rgba(255 255 255 / var(--brightness));
+  --brightness: 0.8;
+
+  color: rgba(255, 255, 255, var(--brightness));
 }
 
 .image-a {
