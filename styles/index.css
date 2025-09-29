@@ -247,7 +247,7 @@ main button span::before {
   height: 0.5px;
   width: 0%;
   position: absolute;
-  bottom: 10%;
+  bottom: 6%;
   transition: width 0.25s ease;
   background-color: var(--secondary);
 }
@@ -266,7 +266,7 @@ main button:not(.nav-button) span:hover::before {
 main .nav-button.active span {
   text-decoration: underline;
   text-decoration-thickness: 0.5px;
-  text-underline-offset: 2px;
+  text-underline-offset: 2.5px;
 }
 
 main .nav-button:hover {
