@@ -145,8 +145,21 @@ function main() {
   }
 
   addBandButtons();
+  preloadArtistImages(bands);
 
   removeCurtainAfterImagesLoad();
+}
+
+/**
+ * Preloads the artist background images to prevent jank on hover.
+ * @param {string[]} bands - Array of band names.
+ */
+function preloadArtistImages(bands) {
+  bands.forEach((band) => {
+    const filename = wordsToFilename(band);
+    const img = new Image();
+    img.src = `./images/${filename}.jpg`; // This starts the download and caches the image.
+  });
 }
 
 /**
