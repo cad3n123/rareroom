@@ -159,6 +159,10 @@ main > div {
   max-height: 100vh;
 }
 
+#home-logo-container img {
+  cursor: pointer;
+}
+
 #home-logo-morse-container > span img {
   width: 100%;
   height: auto;
@@ -167,7 +171,6 @@ main > div {
   min-height: 0;
   max-width: 100vw;
   max-height: 100vh;
-  cursor: pointer;
 }
 
 main {
@@ -494,6 +497,7 @@ main > div #content a.contact {
   justify-content: center;
   width: 1.6rem;
   margin-top: 0.3rem;
+  cursor: pointer;
 }
 
 #settings .content > span > span .switch img {
