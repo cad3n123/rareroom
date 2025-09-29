@@ -241,14 +241,25 @@ main button span::before {
   height: 0.5px;
   width: 0%;
   position: absolute;
-  bottom: 0px;
+  bottom: 15%;
   transition: width 0.25s ease;
   background-color: var(--secondary);
 }
 
-main.inverted button span:hover::before {
+main button:not(.active) span:hover::before {
   width: 100%;
+}
+main button.nav-button span:hover::before {
+  background-color: rgb(calc(var(--brightness) * 255), calc(var(--brightness) * 255), calc(var(--brightness) * 255));
+}
+
+main button:not(.nav-button) span:hover::before {
   background-color: rgb(255 255 255 / calc(0.9 * var(--brightness)));
+}
+
+main .nav-button.active span {
+  text-decoration: underline;
+  text-decoration-thickness: 0.5px;
 }
 
 main .nav-button:hover {

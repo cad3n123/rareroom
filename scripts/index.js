@@ -335,6 +335,7 @@ function stateChanged(withMorse) {
   if (path === '/about' || path == '/about/') {
     switchPage(
       $aboutBackground,
+      $aboutButton,
       [...$$aboutParagraphImgs, $aboutLink].map(($element) => {
         return {
           element: $element,
@@ -346,7 +347,7 @@ function stateChanged(withMorse) {
       playMorse(aboutAudio, '.- -... --- ..- -');
     }
   } else if (path === '/contact' || path == '/contact/') {
-    switchPage($contactBackground, [
+    switchPage($contactBackground, $contactButton, [
       ...Array.from($$contacts).map(($) => {
         return {
           element: $,
@@ -362,12 +363,14 @@ function stateChanged(withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
   } else if (path === '/artists' || path == '/artists/') {
-    switchPage(null, [{ element: $artistsDiv, displayMode: 'block' }]);
+    switchPage(null, $artistsButton, [
+      { element: $artistsDiv, displayMode: 'block' },
+    ]);
     if (withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
   } else {
-    switchPage($homeBackground, [
+    switchPage($homeBackground, null, [
       {
         element: $nav,
         displayMode: 'block',
@@ -422,9 +425,10 @@ $settingsX.addEventListener('click', () => {
 /**
  *
  * @param {HTMLIFrameElement} background
+ * @param {HTMLButtonElement} selectedNavButton
  * @param {ElementSettings[]} elementSettings
  */
-function switchPage(background, elementSettings) {
+function switchPage(background, selectedNavButton, elementSettings) {
   if (background == null || background.style.zIndex != 0) {
     [
       // $nav,
@@ -440,6 +444,13 @@ function switchPage(background, elementSettings) {
     });
     $settings.classList.remove('active');
     $settingsArrowDown.classList.add('active');
+
+    $$navButtons.forEach(($navButton) => {
+      $navButton.classList.remove('active');
+    });
+    if (selectedNavButton != null) {
+      selectedNavButton.classList.add('active');
+    }
 
     setBackground(background);
   }
