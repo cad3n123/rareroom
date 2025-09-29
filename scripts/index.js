@@ -463,14 +463,13 @@ function addBandButtons() {
       (() => {
         const bandFileName = wordsToFilename(band);
 
-        const $band = document.createElement('img'); // document.createElement('button');
-        $band.src = `./images/${bandFileName}.png`;
+        const $band = document.createElement('span'); // document.createElement('button');
 
-        // const $span = document.createElement('span');
+        const $img = document.createElement('img');
+        $img.src = `./images/${bandFileName}.png`;
         // $span.innerHTML = band + (i == lastIndex ? '' : ',');
 
         $band.onmouseover = (e) => {
-          console.log('Enter!');
           $backgroundPicture.classList.add('active');
 
           $backgroundPictureImg.src = `./images/${bandFileName}_artist.jpg`;
@@ -481,7 +480,7 @@ function addBandButtons() {
           $main.classList.remove('inverted');
         };
 
-        // [$span].forEach(($child) => $band.appendChild($child));
+        [$img].forEach(($child) => $band.appendChild($child));
 
         return $band;
       })()

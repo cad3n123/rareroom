@@ -223,6 +223,7 @@ main > div #content nav > span > span img {
 }
 
 #bands-nav {
+  position: relative;
   display: flex;
   gap: 1rem;
 }
@@ -254,30 +255,34 @@ main > div #content #pollish-link {
   top: 51.25%;
 }
 
-main button span, main button span::before   {
+main button span, main button span::before, main #bands-nav span   {
   transition: color 250ms ease; 
   position: relative;
 }
 
-main button span::before {
+main button span::before, main #bands-nav span::before {
   box-sizing: border-box;
   content: "";
   height: 0.5px;
   width: 0%;
   position: absolute;
-  bottom: 6%;
+  bottom: 0%;
   transition: width 0.25s ease;
   background-color: var(--secondary);
 }
 
-main button:not(.active) span:hover::before {
+main #bands-nav span::before {
+  bottom: 20%;
+}
+
+main button:not(.active) span:hover::before, main #bands-nav span:hover::before {
   width: 100%;
 }
 main button.nav-button span:hover::before {
   background-color: rgb(calc(var(--brightness) * 255), calc(var(--brightness) * 255), calc(var(--brightness) * 255));
 }
 
-main button:not(.nav-button) span:hover::before {
+main #bands-nav span:hover::before {
   background-color: rgb(255 255 255 / calc(0.9 * var(--brightness)));
 }
 
