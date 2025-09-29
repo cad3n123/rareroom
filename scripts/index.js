@@ -40,6 +40,7 @@ const [
   $content,
   $contactButton,
   $aboutButton,
+  $artistsButton,
   $homeLogo,
   $homeLogoShadow,
   $settings,
@@ -48,6 +49,7 @@ const [
   $socialMediaIcons,
   $settingsBorder,
   $pollishLink,
+  $artistsDiv,
 ] = [
   'background-content',
   'background-picture',
@@ -57,6 +59,7 @@ const [
   'content',
   'contact-button',
   'about-button',
+  'artists-button',
   'home-logo',
   'home-logo-shadow',
   'settings',
@@ -65,6 +68,7 @@ const [
   'social-media-icons',
   'settings-border',
   'pollish-link',
+  'artists-div',
 ].map((id) => document.getElementById(id));
 const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
   'nav',
@@ -81,7 +85,6 @@ const [[$bandsNavSpan]] = ['span'].map((descriptor) =>
 const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
   Array.from($backgroundPicture.querySelectorAll(descriptor))
 );
-console.log($bandsNavSpan);
 
 function main() {
   settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
@@ -189,7 +192,9 @@ function setBackground(background) {
       background.style.zIndex = '-2';
     }
   );
-  background.style.zIndex = '0';
+  if (background != null) {
+    background.style.zIndex = '0';
+  }
 }
 /**
  *
@@ -353,6 +358,11 @@ function stateChanged(withMorse) {
     if (withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
+  } else if (path === '/artists' || path == '/artists/') {
+    switchPage(null, [{ element: $artistsDiv, displayMode: 'block' }]);
+    if (withMorse) {
+      playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
+    }
   } else {
     switchPage($homeBackground, [
       {
@@ -387,6 +397,9 @@ $contactButton.addEventListener('click', () => {
 $aboutButton.addEventListener('click', () => {
   changeState('about');
 });
+$artistsButton.addEventListener('click', () => {
+  changeState('artists');
+});
 $homeLogo.addEventListener('click', () => {
   changeState('');
 });
@@ -409,17 +422,22 @@ $settingsX.addEventListener('click', () => {
  * @param {ElementSettings[]} elementSettings
  */
 function switchPage(background, elementSettings) {
-  if (background.style.zIndex != 0) {
-    [$nav, ...$$aboutParagraphImgs, $aboutLink, ...$$contacts].forEach(
-      (element) => {
-        element.style.display = 'none';
-      }
-    );
+  if (background == null || background.style.zIndex != 0) {
+    [
+      $nav,
+      ...$$aboutParagraphImgs,
+      $aboutLink,
+      ...$$contacts,
+      $artistsDiv,
+    ].forEach((element) => {
+      element.style.display = 'none';
+    });
     elementSettings.forEach((elementSetting) => {
       elementSetting.element.style.display = elementSetting.displayMode;
     });
     $settings.classList.remove('active');
     $settingsArrowDown.classList.add('active');
+
     setBackground(background);
   }
 }
