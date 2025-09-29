@@ -174,6 +174,10 @@ main {
   --brightness: 95%;
 }
 
+main img {
+  will-change: filter;
+}
+
 main.inverted img {
   filter: invert(calc(1 * var(--brightness)));
 }
@@ -263,6 +267,10 @@ main button.nav-button span:hover::before {
 
 main button:not(.nav-button) span:hover::before {
   background-color: rgb(255 255 255 / calc(0.9 * var(--brightness)));
+}
+
+main button:not(.nav-button) span {
+  font-size: 1.05rem;
 }
 
 main .nav-button.active span {
