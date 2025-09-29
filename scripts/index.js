@@ -83,9 +83,6 @@ const [[$main], $$switch] = ['main', '.switch'].map((descriptor) =>
 const [$$navButtons] = [':scope button'].map((descriptor) =>
   $nav.querySelectorAll(descriptor)
 );
-const [[$bandsNavSpan]] = ['span'].map((descriptor) =>
-  Array.from($bandsNav.querySelectorAll(descriptor))
-);
 const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
   Array.from($backgroundPicture.querySelectorAll(descriptor))
 );
@@ -478,19 +475,21 @@ function switchPage(background, selectedNavButton, elementSettings, test) {
 function addBandButtons() {
   const lastIndex = bands.length - 1;
   bands.forEach((band, i) => {
-    $bandsNavSpan.appendChild(
+    $bandsNav.appendChild(
       (() => {
-        const $band = document.createElement('button');
+        const bandFileName = wordsToFilename(band);
 
-        const $span = document.createElement('span');
-        $span.innerHTML = band + (i == lastIndex ? '' : ',');
+        const $band = document.createElement('img'); // document.createElement('button');
+        $band.src = `./images/${bandFileName}.png`;
+
+        // const $span = document.createElement('span');
+        // $span.innerHTML = band + (i == lastIndex ? '' : ',');
 
         $band.onmouseover = (e) => {
           console.log('Enter!');
           $backgroundPicture.classList.add('active');
-          $backgroundPictureImg.src = `./images/${wordsToFilename(
-            band
-          )}_artist.jpg`;
+
+          $backgroundPictureImg.src = `./images/${bandFileName}_artist.jpg`;
           $main.classList.add('inverted');
         };
         $band.onmouseleave = (e) => {
@@ -498,7 +497,7 @@ function addBandButtons() {
           $main.classList.remove('inverted');
         };
 
-        [$span].forEach(($child) => $band.appendChild($child));
+        // [$span].forEach(($child) => $band.appendChild($child));
 
         return $band;
       })()

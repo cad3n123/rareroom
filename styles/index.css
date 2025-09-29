@@ -182,7 +182,7 @@ main img {
 }
 
 main.inverted img {
-  filter: invert(calc(1 * var(--brightness)));
+  filter: invert(var(--brightness));
 }
 
 main.inverted img {
@@ -222,9 +222,18 @@ main > div #content nav > span > span img {
   object-fit: contain;
 }
 
-/* #bands-nav .bands * {
-  font-family: Helvetica, Arial, sans-serif;
-} */
+#bands-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+#bands-nav img {
+  height: 1rem;
+}
+
+main.inverted #bands-nav img {
+  filter: invert(100%);
+}
 
 main > div #content img.about.title {
   width: 4rem;
