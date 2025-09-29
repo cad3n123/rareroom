@@ -334,7 +334,7 @@ function stateChanged(withMorse) {
   const path = window.location.pathname;
   if (path === '/about' || path == '/about/') {
     switchPage(
-      $aboutBackground,
+      $homeBackground, // $aboutBackground,
       $aboutButton,
       [...$$aboutParagraphImgs, $aboutLink].map(($element) => {
         return {
@@ -347,7 +347,7 @@ function stateChanged(withMorse) {
       playMorse(aboutAudio, '.- -... --- ..- -');
     }
   } else if (path === '/contact' || path == '/contact/') {
-    switchPage($contactBackground, $contactButton, [
+    switchPage($homeBackground, /*$contactBackground,*/ $contactButton, [
       ...Array.from($$contacts).map(($) => {
         return {
           element: $,
@@ -363,7 +363,7 @@ function stateChanged(withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
   } else if (path === '/artists' || path == '/artists/') {
-    switchPage(null, $artistsButton, [
+    switchPage($homeBackground, /*null,*/ $artistsButton, [
       { element: $artistsDiv, displayMode: 'block' },
     ]);
     if (withMorse) {
