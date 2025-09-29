@@ -156,7 +156,7 @@ function preloadArtistImages(bands) {
   bands.forEach((band) => {
     const filename = wordsToFilename(band);
     const img = new Image();
-    img.src = `./images/${filename}.jpg`; // This starts the download and caches the image.
+    img.src = `./images/${filename}_artist.jpg`; // This starts the download and caches the image.
   });
 }
 
@@ -345,21 +345,19 @@ function stateChanged(withMorse) {
   const path = window.location.pathname;
   if (path === '/about' || path == '/about/') {
     switchPage(
-      $homeBackground, // $aboutBackground,
       $aboutButton,
       [...$$aboutParagraphImgs, $aboutLink].map(($element) => {
         return {
           element: $element,
           displayMode: 'block',
         };
-      }),
-      true
+      })
     );
     if (withMorse) {
       playMorse(aboutAudio, '.- -... --- ..- -');
     }
   } else if (path === '/contact' || path == '/contact/') {
-    switchPage($homeBackground, /*$contactBackground,*/ $contactButton, [
+    switchPage($contactButton, [
       ...Array.from($$contacts).map(($) => {
         return {
           element: $,
@@ -370,28 +368,23 @@ function stateChanged(withMorse) {
         element: $socialMediaIcons,
         displayMode: 'flex',
       },
-      true,
     ]);
     if (withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
   } else if (path === '/artists' || path == '/artists/') {
-    switchPage(
-      $homeBackground,
-      /*null,*/ $artistsButton,
-      [{ element: $artistsDiv, displayMode: 'block' }],
-      true
-    );
+    switchPage($artistsButton, [
+      { element: $artistsDiv, displayMode: 'block' },
+    ]);
     if (withMorse) {
       playMorse(artistsAudio, '.- .-. - .. ... - ...');
     }
   } else {
-    switchPage($homeBackground, null, [
+    switchPage(null, [
       {
         element: $nav,
         displayMode: 'block',
       },
-      false,
     ]);
     if (withMorse) {
       playMorse(homeAudio, '.-. .- .-. . .-. --- --- --');
@@ -441,35 +434,26 @@ $settingsX.addEventListener('click', () => {
  */
 /**
  *
- * @param {HTMLIFrameElement} background
  * @param {HTMLButtonElement} selectedNavButton
  * @param {ElementSettings[]} elementSettings
  */
-function switchPage(background, selectedNavButton, elementSettings, test) {
-  if (background == null || background.style.zIndex != 0 || test) {
-    [
-      // $nav,
-      ...$$aboutParagraphImgs,
-      $aboutLink,
-      ...$$contacts,
-      $artistsDiv,
-    ].forEach((element) => {
+function switchPage(selectedNavButton, elementSettings) {
+  [...$$aboutParagraphImgs, $aboutLink, ...$$contacts, $artistsDiv].forEach(
+    (element) => {
       element.style.display = 'none';
-    });
-    elementSettings.forEach((elementSetting) => {
-      elementSetting.element.style.display = elementSetting.displayMode;
-    });
-    $settings.classList.remove('active');
-    $settingsArrowDown.classList.add('active');
-
-    $$navButtons.forEach(($navButton) => {
-      $navButton.classList.remove('active');
-    });
-    if (selectedNavButton != null) {
-      selectedNavButton.classList.add('active');
     }
+  );
+  elementSettings.forEach((elementSetting) => {
+    elementSetting.element.style.display = elementSetting.displayMode;
+  });
+  $settings.classList.remove('active');
+  $settingsArrowDown.classList.add('active');
 
-    // setBackground(background);
+  $$navButtons.forEach(($navButton) => {
+    $navButton.classList.remove('active');
+  });
+  if (selectedNavButton != null) {
+    selectedNavButton.classList.add('active');
   }
 }
 function addBandButtons() {
