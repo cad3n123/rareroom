@@ -120,6 +120,19 @@ function main() {
       return;
     }
     const [$on, $off] = $$buttons;
+
+    ['sound', 'light'].forEach((descriptor) => {
+      if ($settingsSection.classList.contains(descriptor)) {
+        if (settings[descriptor]) {
+          $on.classList.add('active');
+          $off.classList.remove('active');
+        } else {
+          $on.classList.remove('active');
+          $off.classList.add('active');
+        }
+      }
+    });
+
     /**
      *
      * @param {HTMLButtonElement} $target
