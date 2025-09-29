@@ -16,10 +16,11 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const gainNode = audioCtx.createGain();
 gainNode.connect(audioCtx.destination);
 gainNode.gain.value = volume;
-const [homeAudio, aboutAudio, contactAudio] = [
+const [homeAudio, aboutAudio, contactAudio, artistsAudio] = [
   'RAREROOM',
   'ABOUT',
   'CONTACT',
+  'ARTISTS',
 ].map((name) => `/audios/${name} MORSE.m4a`);
 const bands = ['POLLISH', 'KELSI KEE'];
 
@@ -35,8 +36,8 @@ const [
   $backgroundContent,
   $backgroundPicture,
   $homeBackground,
-  $contactBackground,
-  $aboutBackground,
+  // $contactBackground,
+  // $aboutBackground,
   $content,
   $contactButton,
   $aboutButton,
@@ -54,8 +55,8 @@ const [
   'background-content',
   'background-picture',
   'home-background',
-  'contact-background',
-  'about-background',
+  // 'contact-background',
+  // 'about-background',
   'content',
   'contact-button',
   'about-button',
@@ -202,16 +203,16 @@ function updataContentPosition() {
     `${$settings.offsetWidth}px`
   );
 }
-function setBackground(background) {
-  [$homeBackground, $contactBackground, $aboutBackground].forEach(
-    (background) => {
-      background.style.zIndex = '-2';
-    }
-  );
-  if (background != null) {
-    background.style.zIndex = '0';
-  }
-}
+// function setBackground(background) {
+//   [$homeBackground, $contactBackground, $aboutBackground].forEach(
+//     (background) => {
+//       background.style.zIndex = '-2';
+//     }
+//   );
+//   if (background != null) {
+//     background.style.zIndex = '0';
+//   }
+// }
 /**
  *
  * @param {String} audioUrl - URL of the morse audio file
@@ -385,7 +386,7 @@ function stateChanged(withMorse) {
       true
     );
     if (withMorse) {
-      playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
+      playMorse(artistsAudio, '.- .-. - .. ... - ...');
     }
   } else {
     switchPage($homeBackground, null, [
@@ -471,7 +472,7 @@ function switchPage(background, selectedNavButton, elementSettings, test) {
       selectedNavButton.classList.add('active');
     }
 
-    setBackground(background);
+    // setBackground(background);
   }
 }
 function addBandButtons() {
@@ -487,7 +488,9 @@ function addBandButtons() {
         $band.onmouseover = (e) => {
           console.log('Enter!');
           $backgroundPicture.classList.add('active');
-          $backgroundPictureImg.src = `./images/${wordsToFilename(band)}.jpg`;
+          $backgroundPictureImg.src = `./images/${wordsToFilename(
+            band
+          )}_artist.jpg`;
           $main.classList.add('inverted');
         };
         $band.onmouseleave = (e) => {
