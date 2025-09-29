@@ -231,13 +231,29 @@ main > div #content #pollish-link {
   top: 51.25%;
 }
 
-main button {
-  transition: color 250ms ease, filter 250ms ease;
+main button span {
+  transition: color 250ms ease; 
+  position: relative;
+}
+
+main button span::before {
+  box-sizing: border-box;
+  content: "";
+  height: 0.5px;
+  width: 0%;
+  position: absolute;
+  bottom: 0px;
+  transition: width 0.25s ease;
+  background-color: var(--primary);
+}
+
+main.inverted button span:hover::before {
+  width: 100%;
+  color:white
 }
 
 main .nav-button:hover {
-  color: white;
-  filter: brightness(calc(0.9 * var(--brightness)));
+  color: rgba(255 255 255 / var(--brightness));
 }
 
 .image-a {

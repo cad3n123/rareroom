@@ -450,7 +450,9 @@ function addBandButtons() {
     $bandsNavSpan.appendChild(
       (() => {
         const $band = document.createElement('button');
-        $band.innerHTML = band + (i == lastIndex ? '' : ',');
+
+        const $span = document.createElement('span');
+        $span.innerHTML = band + (i == lastIndex ? '' : ',');
 
         $band.onmouseover = (e) => {
           console.log('Enter!');
@@ -462,6 +464,8 @@ function addBandButtons() {
           $backgroundPicture.classList.remove('active');
           $main.classList.remove('inverted');
         };
+
+        [$span].forEach(($child) => $band.appendChild($child));
 
         return $band;
       })()
