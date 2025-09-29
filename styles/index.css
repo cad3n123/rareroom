@@ -227,6 +227,11 @@ main > div #content #pollish-link {
   top: 51.25%;
 }
 
+main .nav-button:hover {
+  color: white;
+  filter: brightness(var(--brightness));
+}
+
 .image-a {
   background-color: rgb(38, 13, 37);
   color: transparent;

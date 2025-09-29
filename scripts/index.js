@@ -79,6 +79,9 @@ const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
 const [[$main], $$switch] = ['main', '.switch'].map((descriptor) =>
   document.querySelectorAll(descriptor)
 );
+const [$$navButtons] = [':scope button'].map((descriptor) =>
+  $nav.querySelectorAll(descriptor)
+);
 const [[$bandsNavSpan]] = ['span'].map((descriptor) =>
   Array.from($bandsNav.querySelectorAll(descriptor))
 );
@@ -449,7 +452,7 @@ function addBandButtons() {
         const $band = document.createElement('button');
         $band.innerHTML = band + (i == lastIndex ? '' : ',');
 
-        $band.onmouseenter = (e) => {
+        $band.onmouseover = (e) => {
           console.log('Enter!');
           $backgroundPicture.classList.add('active');
           $backgroundPictureImg.src = `./images/${wordsToFilename(band)}.png`;
