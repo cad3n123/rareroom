@@ -3,6 +3,8 @@
   src: url(/EliteMath/Elite\ Math\ Regular.ttf);
   font-family: Alike;
   src: url(/Alike/Alike-Regular.ttf);
+  font-family: Helvetica;
+  src: url(/Helvetica/Helvetica.ttf);
 }
 @font-face {
     font-family: Source_Code_Pro;
@@ -209,6 +211,10 @@ main > div #content nav span button {
 main > div #content nav > span > span img {
   height: 0.4rem;
   object-fit: contain;
+}
+
+#bands-nav .bands * {
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 main > div #content img.about.title {
