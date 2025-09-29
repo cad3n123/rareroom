@@ -213,9 +213,9 @@ main > div #content nav > span > span img {
   object-fit: contain;
 }
 
-#bands-nav .bands * {
+/* #bands-nav .bands * {
   font-family: Helvetica, Arial, sans-serif;
-}
+} */
 
 main > div #content img.about.title {
   width: 4rem;
@@ -304,16 +304,17 @@ main > div #content ul a svg {
 
 main > div #content img.contact {
   margin-top: 0.5rem;
-  width: 15rem;
+  width: 12rem;
   object-fit: contain;
+  margin: auto;
 }
 
 main > div #content a.contact {
   bottom: 0;
-  font-size: 60%;
-  letter-spacing: 0.115rem;
+  font-size: 80%;
+  letter-spacing: 0.15rem;
   position: absolute;
-  right: 10.5%;
+  right: 16%;
 }
 
 #home-logo-morse-container span.morse {
