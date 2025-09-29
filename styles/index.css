@@ -337,11 +337,11 @@ main > div #content img.contact {
 }
 
 main > div #content a.contact {
-  bottom: 30%;
-  font-size: 80%;
-  letter-spacing: 0.15rem;
+  bottom: 27%;
+  font-size: 55%;
+  letter-spacing: 0.09rem;
   position: absolute;
-  right: 16%;
+  right: 27%;
 }
 
 #home-logo-morse-container span.morse {
