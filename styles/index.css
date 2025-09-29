@@ -87,7 +87,7 @@ body div img {
 }
 
 #background-picture {
-  visibility: hidden;
+  display: none;
   position: absolute;
   z-index: -1;
   width: 100%;
@@ -98,7 +98,6 @@ body div img {
   border: none;
   padding: 0;
   margin: 0;
-  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -109,7 +108,7 @@ body div img {
 }
 
 #background-picture.active {
-  visibility: visible;
+  display: flex;
 }
 
 main {
@@ -167,12 +166,17 @@ main > div {
   max-height: 100vh;
 }
 
+main.inverted {
+  --brightness: 95%;
+}
+
 main.inverted img {
-  filter: invert(100%);
+  filter: invert(calc(1 * var(--brightness)));
 }
 
 main.inverted #content nav button, main.inverted > div #content nav > span > span {
   color: white;
+  filter: brightness(var(--brightness));
 }
 
 main > div #content {

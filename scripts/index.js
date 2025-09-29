@@ -432,12 +432,13 @@ function addBandButtons() {
         $band.innerHTML = band + (i == lastIndex ? '' : ',');
 
         $band.onmouseenter = (e) => {
-          $backgroundPicture.style.visibility = 'visible';
+          console.log('Enter!');
+          $backgroundPicture.classList.add('active');
           $backgroundPictureImg.src = `./images/${wordsToFilename(band)}.png`;
           $main.classList.add('inverted');
         };
         $band.onmouseleave = (e) => {
-          $backgroundPicture.style.visibility = 'hidden';
+          $backgroundPicture.classList.remove('active');
           $main.classList.remove('inverted');
         };
 
