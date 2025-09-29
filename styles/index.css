@@ -21,6 +21,7 @@
 button {
   font-family: Alike;
   color: var(--secondary);
+  filter: blur(0.5px);
 }
 
 html,
@@ -233,7 +234,7 @@ main .nav-button {
 
 main .nav-button:hover {
   color: white;
-  filter: brightness(calc(0.9 * var(--brightness)));
+  filter: brightness(calc(0.9 * var(--brightness))) blur(0.5px);
 }
 
 .image-a {
