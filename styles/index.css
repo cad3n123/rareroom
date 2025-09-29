@@ -270,7 +270,7 @@ main button:not(.nav-button) span:hover::before {
 }
 
 main button:not(.nav-button) span {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
 }
 
 main .nav-button.active span {
