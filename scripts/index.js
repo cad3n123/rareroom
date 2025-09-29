@@ -341,7 +341,8 @@ function stateChanged(withMorse) {
           element: $element,
           displayMode: 'block',
         };
-      })
+      }),
+      true
     );
     if (withMorse) {
       playMorse(aboutAudio, '.- -... --- ..- -');
@@ -358,14 +359,18 @@ function stateChanged(withMorse) {
         element: $socialMediaIcons,
         displayMode: 'flex',
       },
+      true,
     ]);
     if (withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
   } else if (path === '/artists' || path == '/artists/') {
-    switchPage($homeBackground, /*null,*/ $artistsButton, [
-      { element: $artistsDiv, displayMode: 'block' },
-    ]);
+    switchPage(
+      $homeBackground,
+      /*null,*/ $artistsButton,
+      [{ element: $artistsDiv, displayMode: 'block' }],
+      true
+    );
     if (withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
@@ -375,6 +380,7 @@ function stateChanged(withMorse) {
         element: $nav,
         displayMode: 'block',
       },
+      false,
     ]);
     if (withMorse) {
       playMorse(homeAudio, '.-. .- .-. . .-. --- --- --');
@@ -428,8 +434,8 @@ $settingsX.addEventListener('click', () => {
  * @param {HTMLButtonElement} selectedNavButton
  * @param {ElementSettings[]} elementSettings
  */
-function switchPage(background, selectedNavButton, elementSettings) {
-  if (background == null || background.style.zIndex != 0) {
+function switchPage(background, selectedNavButton, elementSettings, test) {
+  if (background == null || background.style.zIndex != 0 || test) {
     [
       // $nav,
       ...$$aboutParagraphImgs,
