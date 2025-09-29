@@ -457,7 +457,7 @@ function addBandButtons() {
         $band.onmouseover = (e) => {
           console.log('Enter!');
           $backgroundPicture.classList.add('active');
-          $backgroundPictureImg.src = `./images/${wordsToFilename(band)}.png`;
+          $backgroundPictureImg.src = `./images/${wordsToFilename(band)}.jpg`;
           $main.classList.add('inverted');
         };
         $band.onmouseleave = (e) => {

@@ -254,7 +254,7 @@ main.inverted button span:hover::before {
 main .nav-button:hover {
   --brightness: 0.8;
 
-  color: rgba(255, 255, 255, var(--brightness));
+  color: rgb(calc(var(--brightness) * 255), calc(var(--brightness) * 255), calc(var(--brightness) * 255));
 }
 
 .image-a {
