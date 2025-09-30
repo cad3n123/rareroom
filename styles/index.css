@@ -158,12 +158,14 @@ main > div:has(#home-logo-morse-container.top) {
   width: 100%;
 }
 
-#home-logo-morse-container.top #home-logo-container, #home-logo-morse-container.top > .morse {
+#home-logo-morse-container.top #home-logo-container {
   width: 6rem;
+  transform: translateY(4%);
 }
 
 #home-logo-morse-container.top > .morse img {
-  height: 0.17rem;
+  /* height: 0.17rem; */
+  display: none;
 }
 
 #home-logo-morse-container {
