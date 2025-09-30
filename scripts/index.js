@@ -447,8 +447,8 @@ function stateChanged(withMorse) {
         ]
       );
       console.log(artistName);
-      $artistImage.src = `${artistName}_artist.jpg`;
-      $artistName.src = `${artistName}.png`;
+      $artistImage.src = `/images/${artistName}_artist.jpg`;
+      $artistName.src = `/images/${artistName}.png`;
     }
   } else {
     switchPage(
