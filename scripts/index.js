@@ -500,6 +500,13 @@ $settingsX.addEventListener('click', () => {
   $settings.classList.remove('active');
   $settingsArrowDown.classList.add('active');
 });
+$content.addEventListener('scroll', () => {
+  if ($content.scrollTop > 5) {
+    $homeLogoMorseContainer.classList.add('scrolled');
+  } else {
+    $homeLogoMorseContainer.classList.remove('scrolled');
+  }
+});
 /**
  * @typedef {Object} ElementSettings
  * @property {HTMLElement} element
