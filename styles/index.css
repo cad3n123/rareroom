@@ -588,7 +588,7 @@ img.comma {
 }
 
 #home-logo {
-  transition: filter 300ms ease;
+  transition: filter 300ms ease, opacity 300ms ease;
 }
 
 #home-logo:hover {
