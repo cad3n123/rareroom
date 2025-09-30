@@ -237,6 +237,7 @@ main > div #content {
   min-height: 0;
   overflow-y: auto;
   width: 100%;
+  padding-top: 0.75rem;
 }
 
 main > div #content nav {
