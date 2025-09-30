@@ -566,41 +566,47 @@ function switchPage(selectedNavButton, elementSettings, classSettings) {
   }
 }
 function addBandButtons() {
-  // const lastIndex = bands.length - 1;
+  const lastIndex = bands.length - 1;
   bands.forEach((band, i) => {
-    $bandsNav.appendChild(
-      (() => {
-        const bandFileName = wordsToFilename(band);
-        const artistImageLocation = `/images/${bandFileName}_artist.jpg`;
-        const artistNameLocation = `/images/${bandFileName}.png`;
+    const $band = (() => {
+      const bandFileName = wordsToFilename(band);
+      const artistImageLocation = `/images/${bandFileName}_artist.jpg`;
+      const artistNameLocation = `/images/${bandFileName}.png`;
 
-        const $band = document.createElement('button'); // document.createElement('button');
+      const $band = document.createElement('button'); // document.createElement('button');
 
-        const $img = document.createElement('img');
-        $img.src = artistNameLocation;
-        // $span.innerHTML = band + (i == lastIndex ? '' : ',');
+      const $img = document.createElement('img');
+      $img.src = artistNameLocation;
+      // $span.innerHTML = band + (i == lastIndex ? '' : ',');
 
-        $band.onmouseover = (e) => {
-          $backgroundPicture.classList.add('active');
+      $band.onmouseover = (e) => {
+        $backgroundPicture.classList.add('active');
 
-          $backgroundPictureImg.src = artistImageLocation;
-          $main.classList.add('inverted');
-        };
-        $band.onmouseleave = (e) => {
-          $backgroundPicture.classList.remove('active');
-          $main.classList.remove('inverted');
-        };
-        $band.onclick = (e) => {
-          changeState(`artists/${bandFileName}`);
-          $artistImage.src = artistImageLocation;
-          $artistName.src = artistNameLocation;
-        };
+        $backgroundPictureImg.src = artistImageLocation;
+        $main.classList.add('inverted');
+      };
+      $band.onmouseleave = (e) => {
+        $backgroundPicture.classList.remove('active');
+        $main.classList.remove('inverted');
+      };
+      $band.onclick = (e) => {
+        changeState(`artists/${bandFileName}`);
+        $artistImage.src = artistImageLocation;
+        $artistName.src = artistNameLocation;
+      };
 
-        [$img].forEach(($child) => $band.appendChild($child));
+      [$img].forEach(($child) => $band.appendChild($child));
 
-        return $band;
-      })()
-    );
+      return $band;
+    })();
+    $bandsNav.appendChild($band);
+    if (i != lastIndex) {
+      const $comma = document.createElement('img');
+      $comma.src = '/images/comma.png';
+      $comma.alt = ',';
+      $comma.classList.add('comma');
+      $bandsNav.appendChild($comma);
+    }
   });
 }
 function removeCurtainAfterImagesLoad() {
