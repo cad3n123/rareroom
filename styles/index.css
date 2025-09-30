@@ -438,6 +438,7 @@ main > div #content a.contact:hover {
   padding-bottom: 1rem;
   animation: 1000ms infinite normal backandforth;
   animation-timing-function: linear;
+  filter: blur(0.75px);
 }
 
 #settings #settings-arrow-down > * {
