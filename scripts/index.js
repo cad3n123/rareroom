@@ -537,6 +537,8 @@ function switchPage(selectedNavButton, elementSettings, classSettings) {
   [$rareroomTitle, $homeBackground, $settingsArrowDown].forEach(
     (element) => (element.style.display = 'block')
   );
+  $main.classList.remove('inverted');
+
   elementSettings.forEach((elementSetting) => {
     elementSetting.element.style.display = elementSetting.displayMode;
   });
