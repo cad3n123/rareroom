@@ -107,7 +107,7 @@ body div img {
 
 #background-picture img {
   object-fit: cover;
-  height: 75%;
+  height: 66%;
 }
 
 #background-picture.active {
@@ -174,7 +174,9 @@ main > div {
 }
 
 main {
-  --brightness: 95%;
+  --brightness: 0.2;
+  --text-brightness: calc(1 - var(--brightness) * (3 / 4));
+  --image-brightness: var(--brightness);
 }
 
 main img {
@@ -182,15 +184,16 @@ main img {
 }
 
 main.inverted img {
-  filter: invert(var(--brightness));
-}
-
-main.inverted img {
+  filter: invert(100%) brightness(calc(1 + var(--image-brightness)));
   transition: filter 250ms ease;
 }
 
+main.inverted #home-logo {
+  filter: invert(100%) brightness(calc(0.85 + var(--image-brightness)));
+}
+
 main.inverted #content nav button, main.inverted > div #content nav span {
-  color: rgba(255 255 255 / var(--brightness));
+  color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
 main > div #content {
@@ -279,11 +282,11 @@ main button:not(.active) span:hover::before, main #bands-nav span:hover::before 
   width: 100%;
 }
 main button.nav-button span:hover::before {
-  background-color: rgb(calc(var(--brightness) * 255), calc(var(--brightness) * 255), calc(var(--brightness) * 255));
+  background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
 main #bands-nav span:hover::before {
-  background-color: rgb(255 255 255 / calc(0.9 * var(--brightness)));
+  background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
 main button:not(.nav-button) span {
@@ -297,9 +300,7 @@ main .nav-button.active span {
 }
 
 main .nav-button:hover {
-  --brightness: 0.8;
-
-  color: rgb(calc(var(--brightness) * 255), calc(var(--brightness) * 255), calc(var(--brightness) * 255));
+  color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
 .image-a {
