@@ -137,7 +137,10 @@ main > div {
 
 main > div:has(#home-logo-morse-container.top) {
   justify-content: start;
-  gap: 1.25rem;
+}
+
+#home-logo-morse-container.top {
+  scale: 0.7;
 }
 
 #home-logo-morse-container {
