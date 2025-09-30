@@ -64,7 +64,6 @@ body div img {
 
 #background-content {
   --paper-size: 200%;
-  --word-size: calc(100% / var(var(--paper-size)));
 
   width: 100%;
   height: var(--paper-size);
@@ -86,7 +85,7 @@ body div img {
   position: absolute;
   width: 100%;
   max-width: 100vw;
-  height: var(--word-size);
+  height: 100vh;
   top: 0;
   left: 0;
   border: none;
