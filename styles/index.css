@@ -415,7 +415,8 @@ main > div #content a.contact:hover {
 }
 
 #artist-image {
-  height: 140vh;
+  width: 95vh;
+  margin: auto;
 }
 
 #artist-name {
