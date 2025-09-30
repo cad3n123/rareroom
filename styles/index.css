@@ -221,12 +221,12 @@ main img {
   will-change: filter;
 }
 
-main.inverted img, main > div:has(#home-logo-morse-container.scrolled.top) #home-logo-morse-container img {
+main.inverted img {
   filter: invert(100%) brightness(calc(1 + var(--image-brightness)));
   transition: filter 250ms ease;
 }
 
-main.inverted #home-logo {
+main.inverted #home-logo, main > div:has(#home-logo-morse-container.scrolled.top) #home-logo-morse-container #home-logo {
   filter: invert(100%) brightness(calc(0.85 + var(--image-brightness)));
 }
 
