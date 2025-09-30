@@ -585,7 +585,14 @@ img.comma {
 
 #settings .content > div span button.active img, #settings .content > div button:hover img, #home-logo:hover {
   filter: brightness(2) sepia(1) hue-rotate(270deg) saturate(3) brightness(0.45) blur(0.2px);
+}
+
+#home-logo {
   transition: filter 300ms ease;
+}
+
+#home-logo:hover {
+  opacity: 0.8;
 }
 
 #settings .content p {
