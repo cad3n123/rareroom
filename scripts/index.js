@@ -42,6 +42,7 @@ const [
   $contactButton,
   $aboutButton,
   $artistsButton,
+  $homeLogoMorseContainer,
   $homeLogo,
   $homeLogoShadow,
   $settings,
@@ -51,17 +52,18 @@ const [
   $settingsBorder,
   $pollishLink,
   $artistsDiv,
+  $artistDiv,
   $rareroomTitle,
+  $artistImage,
 ] = [
   'background-content',
   'background-picture',
   'home-background',
-  // 'contact-background',
-  // 'about-background',
   'content',
   'contact-button',
   'about-button',
   'artists-button',
+  'home-logo-morse-container',
   'home-logo',
   'home-logo-shadow',
   'settings',
@@ -71,7 +73,9 @@ const [
   'settings-border',
   'pollish-link',
   'artists-div',
+  'artist-div',
   'rareroom-title',
+  'artist-image',
 ].map((id) => document.getElementById(id));
 const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
   'nav',
@@ -98,20 +102,7 @@ const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
 function main() {
   settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
   setAudioStatus(settings.sound);
-  // ['sound', 'light'].forEach((selector) => {
-  //   /** @type {Element} */
-  //   const $switch = [].find.call(
-  //     $$switch,
-  //     /** @param {Element} $switch */ ($switch) => {
-  //       return $switch.matches(`.${selector}`);
-  //     }
-  //   );
-  //   if (settings[selector]) {
-  //     $switch.classList.add('active');
-  //   } else {
-  //     $switch.classList.remove('active');
-  //   }
-  // });
+
   $$settingsSections.forEach(($settingsSection) => {
     const [$$buttons] = ['button'].map((descriptor) =>
       $settingsSection.querySelectorAll(descriptor)
@@ -173,34 +164,6 @@ function main() {
     addButtonClickedEventListener($on, $off);
     addButtonClickedEventListener($off, $on);
   });
-  // $$switch.forEach(($switch) => {
-  //   $switch.addEventListener('click', () => {
-  //     $switch.classList.toggle('active');
-  //     // ['sound', 'light'].forEach((descriptor) => {
-  //     //   if ($switch.classList.contains(descriptor)) {
-  //     //     settings[descriptor] = !settings[descriptor];
-  //     //     setAudioStatus(settings.sound);
-  //     //   }
-  //     // });
-  //     localStorage.setItem('settings', JSON.stringify(settings));
-  //     (async () => {
-  //       if (settings.sound) {
-  //         // Fetch and decode the audio file
-  //         const response = await fetch('/audios/switch.wav');
-  //         const arrayBuffer = await response.arrayBuffer();
-  //         const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-
-  //         // Create audio source and connect to destination
-  //         const source = audioCtx.createBufferSource();
-  //         source.buffer = audioBuffer;
-  //         source.connect(gainNode);
-
-  //         // Schedule playback a short moment into the future
-  //         source.start(audioCtx.currentTime);
-  //       }
-  //     })();
-  //   });
-  // });
 
   updataContentPosition();
   stateChanged(false);
@@ -410,52 +373,88 @@ function stateChanged(withMorse) {
           element: $element,
           displayMode: 'block',
         };
-      })
+      }),
+      []
     );
     if (withMorse) {
       playMorse(aboutAudio, '.- -... --- ..- -');
     }
   } else if (path === '/contact' || path == '/contact/') {
-    switchPage($contactButton, [
-      ...Array.from($$contacts).map(($) => {
-        return {
-          element: $,
-          displayMode: 'block',
-        };
-      }),
-      {
-        element: $socialMediaIcons,
-        displayMode: 'flex',
-      },
-    ]);
+    switchPage(
+      $contactButton,
+      [
+        ...Array.from($$contacts).map(($) => {
+          return {
+            element: $,
+            displayMode: 'block',
+          };
+        }),
+        {
+          element: $socialMediaIcons,
+          displayMode: 'flex',
+        },
+      ],
+      []
+    );
     if (withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
     }
-  } else if (path === '/artists' || path == '/artists/') {
-    switchPage($artistsButton, [
-      {
-        element: $artistsDiv,
-        displayMode: 'block',
-      },
-      {
-        element: $rareroomTitle,
-        displayMode: 'none',
-      },
-    ]);
-    if (withMorse) {
-      playMorse(artistsAudio, '.- .-. - .. ... - ...');
+  } else if (path.startsWith('/artists') || path.startsWith('/artists/')) {
+    if (path === '/artists' || path === '/artists/') {
+      switchPage(
+        $artistsButton,
+        [
+          {
+            element: $artistsDiv,
+            displayMode: 'block',
+          },
+          {
+            element: $rareroomTitle,
+            displayMode: 'none',
+          },
+        ],
+        []
+      );
+      if (withMorse) {
+        playMorse(artistsAudio, '.- .-. - .. ... - ...');
+      }
+    } else {
+      const artistName = path.slice('/artists/'.length);
+      switchPage(
+        null,
+        [
+          {
+            element: $artistDiv,
+            displayMode: 'block',
+          },
+          ...[$rareroomTitle, $nav].map(($) => {
+            return { element: $, displayMode: 'none' };
+          }),
+        ],
+        [
+          {
+            element: $homeLogoMorseContainer,
+            class: 'top',
+            isAdding: true,
+          },
+        ]
+      );
     }
   } else {
-    switchPage(null, [
-      {
-        element: $nav,
-        displayMode: 'block',
-      },
-      {
-        element: $rareroomTitle,
-        displayMode: 'none',
-      },
-    ]);
+    switchPage(
+      null,
+      [
+        {
+          element: $nav,
+          displayMode: 'block',
+        },
+        {
+          element: $rareroomTitle,
+          displayMode: 'none',
+        },
+      ],
+      []
+    );
     if (withMorse) {
       playMorse(homeAudio, '.-. .- .-. . .-. --- --- --');
     }
@@ -503,19 +502,37 @@ $settingsX.addEventListener('click', () => {
  * @property {String} displayMode
  */
 /**
+ * @typedef {Object} ClassSettings
+ * @property {HTMLElement} element
+ * @property {String} class
+ * @property {boolean} isAdding
+ */
+/**
  *
  * @param {HTMLButtonElement} selectedNavButton
- * @param {ElementSettings[]} elementSettings
+ * @param {ClassSettings[]} classSettings
  */
-function switchPage(selectedNavButton, elementSettings) {
-  [...$$aboutParagraphImgs, $aboutLink, ...$$contacts, $artistsDiv].forEach(
-    (element) => {
-      element.style.display = 'none';
-    }
-  );
+function switchPage(selectedNavButton, elementSettings, classSettings) {
+  [
+    ...$$aboutParagraphImgs,
+    $aboutLink,
+    ...$$contacts,
+    $artistsDiv,
+    $artistDiv,
+  ].forEach((element) => {
+    element.style.display = 'none';
+  });
+  $homeLogoMorseContainer.classList.remove('top');
   [$rareroomTitle].forEach((element) => (element.style.display = 'block'));
   elementSettings.forEach((elementSetting) => {
     elementSetting.element.style.display = elementSetting.displayMode;
+  });
+  classSettings.forEach((classSetting) => {
+    if (classSetting.isAdding) {
+      classSetting.element.classList.add(classSetting.class);
+    } else {
+      classSetting.element.classList.remove(classSetting.class);
+    }
   });
   $settings.classList.remove('active');
   $settingsArrowDown.classList.add('active');
@@ -528,13 +545,14 @@ function switchPage(selectedNavButton, elementSettings) {
   }
 }
 function addBandButtons() {
-  const lastIndex = bands.length - 1;
+  // const lastIndex = bands.length - 1;
   bands.forEach((band, i) => {
     $bandsNav.appendChild(
       (() => {
         const bandFileName = wordsToFilename(band);
+        const imageLocation = `/images/${bandFileName}_artist.jpg`;
 
-        const $band = document.createElement('span'); // document.createElement('button');
+        const $band = document.createElement('button'); // document.createElement('button');
 
         const $img = document.createElement('img');
         $img.src = `/images/${bandFileName}.png`;
@@ -543,12 +561,16 @@ function addBandButtons() {
         $band.onmouseover = (e) => {
           $backgroundPicture.classList.add('active');
 
-          $backgroundPictureImg.src = `/images/${bandFileName}_artist.jpg`;
+          $backgroundPictureImg.src = imageLocation;
           $main.classList.add('inverted');
         };
         $band.onmouseleave = (e) => {
           $backgroundPicture.classList.remove('active');
           $main.classList.remove('inverted');
+        };
+        $band.onclick = (e) => {
+          changeState(`artists/${bandFileName}`);
+          $artistImage.src = imageLocation;
         };
 
         [$img].forEach(($child) => $band.appendChild($child));
@@ -604,7 +626,11 @@ function wordsToFilename(words) {
 }
 // Classes
 class Settings {
-  constructor({ light = false, sound = false, previouslyVisited = false } = {}) {
+  constructor({
+    light = false,
+    sound = false,
+    previouslyVisited = false,
+  } = {}) {
     this.light = light;
     this.sound = sound;
     this.previouslyVisited = previouslyVisited;

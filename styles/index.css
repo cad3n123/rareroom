@@ -131,6 +131,13 @@ main > div {
   align-items: center;
   flex-direction: column;
   gap: 0.75rem;
+  padding: 2.5rem 0;
+  box-sizing: border-box;
+}
+
+main > div:has(#home-logo-morse-container.top) {
+  justify-content: start;
+  gap: 1.25rem;
 }
 
 #home-logo-morse-container {
@@ -199,6 +206,7 @@ main.inverted #content nav button, main.inverted > div #content nav span {
 main > div #content {
   position: relative;
   width: max-content;
+  min-height: 0;
 }
 
 main > div #content nav {
@@ -235,6 +243,13 @@ main > div #content nav > span > span img {
   height: 1rem;
 }
 
+main #bands-nav button {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: transparent;
+}
+
 main.inverted #bands-nav img {
   filter: invert(100%);
 }
@@ -258,12 +273,12 @@ main > div #content #pollish-link {
   letter-spacing: 0.015rem;
 }
 
-main button span, main button span::before, main #bands-nav span   {
+main button span, main button span::before, main #bands-nav button   {
   transition: color 250ms ease; 
   position: relative;
 }
 
-main button span::before, main #bands-nav span::before {
+main button span::before, main #bands-nav button::before {
   box-sizing: border-box;
   content: "";
   height: 0.5px;
@@ -274,18 +289,18 @@ main button span::before, main #bands-nav span::before {
   background-color: var(--secondary);
 }
 
-main #bands-nav span::before {
+main #bands-nav button::before {
   bottom: 20%;
 }
 
-main button:not(.active) span:hover::before, main #bands-nav span:hover::before {
+main button:not(.active) span:hover::before, main #bands-nav button:hover::before {
   width: 100%;
 }
 main button.nav-button span:hover::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
-main #bands-nav span:hover::before {
+main #bands-nav button:hover::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
@@ -338,11 +353,26 @@ main > div #content img.contact {
 }
 
 main > div #content a.contact {
+  opacity: 0;
   bottom: 27%;
   font-size: 55%;
-  letter-spacing: 0.09rem;
+  letter-spacing: 0.145rem;
   position: absolute;
-  right: 27%;
+  right: 24%;
+
+  transition: opacity 300ms;
+}
+main > div #content a.contact:hover {
+  opacity: 1;
+}
+
+#artist-div {
+  height: 100%;
+}
+
+#artist-image {
+  height: 100%;
+  object-fit: contain;
 }
 
 #home-logo-morse-container span.morse {
