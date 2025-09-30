@@ -423,7 +423,7 @@ function stateChanged(withMorse) {
     } else {
       let artistName = path.slice('/artists/'.length);
       if (artistName.slice(-1) === '/') {
-        artistName = artistName.slice(artistName.length - 1);
+        artistName = artistName.slice(0, artistName.length - 1);
       }
       switchPage(
         null,
