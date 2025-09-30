@@ -443,6 +443,9 @@ function stateChanged(withMorse) {
           },
         ]
       );
+      console.log(artistName);
+      $artistImage.src = `${artistName}_artist.jpg`;
+      $artistName.src = `${artistName}.png`;
     }
   } else {
     switchPage(
