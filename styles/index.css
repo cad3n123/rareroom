@@ -544,7 +544,7 @@ main > div #content a.contact:hover {
   object-fit: cover;
 }
 
-#settings .content > div span button.active img, #settings .content > div span button:hover img {
+#settings .content > div span button.active img, #settings .content > div button:hover img {
   filter: brightness(2) sepia(1) hue-rotate(270deg) saturate(3) brightness(0.45) blur(0.2px);
   transition: filter 300ms ease;
 }
