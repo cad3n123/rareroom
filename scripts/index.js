@@ -421,7 +421,10 @@ function stateChanged(withMorse) {
         playMorse(artistsAudio, '.- .-. - .. ... - ...');
       }
     } else {
-      const artistName = path.slice('/artists/'.length);
+      let artistName = path.slice('/artists/'.length);
+      if (artistName.slice(-1) === '/') {
+        artistName = artistName.slice(artistName.length - 1);
+      }
       switchPage(
         null,
         [
