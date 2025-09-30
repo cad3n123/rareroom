@@ -604,7 +604,7 @@ function wordsToFilename(words) {
 }
 // Classes
 class Settings {
-  constructor({ light = false, sound = true, previouslyVisited = false } = {}) {
+  constructor({ light = false, sound = false, previouslyVisited = false } = {}) {
     this.light = light;
     this.sound = sound;
     this.previouslyVisited = previouslyVisited;
