@@ -55,6 +55,7 @@ const [
   $artistDiv,
   $rareroomTitle,
   $artistImage,
+  $artistName,
 ] = [
   'background-content',
   'background-picture',
@@ -76,6 +77,7 @@ const [
   'artist-div',
   'rareroom-title',
   'artist-image',
+  'artist-name',
 ].map((id) => document.getElementById(id));
 const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
   'nav',
@@ -425,7 +427,7 @@ function stateChanged(withMorse) {
         [
           {
             element: $artistDiv,
-            displayMode: 'block',
+            displayMode: 'flex',
           },
           ...[$rareroomTitle, $nav, $homeBackground].map(($) => {
             return { element: $, displayMode: 'none' };
@@ -552,18 +554,19 @@ function addBandButtons() {
     $bandsNav.appendChild(
       (() => {
         const bandFileName = wordsToFilename(band);
-        const imageLocation = `/images/${bandFileName}_artist.jpg`;
+        const artistImageLocation = `/images/${bandFileName}_artist.jpg`;
+        const artistNameLocation = `/images/${bandFileName}.png`;
 
         const $band = document.createElement('button'); // document.createElement('button');
 
         const $img = document.createElement('img');
-        $img.src = `/images/${bandFileName}.png`;
+        $img.src = artistNameLocation;
         // $span.innerHTML = band + (i == lastIndex ? '' : ',');
 
         $band.onmouseover = (e) => {
           $backgroundPicture.classList.add('active');
 
-          $backgroundPictureImg.src = imageLocation;
+          $backgroundPictureImg.src = artistImageLocation;
           $main.classList.add('inverted');
         };
         $band.onmouseleave = (e) => {
@@ -572,7 +575,8 @@ function addBandButtons() {
         };
         $band.onclick = (e) => {
           changeState(`artists/${bandFileName}`);
-          $artistImage.src = imageLocation;
+          $artistImage.src = artistImageLocation;
+          $artistName.src = artistNameLocation;
         };
 
         [$img].forEach(($child) => $band.appendChild($child));
