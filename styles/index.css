@@ -139,9 +139,9 @@ main > div:has(#home-logo-morse-container.top) {
   justify-content: start;
 }
 
-#home-logo-morse-container.top {
+/* #home-logo-morse-container.top {
   scale: 0.7;
-}
+} */
 
 #home-logo-morse-container {
   width: min-content;
