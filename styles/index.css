@@ -388,6 +388,8 @@ main > div #content #social-media-icons {
   padding: 0;
   margin: auto;
   height: 1rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 main > div #content #social-media-icons a {
