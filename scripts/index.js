@@ -478,6 +478,29 @@ function changeState(stateName) {
   window.history.pushState({}, '', `/${stateName}`);
   stateChanged(true);
 }
+/**
+ * @typedef {Object} SocialMediaLinks
+ * @property {String} [youtube]
+ * @property {String} [instagram]
+ * @property {String} [facebook]
+ * @property {String} [twitter]
+ * @property {String} [tiktok]
+ */
+/**
+ *
+ * @param {SocialMediaLinks} links
+ * @returns {HTMLUListElement}
+ */
+function $socialMediaIconsFactory(links) {
+  const $result = document.createElement('ul');
+  $result.class = 'social-media-icons';
+
+  const $$links = [{ url: links.youtube, img: '/images/youtube.png' }].map(
+    (info) => {}
+  );
+
+  return $result;
+}
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);

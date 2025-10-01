@@ -161,7 +161,7 @@ main > div:has(#home-logo-morse-container.top) {
 }
 
 #home-logo-morse-container .background {
-  background: black url(/images/black_sand.jpg) bottom center;
+  background: black url(/images/black_scratches.jpeg) top center;
   background-size: cover;
   opacity: 0;
   top: 0;
@@ -173,7 +173,7 @@ main > div:has(#home-logo-morse-container.top) {
   border-bottom-right-radius: 1rem;
 
   transition: opacity 300ms;
-  filter: blur(1px);
+  /* filter: blur(1px); */
 }
 
 #home-logo-morse-container.scrolled.top {
