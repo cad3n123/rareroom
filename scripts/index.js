@@ -178,6 +178,7 @@ function main() {
 
   addBandButtons();
   preloadArtistImages(bands);
+  addContactLinks();
 
   removeCurtainAfterImagesLoad();
 }
@@ -495,11 +496,42 @@ function $socialMediaIconsFactory(links) {
   const $result = document.createElement('ul');
   $result.class = 'social-media-icons';
 
-  const $$links = [{ url: links.youtube, img: '/images/youtube.png' }].map(
-    (info) => {}
-  );
+  const $$links = [{ url: links.youtube, img: '/images/youtube.png' }]
+    .map(
+      /**
+       * @typedef {Object} Info
+       * @property {String} [url]
+       * @property {String} img
+       */
+      /**
+       *
+       * @param {Info} info
+       */
+      (info) => {
+        if (info.url !== undefined) {
+          const $a = document.createElement('a');
+          const $img = document.createElement('img');
+
+          $a.href = info.url;
+          $img.src = info.img;
+          $a.appendChild($img);
+
+          return $a;
+        } else {
+          return null;
+        }
+      }
+    )
+    .filter(($link) => $link != null);
+  $result.appendChild($$links);
 
   return $result;
+}
+function addContactLinks() {
+  // const $links = $socialMediaIconsFactory();
+  // $links.style.setProperty('display', 'none');
+  // $links.id = 'social-media-icons';
+  // $links.classList.add('contact');
 }
 
 // Event Listeners

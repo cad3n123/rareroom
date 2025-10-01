@@ -156,8 +156,6 @@ main > div:has(#home-logo-morse-container.top) {
   align-items: center;
   width: 170vh;
   border-bottom: 1px solid black;
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
 }
 
 #home-logo-morse-container .background {
@@ -171,14 +169,14 @@ main > div:has(#home-logo-morse-container.top) {
   position: absolute;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
+  border-bottom: 1px solid black;
 
-  transition: opacity 300ms;
+  transition: opacity 300ms, border-bottom 300ms;
   /* filter: blur(1px); */
 }
 
 #home-logo-morse-container.scrolled.top {
   border-color: transparent;
-  background-color: black;
 
   transition: border-color 300ms, background-color 300ms;
 }
