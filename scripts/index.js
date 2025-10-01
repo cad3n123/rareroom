@@ -30,6 +30,7 @@ let settings;
 let flashingInterval = null;
 /** @type {AudioBufferSourceNode} */
 let currentAudioBufferSource = null;
+let $socialMediaIcons = document.createElement('ul');
 
 // Elements
 const [
@@ -48,9 +49,9 @@ const [
   $settings,
   $settingsArrowDown,
   $settingsX,
-  $socialMediaIcons,
   $settingsBorder,
   $pollishLink,
+  $contactEmail,
   $artistsDiv,
   $artistDiv,
   $rareroomTitle,
@@ -70,9 +71,9 @@ const [
   'settings',
   'settings-arrow-down',
   'settings-x',
-  'social-media-icons',
   'settings-border',
   'pollish-link',
+  'contact-email',
   'artists-div',
   'artist-div',
   'rareroom-title',
@@ -496,7 +497,13 @@ function $socialMediaIconsFactory(links) {
   const $result = document.createElement('ul');
   $result.class = 'social-media-icons';
 
-  const $$links = [{ url: links.youtube, img: '/images/youtube.png' }]
+  const $$links = [
+    { url: links['youtube'], img: '/images/youtube.png' },
+    { url: links['instagram'], img: '/images/instagram.png' },
+    { url: links['facebook'], img: '/images/facebook.png' },
+    { url: links['twitter'], img: '/images/x_twitter.png' },
+    { url: links['tiktok'], img: '/images/tiktok.png' },
+  ]
     .map(
       /**
        * @typedef {Object} Info
@@ -523,15 +530,27 @@ function $socialMediaIconsFactory(links) {
       }
     )
     .filter(($link) => $link != null);
-  $result.appendChild($$links);
+
+  $$links.forEach(($link) => $result.appendChild($link));
 
   return $result;
 }
 function addContactLinks() {
-  // const $links = $socialMediaIconsFactory();
-  // $links.style.setProperty('display', 'none');
-  // $links.id = 'social-media-icons';
-  // $links.classList.add('contact');
+  $socialMediaIcons = $socialMediaIconsFactory({
+    youtube: 'https://youtube.com',
+    instagram:
+      'https://www.instagram.com/rareroomeast/?utm_source=ig_web_button_share_sheet',
+    facebook: 'https://facebook.com',
+    twitter: 'https://x.com/rareroomeast',
+    tiktok: 'https://tiktok.com',
+  });
+  $socialMediaIcons.style.setProperty('display', 'none');
+  $socialMediaIcons.id = 'social-media-icons';
+  $socialMediaIcons.classList.add('contact');
+
+  $$contacts.push($socialMediaIcons);
+
+  $content.insertBefore($socialMediaIcons, $contactEmail);
 }
 
 // Event Listeners

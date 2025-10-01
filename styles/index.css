@@ -159,7 +159,7 @@ main > div:has(#home-logo-morse-container.top) {
 }
 
 #home-logo-morse-container .background {
-  background: black url(/images/black_scratches.jpeg) top center;
+  background: black url(/images/black_sand.jpg) top center;
   background-size: cover;
   opacity: 0;
   top: 0;
@@ -172,7 +172,7 @@ main > div:has(#home-logo-morse-container.top) {
   border-bottom: 1px solid black;
 
   transition: opacity 300ms, border-bottom 300ms;
-  /* filter: blur(1px); */
+  filter: blur(1px);
 }
 
 #home-logo-morse-container.scrolled.top {
@@ -383,10 +383,20 @@ main .nav-button:hover {
   mix-blend-mode: screen;
 }
 
-main > div #content ul {
+main > div #content #social-media-icons {
   width: max-content;
   padding: 0;
   margin: auto;
+  height: 1rem;
+}
+
+main > div #content #social-media-icons a {
+  height: 100%;
+}
+
+main > div #content #social-media-icons a img {
+  height: 100%;
+  object-fit: cover;
 }
 
 main > div #content ul a {
