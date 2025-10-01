@@ -158,7 +158,8 @@ main > div:has(#home-logo-morse-container.top) {
 }
 
 #home-logo-morse-container.scrolled.top {
-  background-color: black;
+  background: black url(/images/black_sand.jpg) bottom center;
+  background-size: cover;
 }
 
 #home-logo-morse-container.top #home-logo-container {
