@@ -783,6 +783,25 @@ img.comma {
     font-size: 4vw;
   }
 
+  .img-hover-purple:hover {
+    filter: unset;
+  }
+  .img-hover-purpler:hover {
+    filter: unset;
+  }
+  .img-hover-3-purple:hover {
+    filter: unset;
+  }
+  .img-hover-purple:active {
+    filter: brightness(1.1) sepia(1) hue-rotate(270deg) saturate(2) brightness(0.5);
+  }
+  .img-hover-purpler:active {
+    filter: brightness(1.2) sepia(1) hue-rotate(270deg) saturate(4) brightness(0.6);
+  }
+  .img-hover-3-purple:active {
+    filter: brightness(1.5) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
+  }
+
   main > div {
     margin: 0;
   }
