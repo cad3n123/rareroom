@@ -499,6 +499,15 @@ main > div #content a.contact:hover {
   height: 1.5rem;
 }
 
+#artist-socials {
+  width: max-content;
+  margin: auto;
+}
+
+#artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
+  height: 1rem;
+}
+
 img.comma {
   margin-left: 0.05rem;
   margin-right: 0.4rem;

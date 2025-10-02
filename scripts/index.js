@@ -57,6 +57,7 @@ const [
   $rareroomTitle,
   $artistImage,
   $artistName,
+  $artistSocials,
 ] = [
   'background-content',
   'background-picture',
@@ -79,6 +80,7 @@ const [
   'rareroom-title',
   'artist-image',
   'artist-name',
+  'artist-socials',
 ].map((id) => document.getElementById(id));
 const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
   'nav',
@@ -450,6 +452,18 @@ function stateChanged(withMorse) {
         ]
       );
       console.log(artistName);
+      while ($artistSocials.firstChild) {
+        $artistSocials.removeChild($artistSocials.firstChild);
+      }
+      fetch('/data/artist-socials.json')
+        .then((res) => res.json())
+        .then((data) => {
+          if (data[artistName]) {
+            $artistSocials.appendChild(
+              $socialMediaIconsFactory(data[artistName])
+            );
+          }
+        });
       $artistImage.src = `/images/${artistName}_artist.jpg`;
       $artistName.src = `/images/${artistName}.png`;
     }
