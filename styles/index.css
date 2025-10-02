@@ -31,6 +31,14 @@ button {
   cursor: pointer;
 }
 
+.img-hover-purple {
+  transition: filter 250ms;
+}
+
+.img-hover-purple:hover {
+  filter: brightness(1.1) sepia(1) hue-rotate(270deg) saturate(2) brightness(0.5);
+}
+
 html,
 body {
   overflow: hidden;
@@ -459,21 +467,15 @@ main > div #content ul a svg {
   line-height: 1;
 }
 
-main > div #content img.contact {
+#contact-email {
+  width: max-content;
+}
+
+#contact-email img {
   width: 12rem;
   object-fit: contain;
 }
 
-main > div #content a.contact {
-  opacity: 0;
-  bottom: 27%;
-  font-size: 55%;
-  letter-spacing: 0.145rem;
-  position: absolute;
-  right: 45.28%;
-
-  transition: opacity 300ms;
-}
 main > div #content a.contact:hover {
   opacity: 1;
 }
@@ -669,7 +671,7 @@ img.comma {
   object-fit: cover;
 }
 
-#settings .content > div span button.active img, #settings .content > div button:hover img, #home-logo:hover {
+#settings .content > div span button.active img {
   filter: brightness(2) sepia(1) hue-rotate(270deg) saturate(3) brightness(0.45);
 }
 

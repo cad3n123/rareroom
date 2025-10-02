@@ -536,6 +536,9 @@ function $socialMediaIconsFactory(links) {
 
           $a.href = info.url;
           $img.src = info.img;
+
+          $a.classList.add('img-hover-purple');
+
           $a.appendChild($img);
 
           return $a;
