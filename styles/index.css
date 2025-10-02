@@ -155,6 +155,8 @@ main > div:has(#home-logo-morse-container.top) {
   flex-direction: column;
   align-items: center;
   width: 170vh;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
   border-bottom: 1px solid black;
 }
 
