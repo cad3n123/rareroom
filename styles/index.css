@@ -568,6 +568,10 @@ main > div #content a.contact:hover {
   margin: auto;
 }
 
+#artist-name-link {
+  width: min-content;
+}
+
 #artist-name {
   height: 1.5rem;
   width: max-content;
