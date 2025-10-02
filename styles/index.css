@@ -271,10 +271,6 @@ main.inverted #home-logo, main > div:has(#home-logo-morse-container.scrolled.top
   filter: invert(100%) brightness(calc(0.85 + var(--image-brightness)));
 }
 
-main.inverted #content nav button, main.inverted > div #content nav span {
-  color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
-}
-
 main > div #content {
   position: relative;
   width: max-content;
@@ -297,12 +293,6 @@ main > div #content nav > span > span {
   gap: 0.1rem;
 }
 
-main > div #content nav span button {
-  border: none;
-  background-color: transparent;
-  font-size: 1.15rem;
-}
-
 main > div #content nav > span > span img {
   height: 0.4rem;
   object-fit: contain;
@@ -322,11 +312,15 @@ main > div #content nav > span > span button img, main > div #content nav > span
   height: 1rem;
 }
 
-main #bands-nav button {
+main nav button {
   padding: 0;
   margin: 0;
   border: none;
   background-color: transparent;
+}
+
+main.inverted nav img, main nav:not(#bands-nav) button img:hover {
+  filter: invert(92%);
 }
 
 main.inverted #bands-nav img {
@@ -358,12 +352,12 @@ main > div #content .contact {
   margin-bottom: 0.5rem;
 }
 
-main button span, main button span::before, main #bands-nav button   {
+main button span, main button span::before, main nav button   {
   transition: color 250ms ease; 
   position: relative;
 }
 
-main button span::before, main #bands-nav button::before {
+main button span::before, main nav button::before {
   box-sizing: border-box;
   content: "";
   height: 0.5px;
@@ -374,18 +368,22 @@ main button span::before, main #bands-nav button::before {
   background-color: var(--secondary);
 }
 
+main nav button::before {
+  bottom: 10%;
+}
+
 main #bands-nav button::before {
   bottom: 20%;
 }
 
-main button:not(.active) span:hover::before, main #bands-nav button:hover::before {
+main button:not(.active) span:hover::before, main nav button:hover::before {
   width: 100%;
 }
 main button.nav-button span:hover::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
-main #bands-nav button:hover::before {
+main nav button:hover::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
