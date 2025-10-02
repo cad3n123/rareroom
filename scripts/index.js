@@ -469,6 +469,11 @@ function stateChanged(withMorse) {
             class: 'active',
             isAdding: false,
           },
+          {
+            element: $main,
+            class: 'inverted',
+            isAdding: false,
+          },
         ]
       );
       console.log(artistName);
