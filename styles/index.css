@@ -20,6 +20,11 @@
   font-size: min(max(calc(0.5vw + 8px), 10px), 18px);
 }
 
+* {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 button {
   font-family: Alike;
   color: var(--secondary);
