@@ -437,7 +437,7 @@ main button span, main button span::before, main nav button   {
 main button span::before, main nav button::before {
   box-sizing: border-box;
   content: "";
-  height: 0.5px;
+  height: 1px;
   width: 0%;
   position: absolute;
   bottom: 0%;
