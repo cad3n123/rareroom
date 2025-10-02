@@ -497,6 +497,7 @@ function changeState(stateName) {
 }
 /**
  * @typedef {Object} SocialMediaLinks
+ * @property {String} [site]
  * @property {String} [youtube]
  * @property {String} [instagram]
  * @property {String} [facebook]
@@ -513,6 +514,7 @@ function $socialMediaIconsFactory(links) {
   $result.classList.add('social-media-icons');
 
   const $$links = [
+    { url: links['site'], img: '/images/site.png' },
     { url: links['youtube'], img: '/images/youtube.png' },
     { url: links['instagram'], img: '/images/instagram.png' },
     { url: links['facebook'], img: '/images/facebook.png' },
