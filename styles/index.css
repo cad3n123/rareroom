@@ -480,8 +480,13 @@ main .nav-button:hover {
 }
 
 .social-media-icons a, .social-media-icons > img {
+  visibility: hidden;
   height: 0.75rem;
   display: flex;
+}
+
+.social-media-icons a.seen, .social-media-icons > img.seen {
+  visibility: visible;
 }
 
 .social-media-icons a img {

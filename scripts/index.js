@@ -153,23 +153,6 @@ function main() {
         });
 
         localStorage.setItem('settings', JSON.stringify(settings));
-
-        (async () => {
-          if (settings.sound) {
-            // Fetch and decode the audio file
-            const response = await fetch('/audios/switch.wav');
-            const arrayBuffer = await response.arrayBuffer();
-            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-
-            // Create audio source and connect to destination
-            const source = audioCtx.createBufferSource();
-            source.buffer = audioBuffer;
-            source.connect(gainNode);
-
-            // Schedule playback a short moment into the future
-            source.start(audioCtx.currentTime);
-          }
-        })();
       };
     }
     addButtonClickedEventListener($on, $off);
@@ -189,7 +172,34 @@ function main() {
   addBandButtons();
   preloadArtistImages(bands);
 
+  addButtonClickedSound();
+
   removeCurtainAfterImagesLoad();
+}
+
+async function addButtonClickedSound() {
+  [
+    $homeLogo,
+    ...document.querySelectorAll('a'),
+    ...document.querySelectorAll('button'),
+  ].forEach(($) => {
+    $.addEventListener('click', async (e) => {
+      if (settings.sound) {
+        // Fetch and decode the audio file
+        const response = await fetch('/audios/switch.wav');
+        const arrayBuffer = await response.arrayBuffer();
+        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+        // Create audio source and connect to destination
+        const source = audioCtx.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(gainNode);
+
+        // Schedule playback a short moment into the future
+        source.start(audioCtx.currentTime);
+      }
+    });
+  });
 }
 
 /**
@@ -481,9 +491,11 @@ function stateChanged(withMorse) {
         $artistSocials.removeChild($artistSocials.firstChild);
       }
       if (artistData[artistName]) {
-        $artistSocials.appendChild(
-          $socialMediaIconsFactory(artistData[artistName])
-        );
+        setTimeout(() => {
+          $artistSocials.appendChild(
+            $socialMediaIconsFactory(artistData[artistName])
+          );
+        }, 50);
       }
       $artistImage.src = `/images/${artistName}_artist.jpg`;
       $artistName.src = `/images/${artistName}.png`;
@@ -581,13 +593,38 @@ function $socialMediaIconsFactory(links) {
     )
     .filter(($link) => $link != null);
 
+  const startingDelta = 50;
+  const delayDelta = 75;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const $a = entry.target;
+          const index = $$links.indexOf($a);
+
+          const delay =
+            startingDelta +
+            (index === -1 ? $$links.length : index) * delayDelta;
+
+          setTimeout(() => {
+            $a.classList.add('seen');
+          }, delay);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  ); // threshold = 10% visible
+
   const lastIndex = $$links.length - 1;
   $$links.forEach(($link, i) => {
+    observer.observe($link);
     $result.appendChild($link);
     if (i < lastIndex) {
       const $doubleSlash = document.createElement('img');
       $doubleSlash.src = '/images/double_slash.png';
       $doubleSlash.alt = '//';
+      observer.observe($doubleSlash);
       $result.appendChild($doubleSlash);
     }
   });
