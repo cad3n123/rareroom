@@ -174,8 +174,11 @@ main > div:has(#home-logo-morse-container.top) {
   height: 100%;
 }
 
-#home-logo-morse-container .background {
+#home-logo-morse-container.top .background {
   background: black url(/images/black_sand.jpg) top center;
+}
+
+#home-logo-morse-container .background {
   background-size: cover;
   opacity: 0;
   top: 0;
