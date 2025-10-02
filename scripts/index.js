@@ -106,6 +106,8 @@ function main() {
   settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
   setAudioStatus(settings.sound);
 
+  addContactLinks();
+
   $$settingsSections.forEach(($settingsSection) => {
     const [$$buttons] = ['button'].map((descriptor) =>
       $settingsSection.querySelectorAll(descriptor)
@@ -179,7 +181,6 @@ function main() {
 
   addBandButtons();
   preloadArtistImages(bands);
-  addContactLinks();
 
   removeCurtainAfterImagesLoad();
 }
@@ -495,7 +496,7 @@ function changeState(stateName) {
  */
 function $socialMediaIconsFactory(links) {
   const $result = document.createElement('ul');
-  $result.class = 'social-media-icons';
+  $result.classList.add('social-media-icons');
 
   const $$links = [
     { url: links['youtube'], img: '/images/youtube.png' },

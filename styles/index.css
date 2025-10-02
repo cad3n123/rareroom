@@ -160,6 +160,15 @@ main > div:has(#home-logo-morse-container.top) {
   border-bottom: 1px solid black;
 }
 
+#home-logo-morse-container .fuzz-background {
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 #home-logo-morse-container .background {
   background: black url(/images/black_sand.jpg) top center;
   background-size: cover;
@@ -390,23 +399,26 @@ main .nav-button:hover {
   mix-blend-mode: screen;
 }
 
-main > div #content #social-media-icons {
-  width: max-content;
-  height: max-content;
+.social-media-icons {
   padding: 0;
-  margin: auto;
   display: flex;
   align-items: center;
 }
 
-#social-media-icons a, #social-media-icons > img {
+.social-media-icons a, .social-media-icons > img {
   height: 0.75rem;
   display: flex;
 }
 
-main > div #content #social-media-icons a img {
+.social-media-icons a img {
   height: 100%;
   object-fit: cover;
+}
+
+main > div #content #social-media-icons {
+  width: max-content;
+  height: max-content;
+  margin: auto;
 }
 
 main > div #content ul a {
