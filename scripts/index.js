@@ -484,18 +484,11 @@ function stateChanged(withMorse) {
             class: 'inverted',
             isAdding: false,
           },
-        ]
+        ],
+        artistName
       );
-      console.log(artistName);
       while ($artistSocials.firstChild) {
         $artistSocials.removeChild($artistSocials.firstChild);
-      }
-      if (artistData[artistName]) {
-        setTimeout(() => {
-          $artistSocials.appendChild(
-            $socialMediaIconsFactory(artistData[artistName])
-          );
-        }, 50);
       }
       $artistImage.src = `/images/${artistName}_artist.jpg`;
       $artistName.src = `/images/${artistName}.png`;
@@ -697,9 +690,16 @@ $content.addEventListener('scroll', () => {
 /**
  *
  * @param {HTMLButtonElement} selectedNavButton
+ * @param {ElementSettings} elementSettings
  * @param {ClassSettings[]} classSettings
+ * @param {string} [artistName]
  */
-function switchPage(selectedNavButton, elementSettings, classSettings) {
+function switchPage(
+  selectedNavButton,
+  elementSettings,
+  classSettings,
+  artistName
+) {
   [
     ...$$aboutParagraphImgs,
     $aboutContainer,
@@ -734,6 +734,14 @@ function switchPage(selectedNavButton, elementSettings, classSettings) {
   });
   if (selectedNavButton != null) {
     selectedNavButton.classList.add('active');
+  }
+
+  if (artistData !== undefined && artistData[artistName]) {
+    setTimeout(() => {
+      $artistSocials.appendChild(
+        $socialMediaIconsFactory(artistData[artistName])
+      );
+    }, 50);
   }
 }
 function addBandButtons() {
