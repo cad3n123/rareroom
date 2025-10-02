@@ -772,6 +772,9 @@ img.comma {
   main > div {
     justify-content: start;
   }
+  main > div #content #pollish-link {
+    right: 7.5%;
+  }
   #artist-image {
     height: 50vh;
   }
