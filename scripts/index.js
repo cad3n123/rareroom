@@ -31,6 +31,7 @@ let flashingInterval = null;
 /** @type {AudioBufferSourceNode} */
 let currentAudioBufferSource = null;
 let $socialMediaIcons = document.createElement('ul');
+let artistData = {};
 
 // Elements
 const [
@@ -172,7 +173,7 @@ function main() {
     addButtonClickedEventListener($off, $on);
   });
 
-  updataContentPosition();
+  updateContentPosition();
   stateChanged(false);
 
   if (!settings.previouslyVisited) {
@@ -181,6 +182,7 @@ function main() {
     localStorage.setItem('settings', JSON.stringify(settings));
   }
 
+  updateArtistData();
   addBandButtons();
   preloadArtistImages(bands);
 
@@ -208,7 +210,7 @@ function setAudioStatus(isOn) {
 }
 
 // Functions
-function updataContentPosition() {
+function updateContentPosition() {
   // Settings
   $settings.style.setProperty('--closed-top', `-${$settings.offsetHeight}px`);
   $settings.style.setProperty('--closed-left', `-${$settings.offsetWidth}px`);
@@ -238,6 +240,13 @@ function updataContentPosition() {
     '--margin-left',
     `${$settings.offsetWidth}px`
   );
+}
+function updateArtistData() {
+  fetch('/data/artist-socials.json')
+    .then((res) => res.json())
+    .then((data) => {
+      artistData = data;
+    });
 }
 /**
  *
@@ -455,15 +464,11 @@ function stateChanged(withMorse) {
       while ($artistSocials.firstChild) {
         $artistSocials.removeChild($artistSocials.firstChild);
       }
-      fetch('/data/artist-socials.json')
-        .then((res) => res.json())
-        .then((data) => {
-          if (data[artistName]) {
-            $artistSocials.appendChild(
-              $socialMediaIconsFactory(data[artistName])
-            );
-          }
-        });
+      if (artistData[artistName]) {
+        $artistSocials.appendChild(
+          $socialMediaIconsFactory(artistData[artistName])
+        );
+      }
       $artistImage.src = `/images/${artistName}_artist.jpg`;
       $artistName.src = `/images/${artistName}.png`;
     }
@@ -537,6 +542,8 @@ function $socialMediaIconsFactory(links) {
           const $img = document.createElement('img');
 
           $a.href = info.url;
+          $a.target = '_blank';
+          $a.rel = 'noopener noreferrer';
           $img.src = info.img;
 
           $a.classList.add('img-hover-purple');
@@ -584,8 +591,8 @@ function addContactLinks() {
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
-window.addEventListener('load', updataContentPosition);
-window.addEventListener('resize', updataContentPosition);
+window.addEventListener('load', updateContentPosition);
+window.addEventListener('resize', updateContentPosition);
 window.addEventListener('popstate', () => {
   stateChanged(true);
 });
