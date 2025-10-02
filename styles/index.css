@@ -23,6 +23,7 @@
 * {
   user-select: none;
   -webkit-user-drag: none;
+  touch-action: manipulation;
 }
 
 button {
