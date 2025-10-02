@@ -36,7 +36,7 @@ button {
 }
 
 .img-hover-purple:hover {
-  filter: brightness(1.1) sepia(1) hue-rotate(270deg) saturate(2) brightness(0.5);
+  filter: brightness(1.1) sepia(1) hue-rotate(270deg) saturate(1.5) brightness(0.5);
 }
 
 html,
