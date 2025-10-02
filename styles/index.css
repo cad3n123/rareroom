@@ -332,6 +332,11 @@ main > div #content #pollish-link {
   letter-spacing: 0.015rem;
 }
 
+main > div #content .contact {
+  margin: auto;
+  margin-bottom: 0.5rem;
+}
+
 main button span, main button span::before, main #bands-nav button   {
   transition: color 250ms ease; 
   position: relative;
@@ -385,15 +390,16 @@ main .nav-button:hover {
 
 main > div #content #social-media-icons {
   width: max-content;
+  height: max-content;
   padding: 0;
   margin: auto;
-  height: 1rem;
   display: flex;
   gap: 0.5rem;
 }
 
 main > div #content #social-media-icons a {
-  height: 100%;
+  height: 0.75rem;
+  display: flex;
 }
 
 main > div #content #social-media-icons a img {
@@ -417,10 +423,8 @@ main > div #content ul a svg {
 }
 
 main > div #content img.contact {
-  margin-top: 0.5rem;
   width: 12rem;
   object-fit: contain;
-  margin: auto;
 }
 
 main > div #content a.contact {
