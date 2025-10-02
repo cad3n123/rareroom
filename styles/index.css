@@ -172,17 +172,26 @@ main > div:has(#home-logo-morse-container.top) {
   padding: 0;
 }
 
+#home-logo-morse-container img.underline{
+  width: calc(100% - 1.1rem);
+  display: none;
+  position: absolute;
+  bottom: -0.28rem;
+}
+
 #home-logo-morse-container.top {
   position: relative;
   padding: 0.75rem 1.75rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-bottom-left-radius: 1rem;
+  /* border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid black; */
   position: absolute;
   z-index: 1;
+
+  transition: opacity 250ms;
 }
 
 #home-logo-morse-container .fuzz-background {
@@ -196,6 +205,15 @@ main > div:has(#home-logo-morse-container.top) {
 
 #home-logo-morse-container.top .background {
   background: black url(/images/black_sand.jpg) top center;
+}
+
+#home-logo-morse-container.top img.underline {
+  opacity: 1;
+  display: block;
+}
+
+#home-logo-morse-container.scrolled.top img.underline {
+  opacity: 0;
 }
 
 #home-logo-morse-container .background {
@@ -238,6 +256,7 @@ main > div:has(#home-logo-morse-container.top) {
   width: min-content;
   min-width: 0;
   transition: background-color 250ms;
+  position: relative;
 }
 
 #home-logo-morse-container img.morse {
