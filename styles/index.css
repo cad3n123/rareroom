@@ -40,7 +40,7 @@ button {
 }
 
 .img-hover-purpler:hover {
-  filter: brightness(1.2) sepia(1) hue-rotate(270deg) saturate(4) brightness(0.6)
+  filter: brightness(1.2) sepia(1) hue-rotate(270deg) saturate(4) brightness(0.6);
 }
 
 html,
@@ -677,7 +677,7 @@ img.comma {
 }
 
 #settings .content > div span button.active img {
-  filter: brightness(1.1) sepia(1) hue-rotate(270deg) saturate(2) brightness(0.5);
+  filter: brightness(1.2) sepia(1) hue-rotate(270deg) saturate(4) brightness(0.6);
 }
 
 #home-logo {
