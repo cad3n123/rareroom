@@ -491,6 +491,7 @@ main .nav-button:hover {
   display: flex;
   align-items: center;
   margin: 0;
+  justify-content: center;
 }
 
 .social-media-icons a, .social-media-icons > img {
@@ -580,8 +581,7 @@ main > div #content a.contact:hover {
 }
 
 #artist-socials {
-  width: max-content;
-  margin: auto;
+  width: 100%;
 }
 
 #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
