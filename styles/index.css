@@ -303,6 +303,11 @@ main > div #content nav > span > span img {
   object-fit: contain;
 }
 
+main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
+  height: 0.9rem;
+  object-fit: contain;
+}
+
 #bands-nav {
   position: relative;
   display: flex;
