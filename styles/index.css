@@ -396,7 +396,6 @@ main > div #content #social-media-icons {
   padding: 0;
   margin: auto;
   display: flex;
-  gap: 0.5rem;
   align-items: center;
 }
 
