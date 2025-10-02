@@ -471,9 +471,13 @@ main .nav-button:hover {
 }
 
 .image-a {
-  background-color: rgb(52, 14, 44);
+  background-color: rgb(71, 19, 60);
   color: transparent;
   mix-blend-mode: screen;
+}
+
+.image-a:hover {
+  background-color: rgb(104, 27, 87);
 }
 
 .social-media-icons {
