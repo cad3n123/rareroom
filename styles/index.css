@@ -286,6 +286,11 @@ main > div #content nav {
   padding-bottom: 1rem;
 }
 
+main > div #content nav > span {
+  display: flex;
+  gap: 0.4rem;
+}
+
 main > div #content nav > span > span {
   display: inline-flex;
   flex-direction: column;
