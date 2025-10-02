@@ -393,17 +393,23 @@ main > div #content #rareroom-title {
   margin-bottom: 0.5rem;
 }
 
-main > div #content img.about {
-  width: 20rem;
-  transform: translateX(5%);
+#about-container {
+  position: relative;
+  width: max-content;
+  height: max-content;
   margin: auto;
+  padding-left: 1.5%;
+}
+
+#about-container img {
+  width: 20rem;
 }
 
 main > div #content #pollish-link {
-  right: 36%;
   position: absolute;
   font-size: 85%;
-  top: 65%;
+  right: 1.5%;
+  top: 40%;
   letter-spacing: 0.015rem;
 }
 
@@ -773,7 +779,7 @@ img.comma {
     justify-content: start;
   }
   main > div #content #pollish-link {
-    right: 7.5%;
+    right: 1.5%;
   }
   #artist-image {
     height: 50vh;

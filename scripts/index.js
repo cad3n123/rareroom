@@ -51,6 +51,7 @@ const [
   $settingsArrowDown,
   $settingsX,
   $settingsBorder,
+  $aboutContainer,
   $pollishLink,
   $contactEmail,
   $artistsDiv,
@@ -75,6 +76,7 @@ const [
   'settings-arrow-down',
   'settings-x',
   'settings-border',
+  'about-container',
   'pollish-link',
   'contact-email',
   'artists-div',
@@ -85,11 +87,10 @@ const [
   'artist-name-link',
   'artist-socials',
 ].map((id) => document.getElementById(id));
-const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
+const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts] = [
   'nav',
   ':scope > img.about',
   ':scope > .contact',
-  ':scope > a',
 ].map((descriptor) => Array.from($content.querySelectorAll(descriptor)));
 const [[$main]] = ['main'].map((descriptor) =>
   document.querySelectorAll(descriptor)
@@ -386,7 +387,7 @@ function stateChanged(withMorse) {
   if (path === '/about' || path == '/about/') {
     switchPage(
       $aboutButton,
-      [...$$aboutParagraphImgs, $aboutLink].map(($element) => {
+      [...$$aboutParagraphImgs, $aboutContainer].map(($element) => {
         return {
           element: $element,
           displayMode: 'block',
@@ -462,6 +463,11 @@ function stateChanged(withMorse) {
             element: $settingsArrowDown,
             class: 'up-away',
             isAdding: true,
+          },
+          {
+            element: $backgroundPicture,
+            class: 'active',
+            isAdding: false,
           },
         ]
       );
@@ -654,7 +660,7 @@ $content.addEventListener('scroll', () => {
 function switchPage(selectedNavButton, elementSettings, classSettings) {
   [
     ...$$aboutParagraphImgs,
-    $aboutLink,
+    $aboutContainer,
     ...$$contacts,
     $artistsDiv,
     $artistDiv,
