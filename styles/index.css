@@ -395,9 +395,10 @@ main > div #content #social-media-icons {
   margin: auto;
   display: flex;
   gap: 0.5rem;
+  align-items: center;
 }
 
-main > div #content #social-media-icons a {
+#social-media-icons a, #social-media-icons > img {
   height: 0.75rem;
   display: flex;
 }

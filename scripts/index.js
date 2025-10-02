@@ -531,7 +531,16 @@ function $socialMediaIconsFactory(links) {
     )
     .filter(($link) => $link != null);
 
-  $$links.forEach(($link) => $result.appendChild($link));
+  const lastIndex = $$links.length - 1;
+  $$links.forEach(($link, i) => {
+    $result.appendChild($link);
+    if (i < lastIndex) {
+      const $doubleSlash = document.createElement('img');
+      $doubleSlash.src = '/images/double_slash.png';
+      $doubleSlash.alt = '//';
+      $result.appendChild($doubleSlash);
+    }
+  });
 
   return $result;
 }
