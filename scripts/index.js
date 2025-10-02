@@ -577,7 +577,7 @@ function addContactLinks() {
 
   $$contacts.push($socialMediaIcons);
 
-  $content.insertBefore($socialMediaIcons, $contactEmail);
+  $content.insertBefore($socialMediaIcons, $artistDiv);
 }
 
 // Event Listeners

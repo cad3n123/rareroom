@@ -477,7 +477,7 @@ main > div #content ul a svg {
 }
 
 #contact-email img {
-  width: 12rem;
+  height: 0.7rem;
   object-fit: contain;
 }
 
