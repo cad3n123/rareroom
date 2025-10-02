@@ -58,6 +58,7 @@ const [
   $rareroomTitle,
   $artistImage,
   $artistName,
+  $artistNameLink,
   $artistSocials,
 ] = [
   'background-content',
@@ -81,6 +82,7 @@ const [
   'rareroom-title',
   'artist-image',
   'artist-name',
+  'artist-name-link',
   'artist-socials',
 ].map((id) => document.getElementById(id));
 const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = [
@@ -501,6 +503,14 @@ function changeState(stateName) {
   stateChanged(true);
 }
 /**
+ *
+ * @param {HTMLAnchorElement} $a
+ */
+function linkNewTab($a) {
+  $a.target = '_blank';
+  $a.rel = 'noopener noreferrer';
+}
+/**
  * @typedef {Object} SocialMediaLinks
  * @property {String} [site]
  * @property {String} [youtube]
@@ -542,8 +552,7 @@ function $socialMediaIconsFactory(links) {
           const $img = document.createElement('img');
 
           $a.href = info.url;
-          $a.target = '_blank';
-          $a.rel = 'noopener noreferrer';
+          linkNewTab($a);
           $img.src = info.img;
 
           $a.classList.add('img-hover-purple');
@@ -676,6 +685,8 @@ function switchPage(selectedNavButton, elementSettings, classSettings) {
   }
 }
 function addBandButtons() {
+  linkNewTab($artistNameLink);
+
   const lastIndex = bands.length - 1;
   bands.forEach((band, i) => {
     const $band = (() => {
@@ -703,6 +714,18 @@ function addBandButtons() {
         changeState(`artists/${bandFileName}`);
         $artistImage.src = artistImageLocation;
         $artistName.src = artistNameLocation;
+
+        const purpleClass = 'img-hover-purpler';
+        const thisArtistData = artistData[bandFileName];
+        if (thisArtistData !== undefined) {
+          const artistSite = thisArtistData['site'];
+          if (artistSite !== undefined) {
+            $artistNameLink.href = artistSite;
+            $artistName.classList.add(purpleClass);
+          } else {
+            $artistName.classList.remove(purpleClass);
+          }
+        }
       };
 
       [$img].forEach(($child) => $band.appendChild($child));
