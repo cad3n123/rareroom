@@ -352,6 +352,11 @@ main > div #content nav > span > span img {
 main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
   height: 0.9rem;
   object-fit: contain;
+  align-self: center;
+}
+
+main > div #content nav > span > img.vertical-line {
+  height: 1.1rem;
 }
 
 #bands-nav {
@@ -646,6 +651,11 @@ img.comma {
   transform: translateY(-3rem);
 }
 
+#settings #settings-arrow-down.up-away {
+  pointer-events: none;
+  cursor: default;
+}
+
 #settings #settings-x {
   cursor: pointer;
   top: 1rem;
@@ -749,26 +759,44 @@ img.comma {
 }
 
 @media only screen and (max-width: 600px) {
+  :root {
+    font-size: 4vw;
+  }
+
   main > div {
     margin: 0;
   }
+  #home-background {
+    display: none !important;
+  }
+  main > div {
+    justify-content: start;
+  }
+  #artist-image {
+    height: 50vh;
+  }
+  #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
+    height: 0.7rem;
+  }
   #settings {
-    --closed-left: -20rem;
-    transform: translate(var(--closed-left), 14rem);
+    bottom: var(--closed-top);
+    top: unset;
+    left: 50%;
+
+    transform: translate(-50%, 0);
   }
   #settings img {
     --left: 0;
   }
   #settings #settings-arrow-down {
-    transform: rotate(-90deg);
-    animation: 1000ms infinite normal leftandright;
+    transform: rotate(-180deg);
+    animation: 1000ms infinite normal upanddown;
     animation-timing-function: linear;
     top: 0;
-    margin-left: calc(var(--margin-left) - 1rem);
-    margin-top: var(--top);
+    margin-top: calc(-1 * var(--top));
   }
   #settings.active {
-    transform: translate(0, 14rem);
+    transform: translate(-50%, -14rem);
   }
 }
 
@@ -785,15 +813,15 @@ img.comma {
   }
 }
 
-@keyframes leftandright {
+@keyframes upanddown {
   0%,
   100% {
-    transform: rotate(-90deg) translateY(0);
+    transform: rotate(-180deg) translateY(0);
   }
   25% {
-    transform: rotate(-90deg) translateY(0.25rem);
+    transform: rotate(-180deg) translateY(0.25rem);
   }
   75% {
-    transform: rotate(-90deg) translateY(-0.25rem);
+    transform: rotate(-180deg) translateY(-0.25rem);
   }
 }
