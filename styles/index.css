@@ -621,7 +621,7 @@ img.comma {
   width: 2rem;
   background-color: transparent;
   margin: 0;
-  transition: background-color 250ms;
+  transition: background-color 250ms, transform 500ms;
 }
 
 #settings #settings-arrow-down > .left {
@@ -639,6 +639,10 @@ img.comma {
 
 #settings #settings-arrow-down.active > * {
   background-color: black;
+}
+
+#settings #settings-arrow-down.up-away > * {
+  transform: translateY(-3rem);
 }
 
 #settings #settings-x {

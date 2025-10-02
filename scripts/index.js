@@ -448,16 +448,19 @@ function stateChanged(withMorse) {
             element: $artistDiv,
             displayMode: 'flex',
           },
-          ...[$rareroomTitle, $nav, $homeBackground, $settingsArrowDown].map(
-            ($) => {
-              return { element: $, displayMode: 'none' };
-            }
-          ),
+          ...[$rareroomTitle, $nav, $homeBackground].map(($) => {
+            return { element: $, displayMode: 'none' };
+          }),
         ],
         [
           {
             element: $homeLogoMorseContainer,
             class: 'top',
+            isAdding: true,
+          },
+          {
+            element: $settingsArrowDown,
+            class: 'up-away',
             isAdding: true,
           },
         ]
@@ -663,6 +666,7 @@ function switchPage(selectedNavButton, elementSettings, classSettings) {
     (element) => (element.style.display = 'block')
   );
   $main.classList.remove('inverted');
+  $settingsArrowDown.classList.remove('up-away');
 
   elementSettings.forEach((elementSetting) => {
     elementSetting.element.style.display = elementSetting.displayMode;
