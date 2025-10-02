@@ -319,6 +319,10 @@ main nav button {
   background-color: transparent;
 }
 
+main.inverted nav img {
+  transition: filter 250ms;
+}
+
 main.inverted nav img, main nav:not(#bands-nav) button img:hover {
   filter: invert(92%);
 }
@@ -353,7 +357,7 @@ main > div #content .contact {
 }
 
 main button span, main button span::before, main nav button   {
-  transition: color 250ms ease; 
+  transition: color 250ms; 
   position: relative;
 }
 
@@ -364,8 +368,9 @@ main button span::before, main nav button::before {
   width: 0%;
   position: absolute;
   bottom: 0%;
-  transition: width 0.25s ease;
   background-color: var(--secondary);
+
+  transition: background-color 250ms, width 0.25s ease;
 }
 
 main nav button::before {
@@ -376,14 +381,11 @@ main #bands-nav button::before {
   bottom: 20%;
 }
 
-main button:not(.active) span:hover::before, main nav button:hover::before {
+main nav button:not(.active):hover::before, main nav button.active::before {
   width: 100%;
 }
-main button.nav-button span:hover::before {
-  background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
-}
 
-main nav button:hover::before {
+main nav button:hover::before, main.inverted nav button::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
