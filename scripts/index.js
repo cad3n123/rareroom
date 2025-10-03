@@ -210,7 +210,7 @@ function preloadArtistImages(bands) {
   bands.forEach((band) => {
     const filename = wordsToFilename(band);
     const img = new Image();
-    img.src = `/images/${filename}_artist.jpg`; // This starts the download and caches the image.
+    img.src = `/images/${filename}_artist.png`; // This starts the download and caches the image.
   });
 }
 
@@ -751,7 +751,7 @@ function addBandButtons() {
   bands.forEach((band, i) => {
     const $band = (() => {
       const bandFileName = wordsToFilename(band);
-      const artistImageLocation = `/images/${bandFileName}_artist.jpg`;
+      const artistImageLocation = `/images/${bandFileName}_artist.png`;
       const artistNameLocation = `/images/${bandFileName}.png`;
 
       const $band = document.createElement('button'); // document.createElement('button');
