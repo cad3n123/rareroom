@@ -586,6 +586,13 @@ function $socialMediaIconsFactory(links) {
     )
     .filter(($link) => $link != null);
 
+  const $$doubleSlashes = Array.from({ length: $$links.length - 1 }, () => {
+    const $doubleSlash = document.createElement('img');
+    $doubleSlash.src = '/images/double_slash.png';
+    $doubleSlash.alt = '//';
+    return $doubleSlash;
+  });
+
   const startingDelta = 50;
   const delayDelta = 75;
 
@@ -593,15 +600,18 @@ function $socialMediaIconsFactory(links) {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const $a = entry.target;
-          const index = $$links.indexOf($a);
+          const $ = entry.target;
+          let index = $$links.indexOf($);
+          if (index === -1) {
+            index = $$doubleSlashes.indexOf($) + 0.5;
+          }
 
-          const delay =
-            startingDelta +
-            (index === -1 ? $$links.length : index) * delayDelta;
+          console.log('test');
+
+          const delay = startingDelta + index * 2 * delayDelta;
 
           setTimeout(() => {
-            $a.classList.add('seen');
+            $.classList.add('seen');
           }, delay);
         }
       });
@@ -614,9 +624,7 @@ function $socialMediaIconsFactory(links) {
     observer.observe($link);
     $result.appendChild($link);
     if (i < lastIndex) {
-      const $doubleSlash = document.createElement('img');
-      $doubleSlash.src = '/images/double_slash.png';
-      $doubleSlash.alt = '//';
+      const $doubleSlash = $$doubleSlashes[i];
       observer.observe($doubleSlash);
       $result.appendChild($doubleSlash);
     }
