@@ -50,8 +50,12 @@ button, a {
   filter: brightness(1.2) sepia(1) hue-rotate(270deg) saturate(4) brightness(0.6);
 }
 
-.img-hover-3-purple:hover, nav button.active {
+.img-hover-3-purple:hover {
   filter: brightness(1.5) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
+}
+
+nav button.active {
+  filter: brightness(1) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
 }
 
 html,
