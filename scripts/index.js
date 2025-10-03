@@ -649,6 +649,10 @@ function addContactLinks() {
 
   $content.insertBefore($socialMediaIcons, $artistDiv);
 }
+function closeSettings() {
+  $settings.classList.remove('active');
+  $settingsArrowDown.classList.add('active');
+}
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
@@ -673,10 +677,7 @@ $settingsArrowDown.addEventListener('click', () => {
   $settings.classList.add('active');
   $settingsArrowDown.classList.remove('active');
 });
-$settingsX.addEventListener('click', () => {
-  $settings.classList.remove('active');
-  $settingsArrowDown.classList.add('active');
-});
+$settingsX.addEventListener('click', closeSettings);
 $content.addEventListener('scroll', () => {
   if ($content.scrollTop > 5) {
     $homeLogoMorseContainer.classList.add('scrolled');
@@ -800,6 +801,7 @@ function addBandButtons() {
 
       return $band;
     })();
+    $band.onmouseenter = closeSettings;
     $bandsNav.appendChild($band);
     if (i != lastIndex) {
       const $comma = document.createElement('img');
