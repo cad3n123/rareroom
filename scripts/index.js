@@ -490,7 +490,7 @@ function stateChanged(withMorse) {
       while ($artistSocials.firstChild) {
         $artistSocials.removeChild($artistSocials.firstChild);
       }
-      $artistImage.src = `/images/${artistName}_artist.jpg`;
+      $artistImage.src = `/images/${artistName}_artist.png`;
       $artistName.src = `/images/${artistName}.png`;
     }
   } else {
