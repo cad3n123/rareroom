@@ -365,14 +365,17 @@ main > div #content nav > span > span img {
   object-fit: contain;
 }
 
-main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
-  height: 0.9rem;
-  object-fit: contain;
+main > div #content nav > span > span button img {
   align-self: center;
 }
 
+main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
+  height: 0.9rem;
+  object-fit: contain;
+}
+
 main > div #content nav > span > img.vertical-line {
-  height: 1.1rem;
+  height: 1rem;
 }
 
 #bands-nav {
