@@ -216,7 +216,11 @@ function setAudioStatus(isOn) {
 // Functions
 function updateContentPosition() {
   // Settings
-  $settings.style.setProperty('--closed-top', `-${$settings.offsetHeight}px`);
+  const closedTopOffset = 2;
+  $settings.style.setProperty(
+    '--closed-top',
+    `-${$settings.offsetHeight + closedTopOffset}px`
+  );
   $settings.style.setProperty('--closed-left', `-${$settings.offsetWidth}px`);
 
   $settingsBorder.style.setProperty(

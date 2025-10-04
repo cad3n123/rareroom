@@ -634,11 +634,11 @@ img.comma {
 }
 
 #settings {
-  --closed-top: -20rem;
+  --closed-top: -30rem;
   position: absolute;
   transition: transform 500ms;
   transform: translate(calc(32vw - 16rem), var(--closed-top));
-  top: 0;
+  top: 0.5rem;
   left: 0;
   display: flex;
 }
@@ -687,11 +687,13 @@ img.comma {
 }
 
 #settings #settings-x {
+  --size: 0.85rem;
+
   cursor: pointer;
   top: 2rem;
   right: 2rem;
-  width: 0.75rem;
-  height: 0.75rem;
+  width: var(--size);
+  height: var(--size);
   display: flex;
   justify-content: center;
   align-items: center;
