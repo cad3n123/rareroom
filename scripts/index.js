@@ -388,7 +388,7 @@ function stateChanged(withMorse) {
   if (path === '/about' || path == '/about/') {
     switchPage(
       $aboutButton,
-      [...$$aboutParagraphImgs, $aboutContainer].map(($element) => {
+      [...$$aboutParagraphImgs, $aboutContainer, $nav].map(($element) => {
         return {
           element: $element,
           displayMode: 'block',
@@ -403,7 +403,7 @@ function stateChanged(withMorse) {
     switchPage(
       $contactButton,
       [
-        ...Array.from($$contacts).map(($) => {
+        ...[...Array.from($$contacts), $nav].map(($) => {
           return {
             element: $,
             displayMode: 'block',
@@ -424,10 +424,12 @@ function stateChanged(withMorse) {
       switchPage(
         $artistsButton,
         [
-          {
-            element: $artistsDiv,
-            displayMode: 'block',
-          },
+          ...[$nav, $artistsDiv].map(($) => {
+            return {
+              element: $,
+              displayMode: 'block',
+            };
+          }),
           {
             element: $rareroomTitle,
             displayMode: 'none',
