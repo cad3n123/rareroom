@@ -251,7 +251,7 @@ async function updateArtistData() {
     const data = await res.json();
     artistData = data;
   } catch (err) {
-    console.error("Failed to fetch artist data:", err);
+    console.error('Failed to fetch artist data:', err);
   }
 }
 /**

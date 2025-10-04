@@ -659,37 +659,25 @@ img.comma {
   padding-bottom: 1rem;
   animation: 1000ms infinite normal backandforth;
   animation-timing-function: linear;
-}
-
-#settings #settings-arrow-down > * {
-  position: relative;
-  top: -0.5rem;
-  display: inline-block;
-  height: 0.075rem;
-  width: 2rem;
+  opacity: 0;
   background-color: transparent;
-  margin: 0;
-  transition: background-color 250ms, transform 500ms;
+  border: none;
+
+  transition: opacity 250ms;
 }
 
-#settings #settings-arrow-down > .left {
-  transform: rotate(20deg);
-  margin-right: -0.45rem;
-}
-
-#settings #settings-arrow-down > .right {
-  transform: rotate(-20deg);
+#settings #settings-arrow-down img {
+  height: 1rem;
+  object-fit: contain;
 }
 
 #settings #settings-arrow-down.active {
   cursor: pointer;
+  visibility: visible;
+  opacity: 1;
 }
 
-#settings #settings-arrow-down.active > * {
-  background-color: black;
-}
-
-#settings #settings-arrow-down.up-away > * {
+#settings #settings-arrow-down.up-away img {
   transform: translateY(-3rem);
 }
 
@@ -700,7 +688,7 @@ img.comma {
 
 #settings #settings-x {
   cursor: pointer;
-  top: 1rem;
+  top: 2rem;
   right: 1.25rem;
   width: 1.5rem;
   height: 1.5rem;
@@ -731,9 +719,8 @@ img.comma {
 
 #settings .content {
     margin-top: 0.5rem;
-    padding: 2rem;
-    padding-top: 2.5rem;
-    padding-right: 2.5rem;
+    padding: 2.5rem;
+    padding-top: 2.75rem;
     width: 100%;
 }
 
@@ -752,7 +739,7 @@ img.comma {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 #settings .content > div img {
