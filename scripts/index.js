@@ -600,8 +600,8 @@ function $socialMediaIconsFactory(links) {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
+        const $ = entry.target;
         if (entry.isIntersecting) {
-          const $ = entry.target;
           let index = $$links.indexOf($);
           if (index === -1) {
             index = $$doubleSlashes.indexOf($) + 0.5;
@@ -614,6 +614,8 @@ function $socialMediaIconsFactory(links) {
           setTimeout(() => {
             $.classList.add('seen');
           }, delay);
+        } else {
+          $.classList.remove('seen');
         }
       });
     },
