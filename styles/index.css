@@ -95,7 +95,7 @@ body div img {
 }
 
 body:has(main.inverted) #background-content {
-  opacity: 0.3;
+  opacity: 0;
 }
 
 #background-content {
