@@ -43,11 +43,11 @@ button, a {
 }
 
 .img-hover-purple:hover {
-  filter: brightness(1.1) sepia(1) hue-rotate(270deg) saturate(2) brightness(0.5);
+  filter: brightness(0.475) sepia(1) hue-rotate(270deg) saturate(1.5);
 }
 
 .img-hover-purpler:hover {
-  filter: brightness(1.2) sepia(1) hue-rotate(270deg) saturate(4) brightness(0.6);
+  filter: brightness(0.8) sepia(1) hue-rotate(270deg) saturate(3);
 }
 
 .img-hover-3-purple:hover {
