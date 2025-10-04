@@ -690,7 +690,7 @@ img.comma {
   --size: 0.85rem;
 
   cursor: pointer;
-  top: 2rem;
+  top: 1.9rem;
   right: 2rem;
   width: var(--size);
   height: var(--size);
@@ -709,7 +709,7 @@ img.comma {
 }
 
 #settings .content {
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
     padding: 2rem;
     padding-top: 2.75rem;
     width: 100%;
