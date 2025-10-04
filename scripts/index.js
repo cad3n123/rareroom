@@ -108,11 +108,10 @@ const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
   Array.from($backgroundPicture.querySelectorAll(descriptor))
 );
 
-function main() {
+async function main() {
   settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
   setAudioStatus(settings.sound);
 
-  updateArtistData();
   addContactLinks();
 
   $$settingsSections.forEach(($settingsSection) => {
@@ -170,6 +169,7 @@ function main() {
 
   addBandButtons();
   preloadArtistImages(bands);
+  await updateArtistData();
 
   stateChanged(false);
 
@@ -245,12 +245,14 @@ function updateContentPosition() {
     `${$settings.offsetWidth}px`
   );
 }
-function updateArtistData() {
-  fetch('/data/artist-socials.json')
-    .then((res) => res.json())
-    .then((data) => {
-      artistData = data;
-    });
+async function updateArtistData() {
+  try {
+    const res = await fetch('/data/artist-socials.json');
+    const data = await res.json();
+    artistData = data;
+  } catch (err) {
+    console.error("Failed to fetch artist data:", err);
+  }
 }
 /**
  *
