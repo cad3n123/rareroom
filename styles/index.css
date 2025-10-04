@@ -54,7 +54,7 @@ button, a {
   filter: brightness(1.5) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
 }
 
-nav button.active {
+main:not(.inverted) nav button.active {
   filter: brightness(1) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
 }
 

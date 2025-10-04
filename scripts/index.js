@@ -599,8 +599,6 @@ function $socialMediaIconsFactory(links) {
             index = $$doubleSlashes.indexOf($) + 0.5;
           }
 
-          console.log('test');
-
           const delay = startingDelta + index * 2 * delayDelta;
 
           setTimeout(() => {
