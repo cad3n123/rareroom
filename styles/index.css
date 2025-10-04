@@ -685,6 +685,7 @@ img.comma {
 
 #settings #settings-arrow-down.up-away img {
   transform: translateY(-3rem);
+  transition: transform 250ms;
 }
 
 #settings #settings-x {
