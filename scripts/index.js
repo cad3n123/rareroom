@@ -240,9 +240,10 @@ function updateContentPosition() {
     '--top',
     `${($settings.offsetHeight - $settingsArrowDown.offsetHeight) / 2}px`
   );
+  const settingArrowOffsetTop = -3;
   $settingsArrowDown.style.setProperty(
     '--margin-top',
-    `${$settings.offsetHeight}px`
+    `${$settings.offsetHeight + settingArrowOffsetTop}px`
   );
   $settingsArrowDown.style.setProperty(
     '--margin-left',
