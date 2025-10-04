@@ -783,7 +783,7 @@ function addBandButtons() {
         $artistImage.src = artistImageLocation;
         $artistName.src = artistNameLocation;
 
-        const purpleClass = 'img-hover-purpler';
+        const purpleClass = 'img-hover-purple';
         const thisArtistData = artistData[bandFileName];
         if (thisArtistData !== undefined) {
           const artistSite = thisArtistData['site'];
