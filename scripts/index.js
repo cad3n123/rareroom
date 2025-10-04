@@ -112,6 +112,7 @@ function main() {
   settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
   setAudioStatus(settings.sound);
 
+  updateArtistData();
   addContactLinks();
 
   $$settingsSections.forEach(($settingsSection) => {
@@ -167,7 +168,6 @@ function main() {
     localStorage.setItem('settings', JSON.stringify(settings));
   }
 
-  updateArtistData();
   addBandButtons();
   preloadArtistImages(bands);
 
