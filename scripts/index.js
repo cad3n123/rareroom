@@ -744,12 +744,15 @@ function switchPage(
     selectedNavButton.classList.add('active');
   }
 
-  if (artistData !== undefined && artistData[artistName]) {
+  console.log(artistData);
+  console.log(artistName);
+  console.log(artistData[artistName]);
+  if (artistData !== undefined && artistData[artistName] !== undefined) {
     setTimeout(() => {
       $artistSocials.appendChild(
         $socialMediaIconsFactory(artistData[artistName])
       );
-    }, 50);
+    }, 5);
   }
 }
 function addBandButtons() {
