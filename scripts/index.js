@@ -173,34 +173,24 @@ function main() {
 
   stateChanged(false);
 
-  addButtonClickedSound();
-
   removeCurtainAfterImagesLoad();
 }
 
-async function addButtonClickedSound() {
-  [
-    $homeLogo,
-    ...document.querySelectorAll('a'),
-    ...document.querySelectorAll('button'),
-  ].forEach(($) => {
-    $.addEventListener('click', async (e) => {
-      if (settings.sound) {
-        // Fetch and decode the audio file
-        const response = await fetch('/audios/switch.wav');
-        const arrayBuffer = await response.arrayBuffer();
-        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+async function buttonSoundOnClick() {
+  if (settings.sound) {
+    // Fetch and decode the audio file
+    const response = await fetch('/audios/switch.wav');
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
 
-        // Create audio source and connect to destination
-        const source = audioCtx.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(gainNode);
+    // Create audio source and connect to destination
+    const source = audioCtx.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(gainNode);
 
-        // Schedule playback a short moment into the future
-        source.start(audioCtx.currentTime);
-      }
-    });
-  });
+    // Schedule playback a short moment into the future
+    source.start(audioCtx.currentTime);
+  }
 }
 
 /**
@@ -663,6 +653,12 @@ window.addEventListener('load', updateContentPosition);
 window.addEventListener('resize', updateContentPosition);
 window.addEventListener('popstate', () => {
   stateChanged(true);
+});
+document.addEventListener('click', (e) => {
+  // check if the click target is a <button> or <a>
+  if (e.target.closest('button, a')) {
+    buttonSoundOnClick(e);
+  }
 });
 $contactButton.addEventListener('click', () => {
   changeState('contact');
