@@ -160,7 +160,6 @@ function main() {
   });
 
   updateContentPosition();
-  stateChanged(false);
 
   if (!settings.previouslyVisited) {
     // $settingsArrowDown.click();
@@ -171,6 +170,8 @@ function main() {
   updateArtistData();
   addBandButtons();
   preloadArtistImages(bands);
+
+  stateChanged(false);
 
   addButtonClickedSound();
 
