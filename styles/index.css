@@ -643,8 +643,7 @@ img.comma {
   display: flex;
 }
 
-#settings img {
-  --left: 0;
+#settings #settings-border {
   filter: brightness(1.1) contrast(0.7);
 }
 
@@ -663,6 +662,8 @@ img.comma {
   opacity: 0;
   background-color: transparent;
   border: none;
+  pointer-events: none;
+  cursor: default;
 
   transition: opacity 250ms;
 }
@@ -673,18 +674,17 @@ img.comma {
 }
 
 #settings #settings-arrow-down.active {
-  cursor: pointer;
-  visibility: visible;
   opacity: 1;
+  display: block;
+}
+
+#settings #settings-arrow-down:not(.up-away).active {
+  pointer-events: unset;
+  cursor: pointer;
 }
 
 #settings #settings-arrow-down.up-away img {
   transform: translateY(-3rem);
-}
-
-#settings #settings-arrow-down.up-away {
-  pointer-events: none;
-  cursor: default;
 }
 
 #settings #settings-x {
