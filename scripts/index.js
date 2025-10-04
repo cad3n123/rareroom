@@ -594,7 +594,7 @@ function $socialMediaIconsFactory(links) {
   });
 
   const startingDelta = 50;
-  const delayDelta = 75;
+  const delayDelta = 50;
 
   const observer = new IntersectionObserver(
     (entries) => {

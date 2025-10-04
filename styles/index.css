@@ -38,11 +38,15 @@ button, a {
   cursor: pointer;
 }
 
-.img-hover-purple, .img-hover-purpler {
+.img-hover-purple, .img-hover-purpler, .img-hover-3-purple {
   transition: filter 250ms;
 }
 
 .img-hover-purple:hover {
+  filter: brightness(0.475) sepia(1) hue-rotate(270deg) saturate(1.5);
+}
+
+.img-hover-purple-1-5:hover {
   filter: brightness(0.475) sepia(1) hue-rotate(270deg) saturate(1.5);
 }
 
