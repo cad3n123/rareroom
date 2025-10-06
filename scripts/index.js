@@ -823,11 +823,13 @@ function addBandButtons() {
       // $span.innerHTML = band + (i == lastIndex ? '' : ',');
 
       $band.onmouseover = (e) => {
-        $backgroundPicture.classList.add('active');
+        if (window.innerWidth <= 600) return;
 
+        $backgroundPicture.classList.add('active');
         $backgroundPictureImg.src = artistImageLocation;
         $main.classList.add('inverted');
       };
+
       $band.onmouseleave = (e) => {
         $backgroundPicture.classList.remove('active');
         $main.classList.remove('inverted');
