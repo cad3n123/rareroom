@@ -902,6 +902,9 @@ img.comma {
   .img-hover-3-purple:active {
     filter: brightness(1.5) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
   }
+  main nav:not(#bands-nav) button img:hover {
+    filter: unset;
+  }
 
   main > div {
     margin: 0;
