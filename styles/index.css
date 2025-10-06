@@ -228,7 +228,10 @@ main > div:has(#home-logo-morse-container.top) {
 }
 
 #home-logo-morse-container.top .background {
-  background: black url(/images/black_sand.jpg) top center;
+  background-color: black;
+  background-image: url(/images/black_sand_zoomed.jpg);
+  background-position: top center;
+  background-repeat: no-repeat;
 }
 
 #home-logo-morse-container.top img.underline {
@@ -607,6 +610,96 @@ main > div #content a.contact:hover {
 #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
   height: 1rem;
 }
+
+#studio-div {
+  visibility: hidden;
+  z-index: 2; /* Above settings */
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  opacity: 0;
+
+  transition: opacity 250ms, visibility 250ms;
+}
+
+#studio-div.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+#studio-x {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  z-index: 1;
+}
+
+#studio-x img {
+  filter: invert(100%);
+  width: 2rem;
+  object-fit: cover;
+}
+
+#studio-div .carousel {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#studio-div .carousel-track {
+  display: flex;
+  transition: transform 0.6s ease;
+  height: 100%;
+  width: 100%; /* one "viewport width" per image */
+}
+
+#studio-div .carousel-track img {
+  width: 100vw;                /* each slide takes up full screen width */
+  height: 100vh;               /* each slide area fills screen height */
+  object-fit: contain;         /* image never stretches */
+  object-position: center;     /* center image within its box */
+  background-color: black;     /* fill space around images cleanly */
+  flex-shrink: 0;              /* don’t compress slides */
+}
+
+#studio-div .carousel button.back,
+#studio-div .carousel button.forward {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s;
+  z-index: 2;
+}
+
+#studio-div .carousel button.back:hover,
+#studio-div .carousel button.forward:hover {
+  background-color: rgba(255,255,255,0.3);
+}
+
+#studio-div .carousel button.back {
+  left: 1rem;
+}
+
+#studio-div .carousel button.forward {
+  right: 1rem;
+}
+
 
 img.comma {
   margin-left: 0.05rem;

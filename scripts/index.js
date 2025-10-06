@@ -51,11 +51,14 @@ const [
   $settingsArrowDown,
   $settingsX,
   $settingsBorder,
+  $studioButton,
   $aboutContainer,
   $pollishLink,
   $contactEmail,
   $artistsDiv,
   $artistDiv,
+  $studioDiv,
+  $studioX,
   $rareroomTitle,
   $artistImage,
   $artistName,
@@ -76,11 +79,14 @@ const [
   'settings-arrow-down',
   'settings-x',
   'settings-border',
+  'studio-button',
   'about-container',
   'pollish-link',
   'contact-email',
   'artists-div',
   'artist-div',
+  'studio-div',
+  'studio-x',
   'rareroom-title',
   'artist-image',
   'artist-name',
@@ -107,6 +113,11 @@ const [$$settingsSections] = [':scope > div'].map((descriptor) =>
 const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
   Array.from($backgroundPicture.querySelectorAll(descriptor))
 );
+const [[$studioBack], [$studioTrack], [$studioForward]] = [
+  '.back',
+  '.carousel-track',
+  '.forward',
+].map((descriptor) => $studioDiv.querySelectorAll(descriptor));
 
 async function main() {
   settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
@@ -169,6 +180,7 @@ async function main() {
 
   addBandButtons();
   preloadArtistImages(bands);
+  populateStudioImages();
   await updateArtistData();
 
   stateChanged(false);
@@ -191,6 +203,35 @@ async function buttonSoundOnClick() {
     // Schedule playback a short moment into the future
     source.start(audioCtx.currentTime);
   }
+}
+
+function populateStudioImages() {
+  const NUM_IMAGES = 2;
+
+  let currentIndex = 0;
+
+  // Populate carousel dynamically
+  for (let i = 1; i <= NUM_IMAGES; i++) {
+    const img = document.createElement('img');
+    img.src = `/images/studio/${i}.jpg`;
+    img.alt = `Image ${i}`;
+    $studioTrack.appendChild(img);
+  }
+
+  // Function to update slide position
+  function updateCarousel() {
+    $studioTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+  // Button events
+  $studioForward.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % NUM_IMAGES;
+    updateCarousel();
+  });
+
+  $studioBack.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + NUM_IMAGES) % NUM_IMAGES;
+    updateCarousel();
+  });
 }
 
 /**
@@ -691,6 +732,12 @@ $content.addEventListener('scroll', () => {
     $homeLogoMorseContainer.classList.remove('scrolled');
   }
 });
+$studioButton.addEventListener('click', () => {
+  $studioDiv.classList.add('active');
+});
+$studioX.addEventListener('click', () => {
+  $studioDiv.classList.remove('active');
+});
 /**
  * @typedef {Object} ElementSettings
  * @property {HTMLElement} element
@@ -751,9 +798,6 @@ function switchPage(
     selectedNavButton.classList.add('active');
   }
 
-  console.log(artistData);
-  console.log(artistName);
-  console.log(artistData[artistName]);
   if (artistData !== undefined && artistData[artistName] !== undefined) {
     setTimeout(() => {
       $artistSocials.appendChild(
