@@ -772,7 +772,7 @@ img.comma {
   position: absolute;
   transition: transform 500ms;
   transform: translate(calc(32vw - 16rem), var(--closed-top));
-  top: 0.5rem;
+  top: 0.35rem;
   left: 0;
   display: flex;
 }
