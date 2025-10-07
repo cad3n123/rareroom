@@ -576,7 +576,7 @@ function stateChanged(withMorse) {
 function changeState(stateName) {
   window.history.pushState({}, '', `/${stateName}`);
   if (stateName !== '') {
-    $main.classList.remove('first-inverted');
+    removeFirstInverted();
   }
   stateChanged(true);
 }
@@ -712,6 +712,12 @@ function closeSettings() {
   $settings.classList.remove('active');
   $settingsArrowDown.classList.add('active');
 }
+function removeFirstInverted() {
+  $main.classList.remove('first-inverted');
+  setTimeout(() => {
+    $backgroundContent.style.setProperty('--opacity-transition', '250ms');
+  }, 1000);
+}
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
@@ -736,7 +742,7 @@ $artistsButton.addEventListener('click', () => {
   changeState('artists');
 });
 $homeLogo.addEventListener('click', () => {
-  $main.classList.remove('first-inverted');
+  removeFirstInverted();
   changeState('');
 });
 $settingsArrowDown.addEventListener('click', () => {
