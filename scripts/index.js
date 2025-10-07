@@ -432,6 +432,13 @@ function createSwitch($switch) {
  */
 function stateChanged(withMorse) {
   const path = window.location.pathname;
+  if (path !== '') {
+    $backgroundContent.style.setProperty('--opacity-transition', '0ms');
+    $main.classList.remove('first-inverted');
+    setTimeout(() => {
+      $backgroundContent.style.setProperty('--opacity-transition', '250ms');
+    }, 1);
+  }
   if (path === '/about' || path == '/about/') {
     switchPage(
       $aboutButton,
