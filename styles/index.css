@@ -103,10 +103,8 @@ body:has(main.inverted) #background-content {
 }
 
 #background-content {
-  --paper-size: 200%;
-
-  width: 100%;
-  height: var(--paper-size);
+  width: 100vw;
+  height: 100vh;
   padding-bottom: 0;
   overflow: hidden;
   z-index: -10;
