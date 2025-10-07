@@ -1,4 +1,5 @@
 // Constant Variables
+const numStudioImages = 7;
 const canvaBaseWidthPixel = 1366;
 const canvaBaseHeightPixel = 768;
 const canvaRatioPixel = 1366 / 768;
@@ -209,12 +210,10 @@ async function buttonSoundOnClick() {
 }
 
 function populateStudioImages() {
-  const NUM_IMAGES = 8;
-
   let currentIndex = 0;
 
   // Populate carousel dynamically
-  for (let i = 1; i <= NUM_IMAGES; i++) {
+  for (let i = 1; i <= numStudioImages; i++) {
     const img = document.createElement('img');
     img.src = `/images/studio/RRE${i}.jpg`;
     img.alt = `Image ${i}`;
@@ -227,12 +226,12 @@ function populateStudioImages() {
   }
   // Button events
   $studioForward.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % NUM_IMAGES;
+    currentIndex = (currentIndex + 1) % numStudioImages;
     updateCarousel();
   });
 
   $studioBack.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + NUM_IMAGES) % NUM_IMAGES;
+    currentIndex = (currentIndex - 1 + numStudioImages) % numStudioImages;
     updateCarousel();
   });
 }

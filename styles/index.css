@@ -668,14 +668,17 @@ main > div #content a.contact:hover {
 }
 
 #studio-x img {
-  filter: invert(100%);
   width: 2rem;
   object-fit: cover;
+}
 
+#studio-x img, #studio-div .carousel button img {
+  filter: invert(100%);
+  
   transition: filter 250ms;
 }
 
-#studio-x img:hover {
+#studio-x img:hover, #studio-div .carousel button img:hover {
   filter: invert(80%);
 }
 
