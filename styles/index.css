@@ -42,6 +42,10 @@ button, a {
   transition: filter 250ms;
 }
 
+.img-hover-purple-0-5:hover {
+  filter: brightness(0.375) sepia(1) hue-rotate(270deg) saturate(1.5);
+}
+
 .img-hover-purple:hover {
   filter: brightness(0.475) sepia(1) hue-rotate(270deg) saturate(1.5);
 }
@@ -647,6 +651,12 @@ main > div #content a.contact:hover {
   filter: invert(100%);
   width: 2rem;
   object-fit: cover;
+
+  transition: filter 250ms;
+}
+
+#studio-x img:hover {
+  filter: invert(80%);
 }
 
 #studio-div .carousel {

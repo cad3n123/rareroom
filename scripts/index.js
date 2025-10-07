@@ -839,15 +839,17 @@ function addBandButtons() {
         $artistImage.src = artistImageLocation;
         $artistName.src = artistNameLocation;
 
-        const purpleClass = 'img-hover-purple';
         const thisArtistData = artistData[bandFileName];
+        const purpleClass =
+          thisArtistData['class'] === undefined
+            ? 'img-hover-purple'
+            : thisArtistData['class'];
         if (thisArtistData !== undefined) {
           const artistSite = thisArtistData['site'];
+          $artistName.className = '';
           if (artistSite !== undefined) {
             $artistNameLink.href = artistSite;
             $artistName.classList.add(purpleClass);
-          } else {
-            $artistName.classList.remove(purpleClass);
           }
         }
       };
