@@ -184,6 +184,10 @@ async function main() {
 
   stateChanged(false);
 
+  if ($main.classList.contains('first-inverted')) {
+    $settingsArrowDown.classList.add('up-away');
+  }
+
   removeCurtainAfterImagesLoad();
 }
 
