@@ -353,6 +353,22 @@ main > div:has(#home-logo-morse-container.scrolled.top) #home-logo-morse-contain
   filter: invert(100%) brightness(calc(0.85 + var(--image-brightness)));
 }
 
+main.first-inverted #loading-div {
+  display: block;
+}
+
+main #loading-div {
+  position: absolute;
+  display: none;
+  top: 55%;
+}
+
+main #loading-div img.message {
+  height: 1.25rem;
+  width: auto;
+  object-fit: cover;
+}
+
 main > div #content {
   position: relative;
   width: max-content;
@@ -954,6 +970,9 @@ img.comma {
   }
   #home-background {
     display: none !important;
+  }
+  main #loading-div {
+    top: 22%;
   }
   main > div {
     justify-content: start;
