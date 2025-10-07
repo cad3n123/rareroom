@@ -432,7 +432,7 @@ function createSwitch($switch) {
  */
 function stateChanged(withMorse) {
   const path = window.location.pathname;
-  if (path !== '') {
+  if (!['', '/'].includes(path)) {
     $backgroundContent.style.setProperty('--opacity-transition', '0ms');
     $main.classList.remove('first-inverted');
     setTimeout(() => {
