@@ -206,14 +206,14 @@ async function buttonSoundOnClick() {
 }
 
 function populateStudioImages() {
-  const NUM_IMAGES = 2;
+  const NUM_IMAGES = 8;
 
   let currentIndex = 0;
 
   // Populate carousel dynamically
   for (let i = 1; i <= NUM_IMAGES; i++) {
     const img = document.createElement('img');
-    img.src = `/images/studio/${i}.jpg`;
+    img.src = `/images/studio/RRE${i}.jpg`;
     img.alt = `Image ${i}`;
     $studioTrack.appendChild(img);
   }
