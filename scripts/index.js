@@ -173,7 +173,6 @@ async function main() {
   updateContentPosition();
 
   if (!settings.previouslyVisited) {
-    // $settingsArrowDown.click();
     settings.previouslyVisited = true;
     localStorage.setItem('settings', JSON.stringify(settings));
   }
@@ -531,12 +530,12 @@ function stateChanged(withMorse) {
       while ($artistSocials.firstChild) {
         $artistSocials.removeChild($artistSocials.firstChild);
       }
-      artistImageLocation = `/images/${artistName}_artist.jpg`;
-      artistNameLocation = `/images/${artistName}.png`;
+      let artistImageLocation = `/images/${artistName}_artist.jpg`;
+      let artistNameLocation = `/images/${artistName}.png`;
       $artistImage.src = artistImageLocation;
       $artistName.src = artistNameLocation;
 
-      const thisArtistData = artistData[bandFileName];
+      const thisArtistData = artistData[artistName];
       const purpleClass =
         thisArtistData['class'] === undefined
           ? 'img-hover-purple'
