@@ -516,7 +516,6 @@ main .nav-button:hover {
 .social-media-icons a, .social-media-icons > img {
   visibility: hidden;
   height: 0.75rem;
-  display: flex;
 }
 
 .social-media-icons a.seen, .social-media-icons > img.seen {
@@ -526,6 +525,7 @@ main .nav-button:hover {
 .social-media-icons a img {
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 main > div #content #social-media-icons {

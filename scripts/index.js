@@ -803,7 +803,7 @@ function switchPage(
       $artistSocials.appendChild(
         $socialMediaIconsFactory(artistData[artistName])
       );
-    }, 5);
+    }, 50);
   }
 }
 function addBandButtons() {
