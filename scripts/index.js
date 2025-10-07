@@ -575,6 +575,9 @@ function stateChanged(withMorse) {
  */
 function changeState(stateName) {
   window.history.pushState({}, '', `/${stateName}`);
+  if (stateName !== '') {
+    $main.classList.remove('first-inverted');
+  }
   stateChanged(true);
 }
 /**
