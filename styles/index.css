@@ -62,7 +62,7 @@ button, a {
   filter: brightness(1.5) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
 }
 
-main:not(.inverted) nav button.active {
+main:not(.inverted):not(.first-inverted) nav button.active {
   filter: brightness(1) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
 }
 
@@ -104,6 +104,10 @@ body div img {
 
 body:has(main.inverted) #background-content {
   opacity: 0.18;
+}
+
+body:has(main.first-inverted) #background-content {
+  opacity: 0;
 }
 
 #background-content {
@@ -333,12 +337,14 @@ main img {
   will-change: filter;
 }
 
-main.inverted img {
+main.inverted img, main.first-inverted img {
   filter: invert(100%) brightness(calc(1 + var(--image-brightness)));
   transition: filter 250ms ease;
 }
 
-main.inverted #home-logo, main > div:has(#home-logo-morse-container.scrolled.top) #home-logo-morse-container #home-logo {
+main.inverted #home-logo,
+main.first-inverted #home-logo,
+main > div:has(#home-logo-morse-container.scrolled.top) #home-logo-morse-container #home-logo {
   filter: invert(100%) brightness(calc(0.85 + var(--image-brightness)));
 }
 
@@ -349,6 +355,13 @@ main > div #content {
   overflow-y: auto;
   width: 100%;
   padding-top: 0.75rem;
+  opacity: 1;
+
+  transition: opacity 250ms;
+}
+
+main.first-inverted > div #content {
+  opacity: 0;
 }
 
 main > div:has(#home-logo-morse-container.top) #content {
@@ -407,15 +420,19 @@ main nav button {
   background-color: transparent;
 }
 
-main.inverted nav img {
+main.inverted nav img,
+main.first-inverted nav img {
   transition: filter 250ms;
 }
 
-main.inverted nav img, main nav:not(#bands-nav) button img:hover {
+main.inverted nav img,
+main.first-inverted nav img
+main nav:not(#bands-nav) button img:hover {
   filter: invert(92%);
 }
 
-main.inverted #bands-nav img {
+main.inverted #bands-nav img
+main.first-inverted #bands-nav img {
   filter: invert(100%);
 }
 
@@ -479,7 +496,9 @@ main nav button:not(.active):hover::before, main nav button.active::before {
   width: 100%;
 }
 
-main nav button:hover::before, main.inverted nav button::before {
+main nav button:hover::before,
+main.inverted nav button::before
+main.first-inverted nav button::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
@@ -931,7 +950,8 @@ img.comma {
   main > div #content #pollish-link {
     right: 1.5%;
   }
-  main nav button:hover::before, main.inverted nav button::before {
+  main nav button:hover::before, main.inverted nav button::before
+  main nav button:hover::before, main.first-inverted nav button::before {
     background-color: var(--secondary);
   }
   #artist-image {

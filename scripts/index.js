@@ -733,6 +733,7 @@ $artistsButton.addEventListener('click', () => {
   changeState('artists');
 });
 $homeLogo.addEventListener('click', () => {
+  $main.classList.remove('first-inverted');
   changeState('');
 });
 $settingsArrowDown.addEventListener('click', () => {
@@ -914,11 +915,7 @@ function wordsToFilename(words) {
 }
 // Classes
 class Settings {
-  constructor({
-    light = false,
-    sound = false,
-    previouslyVisited = false,
-  } = {}) {
+  constructor({ light = true, sound = false, previouslyVisited = false } = {}) {
     this.light = light;
     this.sound = sound;
     this.previouslyVisited = previouslyVisited;
