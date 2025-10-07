@@ -531,8 +531,24 @@ function stateChanged(withMorse) {
       while ($artistSocials.firstChild) {
         $artistSocials.removeChild($artistSocials.firstChild);
       }
-      $artistImage.src = `/images/${artistName}_artist.jpg`;
-      $artistName.src = `/images/${artistName}.png`;
+      artistImageLocation = `/images/${artistName}_artist.jpg`;
+      artistNameLocation = `/images/${artistName}.png`;
+      $artistImage.src = artistImageLocation;
+      $artistName.src = artistNameLocation;
+
+      const thisArtistData = artistData[bandFileName];
+      const purpleClass =
+        thisArtistData['class'] === undefined
+          ? 'img-hover-purple'
+          : thisArtistData['class'];
+      if (thisArtistData !== undefined) {
+        const artistSite = thisArtistData['site'];
+        $artistName.className = '';
+        if (artistSite !== undefined) {
+          $artistNameLink.href = artistSite;
+          $artistName.classList.add(purpleClass);
+        }
+      }
     }
   } else {
     switchPage(
@@ -836,22 +852,6 @@ function addBandButtons() {
       };
       $band.onclick = (e) => {
         changeState(`artists/${bandFileName}`);
-        $artistImage.src = artistImageLocation;
-        $artistName.src = artistNameLocation;
-
-        const thisArtistData = artistData[bandFileName];
-        const purpleClass =
-          thisArtistData['class'] === undefined
-            ? 'img-hover-purple'
-            : thisArtistData['class'];
-        if (thisArtistData !== undefined) {
-          const artistSite = thisArtistData['site'];
-          $artistName.className = '';
-          if (artistSite !== undefined) {
-            $artistNameLink.href = artistSite;
-            $artistName.classList.add(purpleClass);
-          }
-        }
       };
 
       [$img].forEach(($child) => $band.appendChild($child));
