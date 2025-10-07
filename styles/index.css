@@ -428,12 +428,12 @@ main.first-inverted nav img {
 }
 
 main.inverted nav img,
-main.first-inverted nav img
+main.first-inverted nav img,
 main nav:not(#bands-nav) button img:hover {
   filter: invert(92%);
 }
 
-main.inverted #bands-nav img
+main.inverted #bands-nav img,
 main.first-inverted #bands-nav img {
   filter: invert(100%);
 }
@@ -499,7 +499,7 @@ main nav button:not(.active):hover::before, main nav button.active::before {
 }
 
 main nav button:hover::before,
-main.inverted nav button::before
+main.inverted nav button::before,
 main.first-inverted nav button::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
@@ -512,10 +512,6 @@ main .nav-button.active span {
   text-decoration: underline;
   text-decoration-thickness: 0.5px;
   text-underline-offset: 2.5px;
-}
-
-main .nav-button:hover {
-  color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
 
 .image-a {
@@ -706,8 +702,7 @@ main > div #content a.contact:hover {
   flex-shrink: 0;              /* don’t compress slides */
 }
 
-#studio-div .carousel button.back,
-#studio-div .carousel button.forward {
+#studio-div .carousel button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -721,9 +716,14 @@ main > div #content a.contact:hover {
   z-index: 2;
 }
 
-#studio-div .carousel button.back:hover,
-#studio-div .carousel button.forward:hover {
+#studio-div .carousel button:hover {
   background-color: rgba(255,255,255,0.3);
+}
+
+#studio-div .carousel button img {
+  width: 1rem;
+  height: auto;
+  object-fit: cover;
 }
 
 #studio-div .carousel button.back {
