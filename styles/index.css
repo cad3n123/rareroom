@@ -734,6 +734,9 @@ main > div #content a.contact:hover {
   right: 1rem;
 }
 
+#loading-bar {
+  display: none;
+}
 
 img.comma {
   margin-left: 0.05rem;
@@ -775,7 +778,7 @@ img.comma {
 }
 
 #settings #settings-border {
-  filter: brightness(1.1) contrast(0.7);
+  filter: brightness(1.5) contrast(0.5);
 }
 
 #settings #settings-arrow-down {
