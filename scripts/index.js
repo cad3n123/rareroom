@@ -703,12 +703,12 @@ function $socialMediaIconsFactory(links) {
 }
 function addContactLinks() {
   $socialMediaIcons = $socialMediaIconsFactory({
-    youtube: 'https://youtube.com',
+    youtube: 'https://www.youtube.com/@rareroomeast',
     instagram:
       'https://www.instagram.com/rareroomeast/?utm_source=ig_web_button_share_sheet',
-    facebook: 'https://facebook.com',
-    twitter: 'https://x.com/rareroomeast',
-    tiktok: 'https://tiktok.com',
+    facebook: 'https://www.facebook.com/rareroomeast',
+    twitter: 'https://x.com/therobotixmusic',
+    tiktok: 'https://www.tiktok.com/@rareroomeast',
   });
   $socialMediaIcons.style.setProperty('display', 'none');
   $socialMediaIcons.id = 'social-media-icons';
