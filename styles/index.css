@@ -982,6 +982,9 @@ img.comma {
   main #loading-div {
     top: 22%;
   }
+  main.first-inverted #loading-div {
+    margin-top: 0.5rem;
+  }
   main > div {
     justify-content: start;
   }
@@ -997,6 +1000,17 @@ img.comma {
   }
   #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
     height: 0.7rem;
+  }
+  #bands-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  #bands-nav img {
+    height: 1.1rem;
+  }
+  #bands-nav img.comma {
+    display: none;
   }
   #settings {
     bottom: var(--closed-top);
