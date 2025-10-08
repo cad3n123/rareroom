@@ -806,6 +806,13 @@ img.comma {
   display: flex;
 }
 
+#settings > *:not(#settings-arrow-down) {
+  opacity: 0;
+
+  transition: opacity 250ms;
+
+}
+
 #settings #settings-border {
   filter: brightness(1.5) contrast(0.5);
 }
@@ -943,6 +950,10 @@ img.comma {
 
 #settings.active {
   transform: translate(calc(32vw - 16rem), 0);
+}
+
+#settings.active > *:not(#settings-arrow-down) {
+  opacity: 1;
 }
 
 @media only screen and (max-width: 600px) {
