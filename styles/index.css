@@ -622,31 +622,32 @@ main > div #content a.contact:hover {
 }
 
 #artist-name-container {
-  position: relative;
-  display: grid;
-  justify-content: center; 
-  width: min-content;
-  margin: auto;
-  height: 2.75rem;
+    display: grid; /* Keep as grid */
+    justify-content: center;
+    width: min-content;
+    height: 2.75rem;
+    margin: auto;
+    /* position: relative; is no longer needed */
 }
 
-#artist-name-link {
-  width: min-content;
+#artist-name-link,
+#artist-name-container .underline {
+    grid-area: 1 / 1;
 }
 
 #artist-name {
-  height: 1.5rem;
-  width: max-content;
+    height: 1.5rem;
+    width: max-content;
 }
 
 #artist-name-container .underline {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1rem;
-  object-fit: fill;
-  margin-left: 0.05rem;
+    /* No longer needs to be absolutely positioned */
+    width: 100%; /* Now 100% of the grid cell, which is perfect */
+    height: 1rem;
+    object-fit: fill;
+    
+    /* This pushes the underline to the bottom of the grid cell */
+    align-self: end;
 }
 
 #artist-socials {
@@ -683,28 +684,27 @@ main > div #content a.contact:hover {
   opacity: 1;
 }
 
-#studio-x {
+.black-overlay-page .x {
   position: absolute;
   top: 2rem;
   right: 2rem;
   background-color: transparent;
   outline: none;
   border: none;
-  z-index: 1;
-}
+  z-index: 1;}
 
-#studio-x img {
+.black-overlay-page .x img {
   width: 2rem;
   object-fit: cover;
 }
 
-#studio-x img, #studio-div .carousel button img {
+.black-overlay-page .x img, #studio-div .carousel button img {
   filter: invert(100%);
   
   transition: filter 250ms;
 }
 
-#studio-x img:hover, #studio-div .carousel button img:hover {
+.black-overlay-page .x img:hover, #studio-div .carousel button img:hover {
   filter: invert(80%);
 }
 
