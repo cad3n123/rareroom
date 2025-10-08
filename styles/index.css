@@ -953,6 +953,9 @@ img.comma {
   .img-hover-purple:hover {
     filter: unset;
   }
+  .img-hover-purple-1-5:hover {
+    filter: unset;
+  }
   .img-hover-purpler:hover {
     filter: unset;
   }
