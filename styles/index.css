@@ -363,7 +363,7 @@ main #loading-div {
 }
 
 main #loading-div img.message {
-  height: 1.15rem;
+  height: 1rem;
   width: auto;
   object-fit: cover;
 }
