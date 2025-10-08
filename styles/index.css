@@ -551,6 +551,7 @@ main .nav-button.active span {
   align-items: center;
   margin: 0;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .social-media-icons a, .social-media-icons > img {
@@ -654,6 +655,7 @@ main > div #content a.contact:hover {
 
 #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
   height: 1rem;
+  flex-shrink: 0
 }
 
 #studio-div {
