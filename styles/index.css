@@ -1001,11 +1001,18 @@ img.comma {
   #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
     height: 0.7rem;
   }
-  #bands-nav {
+  main > div #content #bands-nav {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
     margin-top: 0.5rem;
+    width: 100%;
+  }
+  #bands-nav button {
+    width: 100%;
+  }
+  main nav button:not(.active):hover::before {
+    width: 0;
   }
   #bands-nav img.comma {
     display: none;
@@ -1025,7 +1032,7 @@ img.comma {
     animation: 1000ms infinite normal upanddown;
     animation-timing-function: linear;
     top: 0;
-    margin-top: calc(-1 * var(--top));
+    margin-top: calc(-1 * var(--top) + 15px);
   }
   #settings.active {
     transform: translate(-50%, -14rem);
