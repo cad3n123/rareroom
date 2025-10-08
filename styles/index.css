@@ -708,7 +708,7 @@ main > div #content a.contact:hover {
 #studio-div .carousel {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -1035,7 +1035,7 @@ img.comma {
     animation: 1000ms infinite normal upanddown;
     animation-timing-function: linear;
     top: 0;
-    margin-top: calc(-1 * var(--top) + 15px);
+    margin-top: calc(-1 * var(--top) + 18px);
   }
   #settings.active {
     transform: translate(-50%, -14rem);
