@@ -305,6 +305,7 @@ main > div:has(#home-logo-morse-container.top) {
   height: min-content;
   display: block;
   min-height: 0;
+  padding: 0;
 }
 
 #home-logo-container {
@@ -668,6 +669,12 @@ main > div #content a.contact:hover {
   transition: opacity 250ms, visibility 250ms;
 }
 
+#studio-div  {
+  visibility: hidden;
+  z-index: 2; /* Above settings */
+  position: absolute;
+}
+
 #studio-div.active {
   visibility: visible;
   opacity: 1;
@@ -940,7 +947,7 @@ img.comma {
 
 @media only screen and (max-width: 600px) {
   :root {
-    font-size: 4vw;
+    font-size: 3.5vw;
   }
 
   .img-hover-purple:hover {
@@ -967,6 +974,7 @@ img.comma {
 
   main > div {
     margin: 0;
+    padding-top: 3.75rem;
   }
   #home-background {
     display: none !important;
