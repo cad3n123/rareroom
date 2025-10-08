@@ -1006,9 +1006,6 @@ img.comma {
     flex-direction: column;
     gap: 0.25rem;
   }
-  #bands-nav img {
-    height: 1.1rem;
-  }
   #bands-nav img.comma {
     display: none;
   }
