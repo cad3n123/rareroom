@@ -384,6 +384,7 @@ main > div #content {
 
 main.first-inverted > div #content {
   opacity: 0;
+  pointer-events: none;
 }
 
 main > div:has(#home-logo-morse-container.top) #content {
