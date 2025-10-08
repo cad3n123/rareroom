@@ -1009,6 +1009,9 @@ img.comma {
   main nav button:hover::before, main.first-inverted nav button::before {
     background-color: var(--secondary);
   }
+  #home-logo:hover {
+    opacity: 1;
+  }
   #artist-image {
     height: 50vh;
   }
