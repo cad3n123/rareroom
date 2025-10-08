@@ -635,6 +635,9 @@ main > div #content a.contact:hover {
     
     /* Align the name image in the center of the container's height */
     align-items: center;
+
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 
@@ -652,7 +655,7 @@ main > div #content a.contact:hover {
 #artist-name-container .underline {
     /* Take the underline out of the layout flow entirely */
     position: absolute;
-    bottom: 0px;
+    bottom: -0.5rem;
     left: 0px;
 
     /* This will now reliably be 100% of the container's width,
