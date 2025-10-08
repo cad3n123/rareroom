@@ -555,12 +555,12 @@ main .nav-button.active span {
 }
 
 .social-media-icons a, .social-media-icons > img {
-  visibility: hidden;
+  opacity: 0;
   height: 0.75rem;
 }
 
 .social-media-icons a.seen, .social-media-icons > img.seen {
-  visibility: visible;
+  opacity: 1;
 }
 
 .social-media-icons a img {
