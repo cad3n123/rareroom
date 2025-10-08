@@ -991,7 +991,7 @@ img.comma {
   main > div #content #pollish-link {
     right: 1.5%;
   }
-  main nav button:hover::before, main.inverted nav button::before
+  main nav button:hover::before, main.inverted nav button::before,
   main nav button:hover::before, main.first-inverted nav button::before {
     background-color: var(--secondary);
   }
