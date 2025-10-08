@@ -39,8 +39,6 @@ const [
   $backgroundContent,
   $backgroundPicture,
   $homeBackground,
-  // $contactBackground,
-  // $aboutBackground,
   $content,
   $contactButton,
   $aboutButton,
@@ -53,13 +51,16 @@ const [
   $settingsX,
   $settingsBorder,
   $studioButton,
+  $privacyPolicyButton,
   $aboutContainer,
   $pollishLink,
   $contactEmail,
   $artistsDiv,
   $artistDiv,
   $studioDiv,
+  $privacyPolicyDiv,
   $studioX,
+  $privacyPolicyX,
   $rareroomTitle,
   $artistImage,
   $artistName,
@@ -81,13 +82,16 @@ const [
   'settings-x',
   'settings-border',
   'studio-button',
+  'privacy-policy-button',
   'about-container',
   'pollish-link',
   'contact-email',
   'artists-div',
   'artist-div',
   'studio-div',
+  'privacy-policy-div',
   'studio-x',
+  'privacy-policy-x',
   'rareroom-title',
   'artist-image',
   'artist-name',
@@ -772,6 +776,12 @@ $studioButton.addEventListener('click', () => {
 });
 $studioX.addEventListener('click', () => {
   $studioDiv.classList.remove('active');
+});
+$privacyPolicyButton.addEventListener('click', () => {
+  $privacyPolicyDiv.classList.add('active');
+});
+$privacyPolicyX.addEventListener('click', () => {
+  $privacyPolicyDiv.classList.remove('active');
 });
 /**
  * @typedef {Object} ElementSettings

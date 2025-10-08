@@ -5,10 +5,8 @@
   src: url(/Alike/Alike-Regular.ttf);
   font-family: Helvetica;
   src: url(/Helvetica/Helvetica.ttf);
-}
-@font-face {
-    font-family: Source_Code_Pro;
-    src: url(/Source_Code_Pro/static/SourceCodePro-Regular.ttf);
+  font-family: Source_Code_Pro;
+  src: url(/Source_Code_Pro/static/SourceCodePro-Regular.ttf);
 }
 
 :root {
@@ -659,7 +657,7 @@ main > div #content a.contact:hover {
   flex-shrink: 0
 }
 
-#studio-div {
+.black-overlay-page {
   visibility: hidden;
   z-index: 2; /* Above settings */
   position: absolute;
@@ -673,13 +671,7 @@ main > div #content a.contact:hover {
   transition: opacity 250ms, visibility 250ms;
 }
 
-#studio-div  {
-  visibility: hidden;
-  z-index: 2; /* Above settings */
-  position: absolute;
-}
-
-#studio-div.active {
+.black-overlay-page.active {
   visibility: visible;
   opacity: 1;
 }
@@ -764,6 +756,20 @@ main > div #content a.contact:hover {
 
 #studio-div .carousel button.forward {
   right: 1rem;
+}
+#privacy-policy-div {
+  font-family: Source_Code_Pro;
+}
+
+#privacy-policy-div > div {
+  padding: 4rem 8rem;
+  overflow-y: scroll;
+  height: 100%;
+  box-sizing: border-box; 
+}
+
+#privacy-policy-div * {
+  color: white;
 }
 
 #loading-bar {
