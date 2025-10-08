@@ -620,32 +620,47 @@ main > div #content a.contact:hover {
 }
 
 #artist-name-container {
-    display: grid; /* Keep as grid */
-    justify-content: center;
-    width: min-content;
-    height: 2.75rem;
-    margin: auto;
-    /* position: relative; is no longer needed */
+    /* Create a positioning context for the underline */
+    position: relative;
+
+    /* Use inline-grid, which is naturally shrink-to-fit.
+       This is key to making the container wrap the name image. */
+    display: inline-grid;
+
+    /* Center the container on the page */
+    margin: 0 auto;
+    
+    /* Set an explicit height for vertical alignment */
+    height: 2.75rem; 
+    
+    /* Align the name image in the center of the container's height */
+    align-items: center;
 }
 
-#artist-name-link,
-#artist-name-container .underline {
-    grid-area: 1 / 1;
+
+#artist-name-link {
+    /* The link will now naturally size to the image inside it */
+    display: block;
 }
 
 #artist-name {
     height: 1.5rem;
-    width: max-content;
+    width: auto; /* Let the image's aspect ratio determine its width */
+    display: block; /* Removes extra space below the image */
 }
 
 #artist-name-container .underline {
-    /* No longer needs to be absolutely positioned */
-    width: 100%; /* Now 100% of the grid cell, which is perfect */
+    /* Take the underline out of the layout flow entirely */
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+
+    /* This will now reliably be 100% of the container's width,
+       which is now correctly sized by the name image. */
+    width: 100%;
+
     height: 1rem;
     object-fit: fill;
-    
-    /* This pushes the underline to the bottom of the grid cell */
-    align-self: end;
 }
 
 #artist-socials {
