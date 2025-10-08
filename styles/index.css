@@ -1063,6 +1063,15 @@ img.comma {
   #settings.active {
     transform: translate(-50%, -14rem);
   }
+  #privacy-policy-div > div {
+    padding: 2.25rem;
+  }
+  #privacy-policy-div h1 {
+    font-size: 1.25rem;
+  }
+  #privacy-policy-div p {
+    font-size: 1rem;
+  }
 }
 
 @keyframes backandforth {
