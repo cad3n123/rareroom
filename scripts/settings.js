@@ -138,6 +138,14 @@ function onWindowLoadedOrResized(event) {
   }
   aspectRatio = newAspectRatio;
 }
+function switchPageDefaults() {
+  $settings.classList.remove('active');
+  $settingsArrowDown.style.display = 'block';
+  $settingsArrowDown.classList.add('active');
+  if (!$main.classList.contains('first-inverted')) {
+    $settingsArrowDown.classList.remove('up-away');
+  }
+}
 
 // Event Listeners
 window.addEventListener('load', onWindowLoadedOrResized);
@@ -157,4 +165,11 @@ class Settings {
   }
 }
 
-export { $settings, $settingsArrowDown, settings, main, closeSettings };
+export {
+  $settings,
+  $settingsArrowDown,
+  settings,
+  main,
+  closeSettings,
+  switchPageDefaults,
+};

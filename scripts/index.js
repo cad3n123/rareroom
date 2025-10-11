@@ -4,6 +4,7 @@ import {
   settings,
   main as settingsMain,
   closeSettings,
+  switchPageDefaults as settingsSwitchPageDefaults,
 } from './settings.js';
 import { audioCtx, gainNode, main as audioMain } from './audio.js';
 
@@ -620,6 +621,7 @@ function switchPage(
   classSettings,
   artistName
 ) {
+  settingsSwitchPageDefaults();
   [
     ...$$aboutParagraphImgs,
     $aboutContainer,
@@ -630,11 +632,10 @@ function switchPage(
     element.style.display = 'none';
   });
   $homeLogoMorseContainer.classList.remove('top');
-  [$rareroomTitle, $homeBackground, $settingsArrowDown].forEach(
+  [$rareroomTitle, $homeBackground].forEach(
     (element) => (element.style.display = 'block')
   );
   $main.classList.remove('inverted');
-  $settingsArrowDown.classList.remove('up-away');
 
   elementSettings.forEach((elementSetting) => {
     elementSetting.element.style.display = elementSetting.displayMode;
@@ -646,8 +647,6 @@ function switchPage(
       classSetting.element.classList.remove(classSetting.class);
     }
   });
-  $settings.classList.remove('active');
-  $settingsArrowDown.classList.add('active');
 
   $$navButtons.forEach(($navButton) => {
     $navButton.classList.remove('active');
