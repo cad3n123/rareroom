@@ -166,7 +166,6 @@ class Settings {
 }
 
 export {
-  $settings,
   $settingsArrowDown,
   settings,
   main,

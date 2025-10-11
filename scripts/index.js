@@ -1,5 +1,4 @@
 import {
-  $settings,
   $settingsArrowDown,
   settings,
   main as settingsMain,
