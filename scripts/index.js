@@ -1,14 +1,13 @@
+import {
+  $settings,
+  $settingsArrowDown,
+  settings,
+  main as settingsMain,
+  closeSettings,
+} from './settings.js';
+
 // Constant Variables
 const numStudioImages = 7;
-const canvaBaseWidthPixel = 1366;
-const canvaBaseHeightPixel = 768;
-const canvaRatioPixel = 1366 / 768;
-const canvaBaseWidthPercent = 100;
-const canvaBaseHeightPercent = 56.2225;
-const canvaScale = 1.1;
-const canvaWidthPercent = canvaBaseWidthPercent * canvaScale;
-const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
-const flashDelay = 125;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
@@ -26,8 +25,6 @@ const [homeAudio, aboutAudio, contactAudio, artistsAudio] = [
 const bands = ['POLLISH', 'KELSI KEE'];
 
 // Global vars
-let localStorageSettings = localStorage.getItem('settings');
-let settings;
 let flashingInterval = null;
 /** @type {AudioBufferSourceNode} */
 let currentAudioBufferSource = null;
@@ -46,15 +43,9 @@ const [
   $homeLogoMorseContainer,
   $homeLogo,
   $homeLogoShadow,
-  $settings,
-  $settingsArrowDown,
-  $settingsX,
-  $settingsBorder,
   $studioButton,
   $privacyPolicyButton,
   $aboutContainer,
-  $pollishLink,
-  $contactEmail,
   $artistsDiv,
   $artistDiv,
   $studioDiv,
@@ -77,15 +68,9 @@ const [
   'home-logo-morse-container',
   'home-logo',
   'home-logo-shadow',
-  'settings',
-  'settings-arrow-down',
-  'settings-x',
-  'settings-border',
   'studio-button',
   'privacy-policy-button',
   'about-container',
-  'pollish-link',
-  'contact-email',
   'artists-div',
   'artist-div',
   'studio-div',
@@ -109,12 +94,6 @@ const [[$main]] = ['main'].map((descriptor) =>
 const [$$navButtons] = [':scope button'].map((descriptor) =>
   $nav.querySelectorAll(descriptor)
 );
-const [[$settingsContent]] = ['.content'].map((descriptor) =>
-  $settings.querySelectorAll(descriptor)
-);
-const [$$settingsSections] = [':scope > div'].map((descriptor) =>
-  $settingsContent.querySelectorAll(descriptor)
-);
 const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
   Array.from($backgroundPicture.querySelectorAll(descriptor))
 );
@@ -125,62 +104,8 @@ const [[$studioBack], [$studioTrack], [$studioForward]] = [
 ].map((descriptor) => $studioDiv.querySelectorAll(descriptor));
 
 async function main() {
-  settings = new Settings(JSON.parse(localStorageSettings ?? '{}'));
-  setAudioStatus(settings.sound);
-
+  settingsMain();
   addContactLinks();
-
-  $$settingsSections.forEach(($settingsSection) => {
-    const [$$buttons] = ['button'].map((descriptor) =>
-      $settingsSection.querySelectorAll(descriptor)
-    );
-    if ($$buttons.length < 2) {
-      return;
-    }
-    const [$on, $off] = $$buttons;
-
-    ['sound', 'light'].forEach((descriptor) => {
-      if ($settingsSection.classList.contains(descriptor)) {
-        if (settings[descriptor]) {
-          $on.classList.add('active');
-          $off.classList.remove('active');
-        } else {
-          $on.classList.remove('active');
-          $off.classList.add('active');
-        }
-      }
-    });
-
-    /**
-     *
-     * @param {HTMLButtonElement} $target
-     * @param {HTMLButtonElement} $other
-     */
-    function addButtonClickedEventListener($target, $other) {
-      $target.onclick = (e) => {
-        $target.classList.add('active');
-        $other.classList.remove('active');
-
-        ['sound', 'light'].forEach((descriptor) => {
-          if ($settingsSection.classList.contains(descriptor)) {
-            settings[descriptor] = $target === $on;
-            setAudioStatus(settings.sound);
-          }
-        });
-
-        localStorage.setItem('settings', JSON.stringify(settings));
-      };
-    }
-    addButtonClickedEventListener($on, $off);
-    addButtonClickedEventListener($off, $on);
-  });
-
-  updateContentPosition();
-
-  if (!settings.previouslyVisited) {
-    settings.previouslyVisited = true;
-    localStorage.setItem('settings', JSON.stringify(settings));
-  }
 
   addBandButtons();
   preloadArtistImages(bands);
@@ -188,10 +113,6 @@ async function main() {
   await updateArtistData();
 
   stateChanged(false);
-
-  if ($main.classList.contains('first-inverted')) {
-    $settingsArrowDown.classList.add('up-away');
-  }
 
   removeCurtainAfterImagesLoad();
 }
@@ -261,42 +182,6 @@ function setAudioStatus(isOn) {
 }
 
 // Functions
-function updateContentPosition() {
-  // Settings
-  const closedTopOffset = 2;
-  $settings.style.setProperty(
-    '--closed-top',
-    `-${$settings.offsetHeight + closedTopOffset}px`
-  );
-  $settings.style.setProperty('--closed-left', `-${$settings.offsetWidth}px`);
-
-  $settingsBorder.style.setProperty(
-    '--top',
-    `${($settings.offsetHeight - $settingsBorder.offsetHeight) / 2}px`
-  );
-  $settingsBorder.style.setProperty(
-    '--left',
-    `${($settings.offsetWidth - $settingsBorder.offsetWidth) / 2}px`
-  );
-
-  $settingsArrowDown.style.setProperty(
-    '--left',
-    `${($settings.offsetWidth - $settingsArrowDown.offsetWidth) / 2}px`
-  );
-  $settingsArrowDown.style.setProperty(
-    '--top',
-    `${($settings.offsetHeight - $settingsArrowDown.offsetHeight) / 2}px`
-  );
-  const settingArrowOffsetTop = -3;
-  $settingsArrowDown.style.setProperty(
-    '--margin-top',
-    `${$settings.offsetHeight + settingArrowOffsetTop}px`
-  );
-  $settingsArrowDown.style.setProperty(
-    '--margin-left',
-    `${$settings.offsetWidth}px`
-  );
-}
 async function updateArtistData() {
   try {
     const res = await fetch('/data/artist-socials.json');
@@ -384,11 +269,6 @@ async function flashMorseCode(times) {
     }
   }, 1);
 }
-function wait(milliseconds) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, milliseconds);
-  });
-}
 /**
  *
  * @param {string} morse
@@ -410,28 +290,6 @@ function morseTiming(morse) {
   }
 
   return times;
-}
-/**
- *
- * @param {HTMLElement} $switch
- */
-function createSwitch($switch) {
-  const $bar = document.createElement('div');
-  $bar.classList.add('bar');
-  const $node = document.createElement('div');
-  $node.classList.add('node');
-  [$bar, $node].forEach(($) => $switch.appendChild($));
-
-  $switch.addEventListener('click', (e) => {
-    $switch.classList.toggle('active');
-    ['sound', 'light'].forEach((descriptor) => {
-      if ($switch.classList.contains(descriptor)) {
-        settings[descriptor] = !settings[descriptor];
-        setAudioStatus(settings.sound);
-      }
-    });
-    localStorage.setItem('settings', JSON.stringify(settings));
-  });
 }
 /**
  *
@@ -722,10 +580,6 @@ function addContactLinks() {
 
   $content.insertBefore($socialMediaIcons, $artistDiv);
 }
-function closeSettings() {
-  $settings.classList.remove('active');
-  $settingsArrowDown.classList.add('active');
-}
 function removeFirstInverted() {
   $main.classList.remove('first-inverted');
   setTimeout(() => {
@@ -735,8 +589,6 @@ function removeFirstInverted() {
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
-window.addEventListener('load', updateContentPosition);
-window.addEventListener('resize', updateContentPosition);
 window.addEventListener('popstate', () => {
   stateChanged(true);
 });
@@ -759,11 +611,6 @@ $homeLogo.addEventListener('click', () => {
   removeFirstInverted();
   changeState('');
 });
-$settingsArrowDown.addEventListener('click', () => {
-  $settings.classList.add('active');
-  $settingsArrowDown.classList.remove('active');
-});
-$settingsX.addEventListener('click', closeSettings);
 $content.addEventListener('scroll', () => {
   if ($content.scrollTop > 5) {
     $homeLogoMorseContainer.classList.add('scrolled');
@@ -942,11 +789,5 @@ function secondsToMilliseconds(timeStr) {
 function wordsToFilename(words) {
   return words.trim().replace(/\s/g, '-').toLowerCase();
 }
-// Classes
-class Settings {
-  constructor({ light = true, sound = false, previouslyVisited = false } = {}) {
-    this.light = light;
-    this.sound = sound;
-    this.previouslyVisited = previouslyVisited;
-  }
-}
+
+export { setAudioStatus, $main };
