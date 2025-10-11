@@ -5,17 +5,13 @@ import {
   main as settingsMain,
   closeSettings,
 } from './settings.js';
+import { audioCtx, gainNode, main as audioMain } from './audio.js';
 
 // Constant Variables
 const numStudioImages = 7;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
-const volume = 0.35;
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const gainNode = audioCtx.createGain();
-gainNode.connect(audioCtx.destination);
-gainNode.gain.value = volume;
 const [homeAudio, aboutAudio, contactAudio, artistsAudio] = [
   'RAREROOM',
   'ABOUT',
@@ -104,6 +100,7 @@ const [[$studioBack], [$studioTrack], [$studioForward]] = [
 ].map((descriptor) => $studioDiv.querySelectorAll(descriptor));
 
 async function main() {
+  audioMain();
   settingsMain();
   addContactLinks();
 
@@ -115,23 +112,6 @@ async function main() {
   stateChanged(false);
 
   removeCurtainAfterImagesLoad();
-}
-
-async function buttonSoundOnClick() {
-  if (settings.sound) {
-    // Fetch and decode the audio file
-    const response = await fetch('/audios/switch.wav');
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-
-    // Create audio source and connect to destination
-    const source = audioCtx.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(gainNode);
-
-    // Schedule playback a short moment into the future
-    source.start(audioCtx.currentTime);
-  }
 }
 
 function populateStudioImages() {
@@ -171,14 +151,6 @@ function preloadArtistImages(bands) {
     const img = new Image();
     img.src = `/images/${filename}_artist.jpg`; // This starts the download and caches the image.
   });
-}
-
-/**
- *
- * @param {boolean} isOn
- */
-function setAudioStatus(isOn) {
-  gainNode.gain.value = isOn ? volume : 0;
 }
 
 // Functions
@@ -592,12 +564,6 @@ window.addEventListener('DOMContentLoaded', main);
 window.addEventListener('popstate', () => {
   stateChanged(true);
 });
-document.addEventListener('click', (e) => {
-  // check if the click target is a <button> or <a>
-  if (e.target.closest('button, a')) {
-    buttonSoundOnClick(e);
-  }
-});
 $contactButton.addEventListener('click', () => {
   changeState('contact');
 });
@@ -790,4 +756,4 @@ function wordsToFilename(words) {
   return words.trim().replace(/\s/g, '-').toLowerCase();
 }
 
-export { setAudioStatus, $main };
+export { $main };
