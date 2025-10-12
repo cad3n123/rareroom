@@ -775,20 +775,6 @@ main > div #content a.contact:hover {
 #studio-div .carousel button.forward {
   right: 1rem;
 }
-#privacy-policy-div {
-  font-family: Source_Code_Pro;
-}
-
-#privacy-policy-div > div {
-  padding: 4rem 8rem;
-  overflow-y: scroll;
-  height: 100%;
-  box-sizing: border-box; 
-}
-
-#privacy-policy-div * {
-  color: white;
-}
 
 #loading-bar {
   display: none;
@@ -1080,15 +1066,6 @@ img.comma {
   }
   #settings.active {
     transform: translate(-50%, -14rem);
-  }
-  #privacy-policy-div > div {
-    padding: 2.25rem;
-  }
-  #privacy-policy-div h1 {
-    font-size: 1.25rem;
-  }
-  #privacy-policy-div p {
-    font-size: 1rem;
   }
 }
 
