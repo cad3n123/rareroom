@@ -1,0 +1,224 @@
+#mc_embed_shell {
+    visibility: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    max-width: 99%;
+    width: max-content;
+    opacity: 0;
+
+    transition: visibility 0s, opacity var(--opacity-transition-time) var(--opacity-transition-function);
+}
+
+#mc_embed_shell.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+#mc_embed_shell #subscribe-border {
+    width: 28rem;
+    max-width: 100%;
+}
+
+#mc_embed_shell #mc_embed_signup {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#mc_embed_shell #mc_embed_signup form {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    padding: 2.75rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#mc_embed_shell #mc_embed_signup form .mc-field-group .mce_inline_error {
+    border: 3px solid red;
+    border-radius: unset;
+}
+
+#subscribe-x {
+    position: absolute;
+    align-self: end;
+    width: 2.75rem;
+    padding: 1rem;
+    padding-right: 0.5rem;
+    cursor: pointer;
+    top: 2rem;
+}
+
+#mc_embed_shell #mc_embed_signup .mc-field-group, #mc_embed_shell #mc_embed_signup #mce-responses {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin-bottom: 4.5%;
+    min-height: 0;
+}
+
+#mc_embed_shell #mc_embed_signup .mc-field-group, #mc_embed_shell #mc_embed_signup .optionalParent, #mc_embed_shell #mc_embed_signup #mce-responses {
+    width: 74%;
+}
+
+/* Center the subscribe button container */
+#mc_embed_shell #mc_embed_signup .optionalParent {
+    display: flex;
+    justify-content: center;
+}
+
+#mc_embed_shell #mc_embed_signup #mce-responses > div {
+    width: 100%;
+    margin: unset;
+    font-size: 0.75rem;
+    text-align: center;
+    margin: unset;
+    padding: unset;
+    font-family: Source_Code_Pro;
+}
+
+#mc_embed_shell #mc_embed_signup .mc-field-group .input-background {
+    width: 100%;
+    min-width: 0;
+}
+
+.placeholder {
+    position: absolute;
+    padding: 0 0.8rem;
+    height: 1.2rem;
+    width: auto;
+    max-width: 100%;
+    min-width: 0;
+    object-fit: contain;
+}
+
+#mc_embed_shell #mc_embed_signup .mc-field-group input, #mc_embed_shell #mc_embed_signup .mc-field-group select {
+    position: absolute;
+    background-color: unset;
+    border: unset;
+    font-size: 1rem;
+    margin: 0;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    padding: 0.5rem;
+    font-family: Source_Code_Pro;
+
+    transition: background-color 9999s ease-in-out 0s;
+}
+
+#mc_embed_shell #mc_embed_signup .mc-field-group input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: inherit !important;
+    background-color: transparent !important;
+}
+
+#mc_embed_shell #mc_embed_signup .mc-field-group input::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+#mc_embed_shell #mc_embed_signup .mc-field-group div.mce_inline_error {
+    display: none !important;
+}
+
+#mc_embed_shell #mc_embed_signup .optionalParent div input, #mc_embed_shell #mc_embed_signup .optionalParent div p {
+    font-family: Source_Code_Pro;
+    background-color: var(--secondary);
+    color: var(--primary);
+    height: 2.25rem;
+    margin: 0;
+}
+
+#mc_embed_shell #mc_embed_signup .optionalParent .foot {
+    display: flex;
+    width: max-content;
+    justify-self: center;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+#mc_embed_shell #mc_embed_signup .optionalParent div #subscribe-button-text {
+    width: auto;
+    height: 2rem;
+    object-fit: contain;
+    padding: 0.6rem;
+    z-index: -1;
+}
+
+#mc_embed_shell #mc_embed_signup .optionalParent div #subscribe-button-background {
+    --transform-padding: 50%;
+
+    position: absolute;
+    height: calc(100% + var(--transform-padding));
+    object-fit: contain;
+    z-index: -2;
+    box-sizing: unset;
+    padding-bottom: 0.25rem;
+}
+
+#mc_embed_shell #mc_embed_signup .optionalParent div input {
+    background-color: transparent;
+    transition: unset;
+    line-height: unset;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+#mc_embed_shell #mc_embed_signup #mailchimp-logo {
+    --size: 8;
+    --width: calc(var(--size) * 0.5rem);
+    --height: calc(var(--size) * 0.25rem);
+
+    margin: 0 !important;
+    position: absolute;
+    right: calc(0.7 * var(--width));
+    bottom: calc(1.5 * var(--height));
+}
+
+#mc_embed_shell #mc_embed_signup #mailchimp-logo a {
+    height: 100%;
+}
+
+#mc_embed_shell #mc_embed_signup #mailchimp-logo a span {
+    height: 100%;
+}
+
+#mc_embed_shell #mc_embed_signup #mailchimp-logo a span img {
+
+    width: var(--width) !important;
+    height: var(--height) !important;
+    padding: 4px !important;
+    filter: invert(1);
+}
+
+#shadow {
+    visibility: hidden;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0;
+    z-index: 11;
+    top: 0;
+
+    
+    transition: visibility 0s, opacity var(--opacity-transition-time) var(--opacity-transition-function);
+}
+
+#shadow.active {
+    visibility: visible;
+    opacity: 0.9;
+}
