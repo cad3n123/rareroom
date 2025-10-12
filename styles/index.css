@@ -1033,7 +1033,7 @@ img.comma {
     opacity: 1;
   }
   #artist-image {
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
   }
   #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
     height: 0.7rem;
