@@ -6,6 +6,7 @@ import {
   switchPageDefaults as settingsSwitchPageDefaults,
 } from '/scripts/settings.js';
 import { audioCtx, gainNode, main as audioMain } from '/scripts/audio.js';
+import { main as subscribeMain } from '/scripts/subscribe.js';
 
 // Constant Variables
 const numStudioImages = 7;
