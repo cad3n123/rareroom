@@ -475,12 +475,19 @@ main > div #content #rareroom-title {
   width: 20rem;
 }
 
+body:has(#curtain) main > div #content #pollish-link {
+  opacity: 0;
+}
+
 main > div #content #pollish-link {
   position: absolute;
   font-size: 85%;
   right: 1.5%;
   top: 40%;
   letter-spacing: 0.015rem;
+  opacity: 1;
+
+  transition: opacity 250ms;
 }
 
 main > div #content .contact {
