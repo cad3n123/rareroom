@@ -235,3 +235,47 @@
     visibility: visible;
     opacity: 0.9;
 }
+
+@media only screen and (max-width: 600px) { 
+     #subscribe-x {
+        --margin-edge: -1rem;
+
+        width: 0.75rem;
+        padding: 0.25rem;
+        top: calc(2.6rem + var(--margin-edge));
+    }
+    #mc_embed_shell #subscribe-border { 
+        width: 15rem;
+        height: 12rem;
+    }
+    #mc_embed_shell #mc_embed_signup form {
+        padding: 2.75rem 2.5rem;
+        padding-bottom: 2rem;
+    }
+    #mc_embed_shell #mc_embed_signup #mailchimp-logo {
+        --size: 3;
+    }
+    #mc_embed_shell #mc_embed_signup .mc-field-group #mce-COUNTRY {
+        padding-left: 0.25rem;
+    }
+    .placeholder {
+        height: 0.5rem;
+        padding: 0 0.4rem;
+    }
+    #mc_embed_shell #mc_embed_signup form .mc-field-group {
+        height: 1.75rem;
+    }
+    #mc_embed_shell #mc_embed_signup .mc-field-group input, #mc_embed_shell #mc_embed_signup .mc-field-group select {
+        font-size: 0.4rem;
+        padding: 0.1rem;
+    }
+    #mc_embed_shell #mc_embed_signup #mce-responses > div {
+        font-size: 0.55rem;
+    }
+    #mc_embed_shell #mc_embed_signup .optionalParent div #subscribe-button-text {
+        height: 0.3rem;
+    }
+    #mc_embed_shell #mc_embed_signup .optionalParent div #subscribe-button-background {
+        --transform-padding: -10%;
+    }
+}
