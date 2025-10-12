@@ -27,7 +27,6 @@ function openNewsletterForm() {
 function closeNewsletterForm() {
   document.getElementById('shadow').classList.remove('active');
   document.getElementById('mc_embed_shell').classList.remove('active');
-  document.documentElement.style.overflow = 'auto';
 }
 function setCountryList() {
   fetch('https://restcountries.com/v3.1/all?fields=name')
@@ -63,4 +62,4 @@ $countrySelect.addEventListener('change', () => {
   }
 });
 
-export { main };
+export { main, closeNewsletterForm };
