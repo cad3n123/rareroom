@@ -354,11 +354,12 @@ main > div:has(#home-logo-morse-container.scrolled.top) #home-logo-morse-contain
 
 main.first-inverted #loading-div {
   display: block;
+  height: 0;
 }
 
 main #loading-div {
-  margin-top: 1.25rem;
   display: none;
+  transform: translateY(1.25rem);
 }
 
 main #loading-div img.message {
@@ -703,7 +704,7 @@ main > div #content a.contact:hover {
   z-index: 1;}
 
 .black-overlay-page .x img {
-  width: 2rem;
+  width: 1.6rem;
   object-fit: cover;
 }
 

@@ -289,7 +289,9 @@ function morseTiming(morse) {
  */
 function stateChanged(withMorse) {
   const path = window.location.pathname;
+  console.log('path: ' + path);
   if (!['', '/'].includes(path)) {
+    console.log('Removing first-inverted');
     $backgroundContent.style.setProperty('--opacity-transition', '0ms');
     $main.classList.remove('first-inverted');
     setTimeout(() => {
@@ -617,7 +619,6 @@ $privacyPolicyX.addEventListener('click', () => {
   $privacyPolicyDiv.classList.remove('active');
 });
 $$imageHoverPurples.forEach(($imageHoverPurple) => {
-  console.log($imageHoverPurple);
   $imageHoverPurple.addEventListener('click', () => {
     $imageHoverPurple.classList.remove('flash'); // restart if tapped repeatedly
     void $imageHoverPurple.offsetWidth; // force reflow (resets animation)
