@@ -262,6 +262,10 @@
     }
     #mc_embed_shell #mc_embed_signup .mc-field-group #mce-COUNTRY {
         padding-left: 0.25rem;
+        border-radius: 0;
+    }
+    #mce-COUNTRY option {
+        font-size: 0.9rem;
     }
     .placeholder {
         height: 0.6rem;
@@ -272,7 +276,7 @@
     }
     #mc_embed_shell #mc_embed_signup .mc-field-group input, #mc_embed_shell #mc_embed_signup .mc-field-group select {
         font-size: 0.4rem;
-        padding: 0.1rem;
+        padding: 0.6rem 0.15rem;
     }
     #mc_embed_shell #mc_embed_signup #mce-responses > div {
         font-size: 0.55rem;
