@@ -1,4 +1,4 @@
-import { settings } from './settings.js';
+import { settings } from '/scripts/settings.js';
 
 // Constant Variables
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();

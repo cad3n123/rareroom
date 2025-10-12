@@ -1,5 +1,5 @@
-import { $main } from './index.js';
-import { setAudioStatus } from './audio.js';
+import { $main } from '/scripts/index.js';
+import { setAudioStatus } from '/scripts/audio.js';
 
 // Elements
 const [$settings, $settingsArrowDown, $settingsX, $settingsBorder] = [

@@ -4,8 +4,8 @@ import {
   main as settingsMain,
   closeSettings,
   switchPageDefaults as settingsSwitchPageDefaults,
-} from './settings.js';
-import { audioCtx, gainNode, main as audioMain } from './audio.js';
+} from '/scripts/settings.js';
+import { audioCtx, gainNode, main as audioMain } from '/scripts/audio.js';
 
 // Constant Variables
 const numStudioImages = 7;
