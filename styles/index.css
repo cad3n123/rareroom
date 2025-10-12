@@ -1063,6 +1063,9 @@ img.comma {
   #bands-nav img.comma {
     display: none;
   }
+  #artist-image {
+    width: 75vw;
+  }
   #settings {
     bottom: var(--closed-top);
     top: unset;
