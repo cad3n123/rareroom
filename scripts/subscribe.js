@@ -1,5 +1,7 @@
 // Constant Variables
 const [
+  $shadow,
+  $mcEmbedShell,
   $subscribeButton,
   $subscribeX,
   $emailInput,
@@ -7,6 +9,8 @@ const [
   $countrySelect,
   $countryPlaceholder,
 ] = [
+  'shadow',
+  'mc_embed_shell',
   'subscribe-button',
   'subscribe-x',
   'mce-EMAIL',
@@ -20,13 +24,13 @@ function main() {
   setCountryList();
 }
 function openNewsletterForm() {
-  document.getElementById('shadow').classList.add('active');
-  document.getElementById('mc_embed_shell').classList.add('active');
+  $shadow.classList.add('active');
+  $mcEmbedShell.classList.add('active');
   document.documentElement.style.overflow = 'hidden';
 }
 function closeNewsletterForm() {
-  document.getElementById('shadow').classList.remove('active');
-  document.getElementById('mc_embed_shell').classList.remove('active');
+  $shadow.classList.remove('active');
+  $mcEmbedShell.classList.remove('active');
 }
 function setCountryList() {
   fetch('https://restcountries.com/v3.1/all?fields=name')
