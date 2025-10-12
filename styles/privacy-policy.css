@@ -37,6 +37,7 @@
     padding-left: 0;
     background-color: black;
     font-size: 1.75rem;
+    text-transform: uppercase;
 }
 
 #privacy-policy-div * {
