@@ -19,6 +19,7 @@ const [homeAudio, aboutAudio, contactAudio, artistsAudio] = [
   'ARTISTS',
 ].map((name) => `/audios/${name} MORSE.m4a`);
 const bands = ['POLLISH', 'KELSI KEE'];
+const mobilePurplePulseMS = 500;
 
 // Global vars
 let flashingInterval = null;
@@ -84,9 +85,28 @@ const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts] = [
   ':scope > img.about',
   ':scope > .contact',
 ].map((descriptor) => Array.from($content.querySelectorAll(descriptor)));
-const [[$main]] = ['main'].map((descriptor) =>
-  document.querySelectorAll(descriptor)
-);
+const [
+  [$main],
+  $$imgHoverPurple0_5,
+  $$imgHoverPurple,
+  $$imgHoverPurple1_5,
+  $$imgHoverPurpler,
+  $$imgHover3Purple,
+] = [
+  'main',
+  '.img-hover-purple-0-5',
+  '.img-hover-purple',
+  '.img-hover-purple-1-5',
+  '.img-hover-purpler',
+  '.img-hover-3-purple',
+].map((descriptor) => document.querySelectorAll(descriptor));
+const $$imageHoverPurples = [
+  ...$$imgHoverPurple0_5,
+  ...$$imgHoverPurple,
+  ...$$imgHoverPurple1_5,
+  ...$$imgHoverPurpler,
+  ...$$imgHover3Purple,
+];
 const [$$navButtons] = [':scope button'].map((descriptor) =>
   $nav.querySelectorAll(descriptor)
 );
@@ -595,6 +615,18 @@ $privacyPolicyButton.addEventListener('click', () => {
 });
 $privacyPolicyX.addEventListener('click', () => {
   $privacyPolicyDiv.classList.remove('active');
+});
+$$imageHoverPurples.forEach(($imageHoverPurple) => {
+  console.log($imageHoverPurple);
+  $imageHoverPurple.addEventListener('click', () => {
+    $imageHoverPurple.classList.remove('flash'); // restart if tapped repeatedly
+    void $imageHoverPurple.offsetWidth; // force reflow (resets animation)
+    $imageHoverPurple.classList.add('flash');
+    setTimeout(
+      () => $imageHoverPurple.classList.remove('flash'),
+      mobilePurplePulseMS
+    ); // match animation duration
+  });
 });
 /**
  * @typedef {Object} ElementSettings
