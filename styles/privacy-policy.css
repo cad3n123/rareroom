@@ -27,6 +27,7 @@
 #privacy-policy-div section hr {
     margin: 0;
     margin-top: calc(1rem + var(--margin-top));
+    visibility: hidden;
 }
 
 #privacy-policy-div section h1 {
