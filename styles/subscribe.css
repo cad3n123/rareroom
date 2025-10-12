@@ -60,12 +60,15 @@
 
     position: absolute;
     align-self: end;
-    width: 1.5rem;
     padding: 0.5rem;
-    padding-right: 0.5rem;
-    cursor: pointer;
     top: calc(4.1rem + var(--margin-edge));
     margin-right: var(--margin-edge);
+    background-color: transparent;
+    border: none;
+}
+
+#subscribe-x img {
+    width: 1.5rem;
 }
 
 #mc_embed_shell #mc_embed_signup .mc-field-group, #mc_embed_shell #mc_embed_signup #mce-responses {
@@ -240,9 +243,11 @@
      #subscribe-x {
         --margin-edge: -1rem;
 
-        width: 0.75rem;
         padding: 0.25rem;
         top: calc(2.6rem + var(--margin-edge));
+    }
+    #subscribe-x img {
+        width: 0.75rem;
     }
     #mc_embed_shell #subscribe-border { 
         width: 15rem;
