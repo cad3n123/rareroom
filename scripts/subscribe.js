@@ -1,3 +1,5 @@
+import { changeState } from '/scripts/index.js';
+
 // Constant Variables
 const [
   $shadow,
@@ -24,6 +26,7 @@ function main() {
   setCountryList();
 }
 function openNewsletterForm() {
+  changeState('');
   $shadow.classList.add('active');
   $mcEmbedShell.classList.add('active');
   document.documentElement.style.overflow = 'hidden';

@@ -125,6 +125,7 @@ const [[$studioBack], [$studioTrack], [$studioForward]] = [
 async function main() {
   audioMain();
   settingsMain();
+  subscribeMain();
   addContactLinks();
 
   addBandButtons();
@@ -790,4 +791,4 @@ function wordsToFilename(words) {
   return words.trim().replace(/\s/g, '-').toLowerCase();
 }
 
-export { $main };
+export { $main, changeState };
