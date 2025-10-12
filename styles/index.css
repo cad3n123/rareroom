@@ -357,9 +357,7 @@ main.first-inverted #loading-div {
 }
 
 main #loading-div {
-  position: absolute;
-  display: none;
-  top: 55%;
+  margin-top: 1.25rem;
 }
 
 main #loading-div img.message {
@@ -1018,9 +1016,6 @@ img.comma {
   }
   main #loading-div {
     top: 22%;
-  }
-  main.first-inverted #loading-div {
-    margin-top: 1.5rem;
   }
   main > div {
     justify-content: start;
