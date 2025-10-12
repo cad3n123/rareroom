@@ -1036,7 +1036,7 @@ img.comma {
     opacity: 1;
   }
   #artist-image {
-    height: 50vh;
+    margin-top: 1rem;
   }
   #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
     height: 0.7rem;
