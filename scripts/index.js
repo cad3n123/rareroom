@@ -19,7 +19,7 @@ const [homeAudio, aboutAudio, contactAudio, artistsAudio] = [
   'ARTISTS',
 ].map((name) => `/audios/${name} MORSE.m4a`);
 const bands = ['POLLISH', 'KELSI KEE'];
-const mobilePurplePulseMS = 500;
+const mobilePurplePulseMS = 750;
 
 // Global vars
 let flashingInterval = null;

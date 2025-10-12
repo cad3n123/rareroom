@@ -39,6 +39,7 @@
     background-color: black;
     font-size: 1.75rem;
     text-transform: uppercase;
+    font-family: Alike;
 }
 
 #privacy-policy-div * {
@@ -47,7 +48,7 @@
 
 @media only screen and (max-width: 600px) {
   #privacy-policy-div > div {
-    --margin: 2.25rem;
+    --margin: 3rem;
   }
   #privacy-policy-div h1 {
     font-size: 1.25rem;

@@ -992,7 +992,7 @@ img.comma {
   .img-hover-purple-1-5,
   .img-hover-purpler,
   .img-hover-3-purple {
-    --purple-pulse-ms: 500ms;
+    --purple-pulse-ms: 750ms;
   }
   .img-hover-purple-0-5:hover,
   .img-hover-purple:hover,
