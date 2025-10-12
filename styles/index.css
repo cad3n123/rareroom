@@ -358,6 +358,7 @@ main.first-inverted #loading-div {
 
 main #loading-div {
   margin-top: 1.25rem;
+  display: none;
 }
 
 main #loading-div img.message {
