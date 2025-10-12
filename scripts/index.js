@@ -54,6 +54,7 @@ const [
   $artistName,
   $artistNameLink,
   $artistSocials,
+  $clickHereMessage,
 ] = [
   'background-content',
   'background-picture',
@@ -79,6 +80,7 @@ const [
   'artist-name',
   'artist-name-link',
   'artist-socials',
+  'click-here-message',
 ].map((id) => document.getElementById(id));
 const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts] = [
   'nav',
@@ -289,9 +291,7 @@ function morseTiming(morse) {
  */
 function stateChanged(withMorse) {
   const path = window.location.pathname;
-  console.log('path: ' + path);
   if (!['', '/'].includes(path)) {
-    console.log('Removing first-inverted');
     $backgroundContent.style.setProperty('--opacity-transition', '0ms');
     $main.classList.remove('first-inverted');
     setTimeout(() => {
@@ -580,6 +580,10 @@ function removeFirstInverted() {
     $backgroundContent.style.setProperty('--opacity-transition', '250ms');
   }, 1000);
 }
+function removeIntro() {
+  removeFirstInverted();
+  changeState('');
+}
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', main);
@@ -595,10 +599,8 @@ $aboutButton.addEventListener('click', () => {
 $artistsButton.addEventListener('click', () => {
   changeState('artists');
 });
-$homeLogo.addEventListener('click', () => {
-  removeFirstInverted();
-  changeState('');
-});
+$homeLogo.addEventListener('click', removeIntro);
+$clickHereMessage.addEventListener('click', removeIntro);
 $content.addEventListener('scroll', () => {
   if ($content.scrollTop > 5) {
     $homeLogoMorseContainer.classList.add('scrolled');

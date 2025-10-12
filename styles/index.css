@@ -362,6 +362,11 @@ main #loading-div {
   transform: translateY(1.25rem);
 }
 
+main #loading-div button {
+  background-color: transparent;
+  border: unset;
+}
+
 main #loading-div img.message {
   height: 1rem;
   width: auto;
@@ -1038,9 +1043,6 @@ img.comma {
   }
   #home-logo:hover {
     opacity: 1;
-  }
-  #artist-image {
-    /* margin-top: 1rem; */
   }
   #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
     height: 0.7rem;
