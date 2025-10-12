@@ -753,7 +753,7 @@ main > div #content a.contact:hover {
   color: white;
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
   transition: background-color 0.3s;
   z-index: 2;
 }
@@ -763,9 +763,10 @@ main > div #content a.contact:hover {
 }
 
 #studio-div .carousel button img {
+  display: block;
   width: 1rem;
-  height: auto;
-  object-fit: cover;
+  object-fit: fill;
+  height: 1.6rem;
 }
 
 #studio-div .carousel button.back {
