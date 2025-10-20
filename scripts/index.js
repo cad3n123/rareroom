@@ -624,7 +624,7 @@ $privacyPolicyX.addEventListener('click', () => {
 });
 $$imageHoverPurples.forEach(($imageHoverPurple) => {
   $imageHoverPurple.addEventListener('click', () => {
-    $imageHoverPurple.classList.remove('flash'); // restart if tapped repeatedly
+    $imageHoverPurple.classList.remove('flash'); 
     void $imageHoverPurple.offsetWidth; // force reflow (resets animation)
     $imageHoverPurple.classList.add('flash');
     setTimeout(

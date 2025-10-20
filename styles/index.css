@@ -61,7 +61,7 @@ button, a {
 }
 
 main:not(.inverted):not(.first-inverted) nav button.active {
-  filter: brightness(1) sepia(1) hue-rotate(270deg) saturate(16) brightness(0.6);
+  filter: brightness(1) sepia(1) hue-rotate(270deg) saturate(8);
 }
 
 html,
@@ -457,6 +457,10 @@ main nav:not(#bands-nav) button img:hover {
   filter: invert(90%);
 }
 
+main nav:not(#bands-nav) button.active img:hover {
+  filter: invert(10%);
+}
+
 main.inverted #bands-nav img,
 main.first-inverted #bands-nav img {
   filter: invert(100%);
@@ -529,10 +533,17 @@ main nav button:not(.active):hover::before, main nav button.active::before {
   width: 100%;
 }
 
-main nav button:hover::before,
 main.inverted nav button::before,
 main.first-inverted nav button::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
+}
+
+main nav button:hover::before {
+  filter: invert(0.9);
+}
+
+main nav button.active:hover::before {
+  filter: invert(0.05);
 }
 
 main button:not(.nav-button) span {
@@ -1001,7 +1012,7 @@ img.comma {
   .img-hover-3-purple:hover {
     filter: unset;
   }
-  .img-hover-purple-0-5.flash {
+  /* .img-hover-purple-0-5.flash {
     animation: img-hover-purple-0-5 var(--purple-pulse-ms) ease;
   }
   .img-hover-purple.flash {
@@ -1015,6 +1026,11 @@ img.comma {
   }
   .img-hover-3-purple.flash {
     animation: img-hover-3-purple var(--purple-pulse-ms) ease;
+  } */
+
+  main nav:not(#bands-nav) button.active img:hover,
+  main nav button.active:hover::before {
+    filter: unset;
   }
 
   main nav:not(#bands-nav) button img:hover {
