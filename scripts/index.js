@@ -624,7 +624,7 @@ $privacyPolicyX.addEventListener('click', () => {
 });
 $$imageHoverPurples.forEach(($imageHoverPurple) => {
   $imageHoverPurple.addEventListener('click', () => {
-    $imageHoverPurple.classList.remove('flash'); 
+    $imageHoverPurple.classList.remove('flash');
     void $imageHoverPurple.offsetWidth; // force reflow (resets animation)
     $imageHoverPurple.classList.add('flash');
     setTimeout(
@@ -633,6 +633,26 @@ $$imageHoverPurples.forEach(($imageHoverPurple) => {
     ); // match animation duration
   });
 });
+if (window.visualViewport) {
+  // Add an event listener for when the viewport resizes (zooms)
+  window.visualViewport.addEventListener('resize', () => {
+    // Check if the user is fully zoomed out (scale = 1)
+    if (window.visualViewport.scale === 1) {
+      const iterations = 6;
+      const deltaT = 15;
+      let i = 0;
+      // A tiny delay ensures the browser has finished its zoom logic
+      const interval = setInterval(() => {
+        // Force the scroll position back to the top-left corner
+        window.scrollTo(0, 0);
+        if (i >= iterations) {
+          clearInterval(interval);
+        }
+        i++;
+      }, deltaT); // 10ms is usually enough
+    }
+  });
+}
 /**
  * @typedef {Object} ElementSettings
  * @property {HTMLElement} element

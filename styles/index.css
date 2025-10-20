@@ -67,6 +67,7 @@ main:not(.inverted):not(.first-inverted) nav button.active {
 html,
 body {
   overflow: hidden;
+  height: 100svh;
 }
 
 body {
@@ -87,7 +88,7 @@ body div img {
   visibility: hidden;
   opacity: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
   z-index: 100;
   
   transition: opacity var(--transition-time) ease, visibility 0s linear var(--transition-time);
@@ -112,7 +113,7 @@ body:has(main.first-inverted) #background-content {
   --opacity-transition: 1500ms;
 
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
   padding-bottom: 0;
   overflow: hidden;
   z-index: -10;
@@ -138,7 +139,7 @@ body:has(main.first-inverted) #background-content {
   position: absolute;
   width: 100%;
   max-width: 100vw;
-  height: 100vh;
+  height: 100svh;
   top: 0;
   left: 0;
   border: none;
@@ -311,7 +312,7 @@ main > div:has(#home-logo-morse-container.top) {
   min-width: 0;
   min-height: 0;
   max-width: 100vw;
-  max-height: 100vh;
+  max-height: 100svh;
   background: none;
   border: none;
   outline: none;
@@ -328,7 +329,7 @@ main > div:has(#home-logo-morse-container.top) {
   min-width: 0;
   min-height: 0;
   max-width: 100vw;
-  max-height: 100vh;
+  max-height: 100svh;
 }
 
 main {
@@ -637,7 +638,7 @@ main > div #content a.contact:hover {
 }
 
 #artist-image {
-  width: 150vh;
+  width: 150svh;
   max-width: 85vw;
   margin: auto;
 }
@@ -705,7 +706,7 @@ main > div #content a.contact:hover {
   left: 0;
   top: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
   background-color: black;
   opacity: 0;
 
@@ -760,7 +761,7 @@ main > div #content a.contact:hover {
 
 #studio-div .carousel-track img {
   width: 100vw;                /* each slide takes up full screen width */
-  height: 100vh;               /* each slide area fills screen height */
+  height: 100svh;               /* each slide area fills screen height */
   object-fit: contain;         /* image never stretches */
   object-position: center;     /* center image within its box */
   background-color: black;     /* fill space around images cleanly */
@@ -1003,7 +1004,7 @@ img.comma {
   .img-hover-purple-1-5,
   .img-hover-purpler,
   .img-hover-3-purple {
-    --purple-pulse-ms: 750ms;
+    --purple-pulse-ms: 100%;
   }
   .img-hover-purple-0-5:hover,
   .img-hover-purple:hover,
@@ -1012,7 +1013,7 @@ img.comma {
   .img-hover-3-purple:hover {
     filter: unset;
   }
-  /* .img-hover-purple-0-5.flash {
+  .img-hover-purple-0-5.flash {
     animation: img-hover-purple-0-5 var(--purple-pulse-ms) ease;
   }
   .img-hover-purple.flash {
@@ -1026,7 +1027,7 @@ img.comma {
   }
   .img-hover-3-purple.flash {
     animation: img-hover-3-purple var(--purple-pulse-ms) ease;
-  } */
+  }
 
   main nav:not(#bands-nav) button.active img:hover,
   main nav button.active:hover::before {
