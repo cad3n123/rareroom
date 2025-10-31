@@ -540,7 +540,7 @@ main nav button:not(.active):hover::before, main nav button.active::before {
   width: 100%;
 }
 
-main.inverted nav button::before,
+main.inverted nav:not(#bands-nav) button::before,
 main.first-inverted nav button::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
