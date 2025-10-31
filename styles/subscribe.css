@@ -251,8 +251,8 @@
         width: 1rem;
     }
     #mc_embed_shell #subscribe-border { 
-        width: 20rem;
-        height: 16rem;
+        width: 21rem;
+        height: 17rem;
     }
     #mc_embed_shell #mc_embed_signup form {
         padding: 3.5rem 2.25rem;
@@ -269,7 +269,7 @@
         font-size: 0.9rem;
     }
     .placeholder {
-        height: 0.7rem;
+        height: 0.75rem;
         padding: 0 0.5rem;
     }
     #mc_embed_shell #mc_embed_signup form .mc-field-group {
@@ -283,9 +283,9 @@
         font-size: 0.55rem;
     }
     #mc_embed_shell #mc_embed_signup .optionalParent div #subscribe-button-text {
-        height: 0.4rem;
+        height: 0.45rem;
     }
     #mc_embed_shell #mc_embed_signup .optionalParent div #subscribe-button-background {
-        --transform-padding: 10%;
+        --transform-padding: 15%;
     }
 }
