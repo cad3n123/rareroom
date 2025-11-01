@@ -1,4 +1,7 @@
 #mc_embed_shell {
+    --opacity-transition-time: 0.5s;
+    --opacity-transition-function: ease-in-out;
+
     visibility: hidden;
     position: fixed;
     top: 50%;
