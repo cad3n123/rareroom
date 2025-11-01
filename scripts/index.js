@@ -6,18 +6,24 @@ import {
   switchPageDefaults as settingsSwitchPageDefaults,
 } from '/scripts/settings.js';
 import { audioCtx, gainNode, main as audioMain } from '/scripts/audio.js';
-import { main as subscribeMain } from '/scripts/subscribe.js';
+import {
+  main as subscribeMain,
+  $subscribeButton,
+  $shadow,
+  $mcEmbedShell,
+} from '/scripts/subscribe.js';
 
 // Constant Variables
 const numStudioImages = 7;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
-const [homeAudio, aboutAudio, contactAudio, artistsAudio] = [
+const [homeAudio, aboutAudio, contactAudio, artistsAudio, subscribeAudio] = [
   'RAREROOM',
   'ABOUT',
   'CONTACT',
   'ARTISTS',
+  'SUBSCRIBE',
 ].map((name) => `/audios/${name} MORSE.m4a`);
 const bands = ['POLLISH', 'KELSI KEE'];
 const mobilePurplePulseMS = 750;
@@ -335,6 +341,20 @@ function stateChanged(withMorse) {
     );
     if (withMorse) {
       playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
+    }
+  } else if (path === '/subscribe' || path == '/subscribe/') {
+    switchPage(
+      $subscribeButton,
+      [],
+      [
+        ...[$shadow, $mcEmbedShell].map(($) => {
+          return { element: $, class: 'active', isAdding: true };
+        }),
+        { element: document.documentElement, class: 'active', isAdding: false },
+      ]
+    );
+    if (withMorse) {
+      playMorse(subscribeAudio, '... ..- -... ... -.-. .-. .. -... .');
     }
   } else if (path.startsWith('/artists') || path.startsWith('/artists/')) {
     if (path === '/artists' || path === '/artists/') {
@@ -698,6 +718,9 @@ function switchPage(
   [$rareroomTitle, $homeBackground].forEach(
     (element) => (element.style.display = 'block')
   );
+  [$shadow, $mcEmbedShell].forEach(($) => {
+    $.classList.remove('active');
+  });
   $main.classList.remove('inverted');
 
   elementSettings.forEach((elementSetting) => {

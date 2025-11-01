@@ -26,14 +26,10 @@ function main() {
   setCountryList();
 }
 function openNewsletterForm() {
-  changeState('');
-  $shadow.classList.add('active');
-  $mcEmbedShell.classList.add('active');
-  document.documentElement.style.overflow = 'hidden';
+  changeState('subscribe');
 }
 function closeNewsletterForm() {
-  $shadow.classList.remove('active');
-  $mcEmbedShell.classList.remove('active');
+  changeState('');
 }
 function setCountryList() {
   fetch('https://restcountries.com/v3.1/all?fields=name')
@@ -69,4 +65,4 @@ $countrySelect.addEventListener('change', () => {
   }
 });
 
-export { main, closeNewsletterForm };
+export { main, closeNewsletterForm, $subscribeButton, $shadow, $mcEmbedShell };
