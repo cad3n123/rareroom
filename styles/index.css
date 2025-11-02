@@ -429,7 +429,7 @@ main > div #content nav > span > span button img {
 }
 
 main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
-  height: 0.9rem;
+  height: 1rem;
   object-fit: contain;
 }
 
