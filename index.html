@@ -12,112 +12,307 @@
   <meta name="description"
     content="RAREROOM - a multifaceted entity encompassing a recording studio, label and development firm, serving as a destination for artists and creatives in music and visual arts. Under the guidance of musician and producer Logan Gladden, the label and studio offer the essential tools and creative freedom necessary to assist artists in navigating the evolving landscape of the entertainment industry." />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta property='og:image' content='https://rareroomeast.com/images/logo.png'>
+  <meta property='og:image' content='https://rareroomeast.com/images/logo_lighter.png'>
   <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96" />
   <link rel="shortcut icon" href="/images/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
   <link rel="manifest" href="/images/site.webmanifest" />
   <link rel="stylesheet" href="/styles/index.css" />
+  <link rel="stylesheet" href="/styles/privacy-policy.css" />
+  <link rel="stylesheet" href="/styles/subscribe.css" />
+  <script
+    id="mcjs">!function (c, h, i, m, p) { m = c.createElement(h), p = c.getElementsByTagName(h)[0], m.async = 1, m.src = i, p.parentNode.insertBefore(m, p) }(document, "script", "https://chimpstatic.com/mcjs-connected/js/users/5430422406759f392a618e6ac/fd9fea6dff2a82e4d99e7d0a7.js");</script>
 </head>
 
 <body>
   <div id='curtain' class='active'></div>
 
-  <div id="background-content" style="width: 100%; height: 100%; padding-bottom: 0; overflow: hidden">
+  <div id="background-content">
     <img id="background" src="/images/background.jpg" style="z-index: -1" />
     <img id="home-background" src="/images/home_transparent.png" style="z-index: 0" />
-    <img id="about-background" src="/images/about_transparent.png" style="z-index: -2" />
-    <img id="contact-background" src="/images/contact_transparent.png" style="z-index: -2" />
+    <!-- <img id="about-background" src="/images/about_transparent.png" style="z-index: -2" />
+    <img id="contact-background" src="/images/contact_transparent.png" style="z-index: -2" /> -->
   </div>
-  <main>
+  <div id='background-picture'>
+    <img>
+  </div>
+  <main class='first-inverted'>
     <div>
       <span id='home-logo-morse-container'>
-        <span id='home-logo-container'>
+        <div class='fuzz-background'></div>
+        <div class='background'></div>
+        <button id='home-logo-container'>
           <img id='home-logo-shadow' src="/images/logo-shadow.png" alt="RAREROOM Logo Shadow">
-          <img id="home-logo" src="/images/logo.png" alt='RAREROOM Logo' />
-        </span>
+          <img id="home-logo" class='img-hover-purple-1-5' src="/images/logo_lighter.png" alt='RAREROOM Logo' />
+        </button>
         <span class="morse">
           <img src="/images/rare-morse.png" class="morse" />
           <img src="/images/room-morse.png" class="morse" />
         </span>
+        <img src="/images/horizontal-line.png" alt="_______" class='underline'>
       </span>
+      <div id='loading-div'>
+        <button>
+          <img id='click-here-message' class='message' src="/images/enter_website_here.png" alt="Enter Website Here">
+        </button>
+      </div>
       <div id="content">
         <nav>
           <span>
-            <span><button id="contact-button">CONTACT</button><img
-                src="/images/contact-morse.png" /></span><span>|</span><span><button
-                id="about-button">ABOUT</button><img src="/images/about-morse.png" /></span>
+
+            <span>
+              <button id="about-button" class='nav-button'>
+                <img src="/images/about-nav.png" alt="ABOUT">
+              </button>
+              <img src="/images/about-morse.png" />
+            </span>
+            <img src="/images/vertical-line.png" alt="|" class='vertical-line'>
+            <span>
+              <button id="artists-button" class='nav-button'><img src="/images/artists-nav.png" alt="ARTISTS">
+              </button>
+              <img src="/images/artists-morse.png" />
+            </span>
+            <img src="/images/vertical-line.png" alt="|" class='vertical-line'>
+            <span>
+              <button id="contact-button" class='nav-button'>
+                <img src="/images/contact-nav.png" alt="CONTACT">
+              </button>
+              <img src="/images/contact-morse-less-rotated.png" />
+            </span>
+            <img src="/images/vertical-line.png" alt="|" class='vertical-line'>
+            <span>
+              <button id="subscribe-button" class='nav-button'>
+                <img src="/images/subscribe-nav.png" alt="SUBSCRIBE" style='opacity: 0.8;'>
+              </button>
+              <img src="/images/subscribe-morse.png" />
+            </span>
           </span>
         </nav>
-        <img style="display: none" class="about title" src="/images/about-paragraph-title_sharpened.png" />
-        <img style="display: none" class="about content" src="/images/about-paragraph_sharpened.png" />
-        <a style="display: none" id='pollish-link' class='image-a' href='https://www.pollishtheproject.com/'>Logan
-          Gladden</a>
-        <ul style="display: none" id="social-media-icons" class='contact'>
-          <a href="https://www.instagram.com/rareroomeast/?utm_source=ig_web_button_share_sheet"><svg
-              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-              <path
-                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
-            </svg></a>
-          <!-- <a href="https://x.com/rareroomeast"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path
-                d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
-            </svg></a> -->
-          <a href="mailto:ops@rareroomeast.com?subject=RAREROOM%20Inquiry"><svg xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512">
-              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-              <path
-                d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z" />
-            </svg></a>
-        </ul>
-        <img style="display: none" src='/images/contact-paragraph.png' alt="Contact Paragraph" class='contact'>
-        <a style="display: none" href='mailto:demos@rareroomeast.com' class='contact image-a'>demos@rareroomeast.com</a>
+        <img style="display: none" id="rareroom-title" src="/images/rareroom-title.png" />
+        <div style="display: none" id='about-container' class='about container'>
+          <img class="content" src="/images/about-paragraph.png" />
+          <a id='pollish-link' class='image-a' href='https://www.pollishtheproject.com/' target="_blank"
+            rel="noopener noreferrer">Logan
+            Gladden</a>
+        </div>
+
+        <a style="display: none" href='mailto:demos@rareroomeast.com' id='contact-email' class='contact'><img
+            src="/images/left-bracket.png" alt="["><img src='/images/contact-paragraph.png' alt="Contact Paragraph"
+            id='contact-paragraph' class='img-hover-purple'><img src="/images/right-bracket.png" alt="]"></a>
+
+
+        <div style="display: none" id='artists-div' class='artists'>
+          <nav id='bands-nav'>
+
+          </nav>
+        </div>
+        <div id='artist-div' class='artist'>
+          <img id='artist-image' alt="Artist Image">
+          <div id='artist-name-container'>
+            <a id='artist-name-link'><img id='artist-name' alt="Artist Name"></a>
+            <img src="/images/horizontal-line-2.png" alt="_______" class='underline'>
+          </div>
+          <div id='artist-socials'></div>
+        </div>
       </div>
     </div>
   </main>
-  <div id="settings" style="z-index: 1; width: 14rem">
+  <div id="studio-div" class="black-overlay-page studio">
+    <button id="studio-x" class='x'><img src="/images/x.png" alt="Close Studio"></button>
+    <div class="carousel">
+      <button class="back"><img src="/images/back-arrow.png" alt="Previous Image"></button>
+      <div class="carousel-track"></div>
+      <button class="forward"><img src="/images/forward-arrow.png" alt="Next Image"></button>
+    </div>
+  </div>
+  <div id="privacy-policy-div" class="black-overlay-page privacy-policy">
+    <button id="privacy-policy-x" class='x'><img src="/images/x.png" alt="Close Privacy Policy"></button>
+    <div>
+      <section>
+        <h1>Information We Collect</h1>
+        <p>We may collect the following categories of information: Voluntarily Provided Information: When you sign up
+          for
+          our newsletter or other communications, we may collect personal information such as your name and email
+          address.
+          Automatically Collected Information: At present, our websites do not utilize cookies, analytics tools, or
+          similar technologies. However, we reserve the right to implement such technologies in the future.</p>
+      </section>
+
+      <section>
+        <h1>How We Use Information</h1>
+        <p>We may use the information we collect for the following purposes: To provide newsletters, updates, and
+          promotional communications. To maintain and improve our websites, services, and offerings. To comply with
+          legal
+          obligations and enforce our rights. For other purposes disclosed to you at the time of collection or with your
+          consent.</p>
+      </section>
+
+      <section>
+        <h1>Third-Party Services</h1>
+        <p>We currently use Mailchimp to manage our newsletter communications. When you provide your email address and
+          other personal information for this purpose, that information may be stored, processed, and managed by
+          Mailchimp
+          in accordance with its own privacy practices.</p>
+        <p>In the future, we may integrate additional third-party services, including but not limited to analytics
+          providers, advertising platforms, or content distribution partners. Such services may collect or process
+          information about your use of our websites, including through cookies or similar technologies. We will update
+          this Policy accordingly to reflect any such integrations.</p>
+      </section>
+
+      <section>
+        <h1>Cookies and Tracking Technologies</h1>
+        <p>At this time, our websites do not employ cookies or tracking technologies. If and when we adopt such
+          technologies (for example, to enable analytics or targeted advertising), this Policy will be updated to
+          describe
+          the types of cookies used, their purposes, and the choices available to you.</p>
+      </section>
+
+      <section>
+        <h1>Data Retention</h1>
+        <p>We retain your personal information only for as long as is reasonably necessary to fulfill the purposes
+          described in this Policy, unless a longer retention period is required or permitted by law.</p>
+      </section>
+
+      <section>
+        <h1>Your Rights and Choices</h1>
+        <p>You may unsubscribe from our newsletter at any time by following the “unsubscribe” link provided in our email
+          communications. You may also request that we delete or update your personal information by contacting us at
+          the
+          address provided below.</p>
+      </section>
+
+      <section>
+        <h1>Data Security</h1>
+        <p>We implement commercially reasonable technical and organizational measures to protect your personal
+          information
+          against unauthorized access, use, or disclosure. However, no method of transmission or storage is completely
+          secure, and we cannot guarantee absolute security.</p>
+      </section>
+
+      <section>
+        <h1>International Users</h1>
+        <p>Our websites are accessible worldwide. If you are accessing our websites from outside the United States,
+          please
+          note that your information may be transferred to, stored, and processed in jurisdictions where privacy laws
+          may
+          not be as protective as those in your location.</p>
+      </section>
+
+      <section>
+        <h1>Changes to This Policy</h1>
+        <p>We reserve the right to modify this Policy at any time. Any changes will be effective upon posting the
+          updated
+          Policy on our websites, unless otherwise required by law. Your continued use of our websites following the
+          posting of changes constitutes your acceptance of those changes.</p>
+      </section>
+
+      <section>
+        <h1>Contact Us</h1>
+        <p>If you have any questions about this Policy or our data practices, please contact us at:</p>
+        <a href="mailto:ops@rareroomeast.com">ops@rareroomeast.com</a>
+      </section>
+
+    </div>
+  </div>
+  <div id="settings" style="z-index: 1; width: 16rem">
     <img id="settings-border" src="/images/settings_border.png"
       style="position: absolute; width: 100%; object-fit: cover" />
-    <div id="settings-arrow-down" class="active" style="position: absolute">
-      <div class="left"></div>
-      <div class="right"></div>
-    </div>
-    <div id="settings-x" style="position: absolute; z-index: 1">
-      <div class="left"></div>
-      <div class="right"></div>
-    </div>
+    <button id="settings-arrow-down" class="active up-away" style="position: absolute">
+      <img src="/images/down-arrow.png" alt="Open Settings">
+    </button>
+    <button id="settings-x" style="position: absolute; z-index: 1">
+      <img src="/images/x.png" alt="Close Settings">
+    </button>
     <div class="content" style="position: relative">
-      <span>
+      <div class='light'>
+        <img src='/images/light.png' alt='LIGHT'>
         <span>
-          <div class="image-container light">
-            <img src="/images/light-button-background.png" />
-            <img src="/images/light-button.png" />
-          </div>
-          <div class="switch light">
-            <img src="/images/on-switch.png" data-state="on" alt="Switch On" />
-            <img src="/images/off-switch.png" data-state="off" alt="Switch Off" />
-          </div>
+          <button><img src="/images/on.png" alt="ON" class='img-hover-purpler'></button>
+          <button><img src="/images/off.png" alt="OFF" class='img-hover-purpler'></button>
         </span>
+      </div>
+      <div class='sound'>
+        <img src='/images/sound.png' alt='SOUND'>
         <span>
-          <div class="image-container sound">
-            <img src="/images/sound-button-background.png" />
-            <img src="/images/sound-button.png" />
-          </div>
-          <div class="switch sound active">
-            <img src="/images/on-switch.png" data-state="on" alt="Switch On" />
-            <img src="/images/off-switch.png" data-state="off" alt="Switch Off" />
-          </div>
+          <button><img src="/images/on.png" alt="ON" class='img-hover-purpler'></button>
+          <button><img src="/images/off.png" alt="OFF" class='img-hover-purpler'></button>
         </span>
-      </span>
-      <p>WARNING: CONTAINS FLASHING IMAGES</p>
+      </div>
+      <br>
+      <div class='store'>
+        <button id='studio-button'><img src='/images/studio.png' alt='STUDIO' class='img-hover-purple-1-5'></button>
+      </div>
+      <div class='privacy-policy'>
+        <button id='privacy-policy-button'><img src='/images/privacy-policy.png' alt='PRIVACY POLICY'
+            class='img-hover-purple-1-5'></button>
+      </div>
     </div>
+  </div>
+  <div id='shadow'></div>
+  <div id="mc_embed_shell" class='unselectable'>
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
+    <img id='subscribe-border' src="/images/subscribe_border.png" alt="Subscribe Border">
+    <div id="mc_embed_signup">
+      <form
+        action="https://rareroomeast.us9.list-manage.com/subscribe/post?u=dc1ef2b26411dc4872ade1a16&amp;id=12eb6d76fb&amp;f_id=00c451e1f0"
+        method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
+        target="_blank">
+        <button id='subscribe-x'><img src="/images/x.png" alt="x"></button>
+        <div class="mc-field-group">
+          <img class='input-background' src="/images/subscribe_input_background.png" alt="Subscribe Input Background">
+          <img id='email-placeholder' class='placeholder' src="/images/ENTER_EMAIL.png" alt="Enter Email">
+          <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required="" value="" autocomplete="on">
+        </div>
+        <div class="mc-field-group">
+          <img class='input-background' src="/images/subscribe_input_background.png" alt="Subscribe Input Background">
+          <img id='country-placeholder' class='placeholder' src="/images/SELECT_COUNTRY.png"
+            alt="Select Country or Region">
+          <select name="COUNTRY" class="required" id="mce-COUNTRY" autocomplete="on">
+            <option value=""></option>
+            <option value="United States">United States</option>
+          </select>
+        </div>
+        <div id="mce-responses" class="clear foot">
+          <div class="response" id="mce-error-response" style="display: none;"></div>
+          <div class="response" id="mce-success-response" style="display: none;"></div>
+        </div>
+        <div aria-hidden="true" style="position: absolute; left: -5000px;">
+          /* real people should not fill this in and expect good things - do not remove this or risk form
+          bot sign-ups */
+          <input type="text" name="b_dc1ef2b26411dc4872ade1a16_12eb6d76fb" tabindex="-1" value="">
+        </div>
+        <div class="optionalParent">
+          <div class="clear foot">
+            <img id='subscribe-button-text' src="/images/subscribe.png" alt="Subscribe">
+            <img id='subscribe-button-background' src="/images/subscribe_background.png" alt="Subscribe Background">
+            <input type="submit" name="subscribe" id="mc-embedded-subscribe" class="button" value="">
+          </div>
+        </div>
+      </form>
+      <p id='mailchimp-logo' style="margin: 0px auto;"><a href="http://eepurl.com/jgy2Rs"
+          title="Mailchimp - email marketing made easy and fun"><span
+            style="display: inline-block; background-color: transparent; border-radius: 4px;"><img
+              class="refferal_badge"
+              src="https://digitalasset.intuit.com/render/content/dam/intuit/mc-fe/en_us/images/intuit-mc-rewards-text-dark.svg"
+              alt="Intuit Mailchimp"
+              style="width: 220px; height: 40px; display: flex; padding: 2px 0px; justify-content: center; align-items: center;"></span></a>
+      </p>
+    </div>
+    <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+    <script
+      type="text/javascript">(function ($) { window.fnames = new Array(); window.ftypes = new Array(); fnames[0] = 'EMAIL'; ftypes[0] = 'email'; fnames[5] = 'COUNTRY'; ftypes[5] = 'dropdown'; fnames[1] = 'FNAME'; ftypes[1] = 'text'; fnames[2] = 'LNAME'; ftypes[2] = 'text'; fnames[3] = 'ADDRESS'; ftypes[3] = 'address'; fnames[4] = 'PHONE'; ftypes[4] = 'phone'; }(jQuery)); var $mcj = jQuery.noConflict(true);</script>
   </div>
   <audio id="home-audio" type="audio/x-m4a" src="/audios/RAREROOM MORSE.m4a"></audio>
   <audio id="about-audio" type="audio/x-m4a" src="/audios/ABOUT MORSE.m4a"></audio>
   <audio id="contact-audio" type="audio/x-m4a" src="/audios/CONTACT MORSE.m4a"></audio>
+  <audio id="artists-audio" type="audio/x-m4a" src="/audios/ARTISTS MORSE.m4a"></audio>
+  <audio id="subscribe-audio" type="audio/x-m4a" src="/audios/SUBSCRIBE MORSE.m4a"></audio>
 
-  <script src="/scripts/index.js"></script>
+  <script type="module" src="/scripts/index.js"></script>
+  <script type="module" src="/scripts/settings.js"></script>
+  <script type="module" src="/scripts/audio.js"></script>
+  <script type="module" src="/scripts/subscribe.js"></script>
+
 </body>
 
 </html>

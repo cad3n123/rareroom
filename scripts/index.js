@@ -1,180 +1,199 @@
+import {
+  $settingsArrowDown,
+  settings,
+  main as settingsMain,
+  closeSettings,
+  switchPageDefaults as settingsSwitchPageDefaults,
+} from '/scripts/settings.js';
+import { audioCtx, gainNode, main as audioMain } from '/scripts/audio.js';
+import {
+  main as subscribeMain,
+  $subscribeButton,
+  $shadow,
+  $mcEmbedShell,
+} from '/scripts/subscribe.js';
+
 // Constant Variables
-const canvaBaseWidthPixel = 1366;
-const canvaBaseHeightPixel = 768;
-const canvaRatioPixel = 1366 / 768;
-const canvaBaseWidthPercent = 100;
-const canvaBaseHeightPercent = 56.2225;
-const canvaScale = 1.1;
-const canvaWidthPercent = canvaBaseWidthPercent * canvaScale;
-const canvaHeightPercent = canvaBaseHeightPercent * canvaScale;
-const flashDelay = 125;
+const numStudioImages = 7;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
-const volume = 0.35;
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const gainNode = audioCtx.createGain();
-gainNode.connect(audioCtx.destination);
-gainNode.gain.value = volume;
-const [homeAudio, aboutAudio, contactAudio] = [
-  "RAREROOM",
-  "ABOUT",
-  "CONTACT",
+const [homeAudio, aboutAudio, contactAudio, artistsAudio, subscribeAudio] = [
+  'RAREROOM',
+  'ABOUT',
+  'CONTACT',
+  'ARTISTS',
+  'SUBSCRIBE',
 ].map((name) => `/audios/${name} MORSE.m4a`);
+const bands = ['POLLISH', 'KELSI KEE'];
+const mobilePurplePulseMS = 750;
 
 // Global vars
-let localStorageSettings = localStorage.getItem("settings");
-let settings;
 let flashingInterval = null;
 /** @type {AudioBufferSourceNode} */
 let currentAudioBufferSource = null;
+let $socialMediaIcons = document.createElement('ul');
+let artistData = {};
+let previouslyWasZoomedOut = true;
 
 // Elements
 const [
   $backgroundContent,
+  $backgroundPicture,
   $homeBackground,
-  $contactBackground,
-  $aboutBackground,
   $content,
   $contactButton,
   $aboutButton,
+  $artistsButton,
+  $homeLogoMorseContainer,
   $homeLogo,
   $homeLogoShadow,
-  $settings,
-  $settingsArrowDown,
-  $settingsX,
-  $socialMediaIcons,
-  $settingsBorder,
-  $pollishLink,
+  $studioButton,
+  $privacyPolicyButton,
+  $aboutContainer,
+  $artistsDiv,
+  $artistDiv,
+  $studioDiv,
+  $privacyPolicyDiv,
+  $studioX,
+  $privacyPolicyX,
+  $rareroomTitle,
+  $artistImage,
+  $artistName,
+  $artistNameLink,
+  $artistSocials,
+  $clickHereMessage,
 ] = [
-  "background-content",
-  "home-background",
-  "contact-background",
-  "about-background",
-  "content",
-  "contact-button",
-  "about-button",
-  "home-logo",
-  "home-logo-shadow",
-  "settings",
-  "settings-arrow-down",
-  "settings-x",
-  "social-media-icons",
-  "settings-border",
-  'pollish-link',
+  'background-content',
+  'background-picture',
+  'home-background',
+  'content',
+  'contact-button',
+  'about-button',
+  'artists-button',
+  'home-logo-morse-container',
+  'home-logo',
+  'home-logo-shadow',
+  'studio-button',
+  'privacy-policy-button',
+  'about-container',
+  'artists-div',
+  'artist-div',
+  'studio-div',
+  'privacy-policy-div',
+  'studio-x',
+  'privacy-policy-x',
+  'rareroom-title',
+  'artist-image',
+  'artist-name',
+  'artist-name-link',
+  'artist-socials',
+  'click-here-message',
 ].map((id) => document.getElementById(id));
-const [[$nav], $$aboutParagraphImgs, $$contacts, [$aboutLink]] = ["nav", ":scope > img.about", ":scope > .contact", ":scope > a"].map(
-  (descriptor) => Array.from($content.querySelectorAll(descriptor)),
+const [[$nav, $bandsNav], $$aboutParagraphImgs, $$contacts] = [
+  'nav',
+  ':scope > img.about',
+  ':scope > .contact',
+].map((descriptor) => Array.from($content.querySelectorAll(descriptor)));
+const [
+  [$main],
+  $$imgHoverPurple0_5,
+  $$imgHoverPurple,
+  $$imgHoverPurple1_5,
+  $$imgHoverPurpler,
+  $$imgHover3Purple,
+] = [
+  'main',
+  '.img-hover-purple-0-5',
+  '.img-hover-purple',
+  '.img-hover-purple-1-5',
+  '.img-hover-purpler',
+  '.img-hover-3-purple',
+].map((descriptor) => document.querySelectorAll(descriptor));
+const $$imageHoverPurples = [
+  ...$$imgHoverPurple0_5,
+  ...$$imgHoverPurple,
+  ...$$imgHoverPurple1_5,
+  ...$$imgHoverPurpler,
+  ...$$imgHover3Purple,
+];
+const [$$navButtons] = [':scope button'].map((descriptor) =>
+  $nav.querySelectorAll(descriptor)
 );
-const [$$switch] = [".switch"].map((descriptor) =>
-  document.querySelectorAll(descriptor),
+const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
+  Array.from($backgroundPicture.querySelectorAll(descriptor))
 );
+const [[$studioBack], [$studioTrack], [$studioForward]] = [
+  '.back',
+  '.carousel-track',
+  '.forward',
+].map((descriptor) => $studioDiv.querySelectorAll(descriptor));
 
-function main() {
-  settings = new Settings(JSON.parse(localStorageSettings ?? "{}"));
-  setAudioStatus(settings.sound);
-  ["sound", "light"].forEach((selector) => {
-    /** @type {Element} */
-    const $switch = [].find.call(
-      $$switch,
-      /** @param {Element} $switch */ ($switch) => {
-        return $switch.matches(`.${selector}`);
-      },
-    );
-    if (settings[selector]) {
-      $switch.classList.add("active");
-    } else {
-      $switch.classList.remove("active");
-    }
-  });
-  $$switch.forEach($switch => {
-    $switch.addEventListener("click", () => {
-      $switch.classList.toggle("active");
-      ["sound", "light"].forEach((descriptor) => {
-        if ($switch.classList.contains(descriptor)) {
-          settings[descriptor] = !settings[descriptor];
-          setAudioStatus(settings.sound);
-        }
-      });
-      localStorage.setItem("settings", JSON.stringify(settings));
-      (async () => {
-        if (settings.sound) {
-          // Fetch and decode the audio file
-          const response = await fetch('/audios/switch.wav');
-          const arrayBuffer = await response.arrayBuffer();
-          const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+async function main() {
+  audioMain();
+  settingsMain();
+  subscribeMain();
+  addContactLinks();
 
-          // Create audio source and connect to destination
-          const source = audioCtx.createBufferSource();
-          source.buffer = audioBuffer;
-          source.connect(gainNode);
+  addBandButtons();
+  preloadArtistImages(bands);
+  populateStudioImages();
+  await updateArtistData();
 
-          // Schedule playback a short moment into the future
-          source.start(audioCtx.currentTime);
-        }
-      })();
-    });
-  });
-
-  updataContentPosition();
   stateChanged(false);
 
-  if (!settings.previouslyVisited) {
-    // $settingsArrowDown.click();
-    settings.previouslyVisited = true;
-    localStorage.setItem("settings", JSON.stringify(settings));
-  }
-
+  await checkPassword();
   removeCurtainAfterImagesLoad();
 }
 
+function populateStudioImages() {
+  let currentIndex = 0;
+
+  // Populate carousel dynamically
+  for (let i = 1; i <= numStudioImages; i++) {
+    const img = document.createElement('img');
+    img.src = `/images/studio/RRE${i}.jpg`;
+    img.alt = `Image ${i}`;
+    $studioTrack.appendChild(img);
+  }
+
+  // Function to update slide position
+  function updateCarousel() {
+    $studioTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+  // Button events
+  $studioForward.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % numStudioImages;
+    updateCarousel();
+  });
+
+  $studioBack.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + numStudioImages) % numStudioImages;
+    updateCarousel();
+  });
+}
+
 /**
- *
- * @param {boolean} isOn
+ * Preloads the artist background images to prevent jank on hover.
+ * @param {string[]} bands - Array of band names.
  */
-function setAudioStatus(isOn) {
-  gainNode.gain.value = isOn ? volume : 0;
+function preloadArtistImages(bands) {
+  bands.forEach((band) => {
+    const filename = wordsToFilename(band);
+    const img = new Image();
+    img.src = `/images/${filename}_artist.jpg`; // This starts the download and caches the image.
+  });
 }
 
 // Functions
-function updataContentPosition() {
-  // Settings
-  $settings.style.setProperty("--closed-top", `-${$settings.offsetHeight}px`);
-  $settings.style.setProperty("--closed-left", `-${$settings.offsetWidth}px`);
-
-  $settingsBorder.style.setProperty(
-    "--top",
-    `${($settings.offsetHeight - $settingsBorder.offsetHeight) / 2}px`,
-  );
-  $settingsBorder.style.setProperty(
-    "--left",
-    `${($settings.offsetWidth - $settingsBorder.offsetWidth) / 2}px`,
-  );
-
-  $settingsArrowDown.style.setProperty(
-    "--left",
-    `${($settings.offsetWidth - $settingsArrowDown.offsetWidth) / 2}px`,
-  );
-  $settingsArrowDown.style.setProperty(
-    "--top",
-    `${($settings.offsetHeight - $settingsArrowDown.offsetHeight) / 2}px`,
-  );
-  $settingsArrowDown.style.setProperty(
-    "--margin-top",
-    `${$settings.offsetHeight}px`,
-  );
-  $settingsArrowDown.style.setProperty(
-    "--margin-left",
-    `${$settings.offsetWidth}px`,
-  );
-}
-function setBackground(background) {
-  [$homeBackground, $contactBackground, $aboutBackground].forEach(
-    (background) => {
-      background.style.zIndex = "-2";
-    },
-  );
-  background.style.zIndex = "0";
+async function updateArtistData() {
+  try {
+    const res = await fetch('/data/artist-socials.json');
+    const data = await res.json();
+    artistData = data;
+  } catch (err) {
+    console.error('Failed to fetch artist data:', err);
+  }
 }
 /**
  *
@@ -182,11 +201,11 @@ function setBackground(background) {
  * @param {String} morse - Morse string to animate
  */
 async function playMorse(audioUrl, morse) {
-  if (audioCtx.state === "suspended") {
+  if (audioCtx.state === 'suspended') {
     await audioCtx.resume();
   }
 
-  $homeLogoShadow.classList.remove("active");
+  $homeLogoShadow.classList.remove('active');
   if (flashingInterval) {
     clearInterval(flashingInterval);
     flashingInterval = null;
@@ -215,7 +234,7 @@ async function playMorse(audioUrl, morse) {
   // Schedule the flashing to start in sync
   const delayMs = (startTime - audioCtx.currentTime) * 1000;
   setTimeout(() => {
-    $homeLogoShadow.classList.remove("active");
+    $homeLogoShadow.classList.remove('active');
     if (flashingInterval) {
       clearInterval(flashingInterval);
       flashingInterval = null;
@@ -232,7 +251,7 @@ async function flashMorseCode(times) {
   const startDate = Date.now();
   let offset = 0;
 
-  if (settings.light) $homeLogoShadow.classList.add("active");
+  if (settings.light) $homeLogoShadow.classList.add('active');
 
   flashingInterval = setInterval(() => {
     const currentDate = Date.now();
@@ -240,24 +259,19 @@ async function flashMorseCode(times) {
     while (currentDate - (startDate + offset) > times[i][j]) {
       offset += times[i][j];
       if (j == 0) {
-        $homeLogoShadow.classList.remove("active");
+        $homeLogoShadow.classList.remove('active');
       } else if (i + 1 >= times.length) {
-        $homeLogoShadow.classList.remove("active");
+        $homeLogoShadow.classList.remove('active');
         clearInterval(flashingInterval);
         flashingInterval = null;
         break;
       } else {
-        if (settings.light) $homeLogoShadow.classList.add("active");
+        if (settings.light) $homeLogoShadow.classList.add('active');
         i++;
       }
       j = 1 - j;
     }
   }, 1);
-}
-function wait(milliseconds) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, milliseconds);
-  });
 }
 /**
  *
@@ -265,16 +279,16 @@ function wait(milliseconds) {
  * @returns {Array[Array[number]]}
  */
 function morseTiming(morse) {
-  morse += " ";
+  morse += ' ';
   let times = [];
   for (let i = 0; i < morse.length - 1; i++) {
     let char = morse[i];
     let nextChar = morse[i + 1];
-    let length1 = char == "." ? dot / 2 : dash / 2;
-    let length2 = length1 + (nextChar == " " ? letterGap : 0);
+    let length1 = char == '.' ? dot / 2 : dash / 2;
+    let length2 = length1 + (nextChar == ' ' ? letterGap : 0);
     times.push([length1, length2]);
 
-    if (nextChar == " ") {
+    if (nextChar == ' ') {
       i++;
     }
   }
@@ -283,70 +297,165 @@ function morseTiming(morse) {
 }
 /**
  *
- * @param {HTMLElement} $switch
- */
-function createSwitch($switch) {
-  const $bar = document.createElement("div");
-  $bar.classList.add("bar");
-  const $node = document.createElement("div");
-  $node.classList.add("node");
-  [$bar, $node].forEach(($) => $switch.appendChild($));
-
-  $switch.addEventListener("click", (e) => {
-    $switch.classList.toggle("active");
-    ["sound", "light"].forEach((descriptor) => {
-      if ($switch.classList.contains(descriptor)) {
-        settings[descriptor] = !settings[descriptor];
-        setAudioStatus(settings.sound);
-      }
-    });
-    localStorage.setItem("settings", JSON.stringify(settings));
-  });
-}
-/**
- *
  * @param {boolean} withMorse
  */
 function stateChanged(withMorse) {
   const path = window.location.pathname;
-  if (path === "/about" || path == "/about/") {
+  if (!['', '/'].includes(path)) {
+    $backgroundContent.style.setProperty('--opacity-transition', '0ms');
+    $main.classList.remove('first-inverted');
+    setTimeout(() => {
+      $backgroundContent.style.setProperty('--opacity-transition', '250ms');
+    }, 1);
+  }
+  if (path === '/about' || path == '/about/') {
     switchPage(
-      $aboutBackground,
-      [...$$aboutParagraphImgs, $aboutLink].map(($element) => {
+      $aboutButton,
+      [...$$aboutParagraphImgs, $aboutContainer, $nav].map(($element) => {
         return {
           element: $element,
-          displayMode: "block",
+          displayMode: 'block',
         };
       }),
+      []
     );
     if (withMorse) {
-      playMorse(aboutAudio, ".- -... --- ..- -");
+      playMorse(aboutAudio, '.- -... --- ..- -');
     }
-  } else if (path === "/contact" || path == "/contact/") {
-    switchPage($contactBackground, [
-      ...Array.from($$contacts).map($ => {
-        return {
-          element: $,
-          displayMode: 'block',
-        }
-      }),
-      {
-        element: $socialMediaIcons,
-        displayMode: "flex",
-      },
-    ]);
+  } else if (path === '/contact' || path == '/contact/') {
+    switchPage(
+      $contactButton,
+      [
+        ...[...Array.from($$contacts), $nav].map(($) => {
+          return {
+            element: $,
+            displayMode: 'block',
+          };
+        }),
+        {
+          element: $socialMediaIcons,
+          displayMode: 'flex',
+        },
+      ],
+      []
+    );
     if (withMorse) {
-      playMorse(contactAudio, "-.-. --- -. - .- -.-. -");
+      playMorse(contactAudio, '-.-. --- -. - .- -.-. -');
+    }
+  } else if (path === '/subscribe' || path == '/subscribe/') {
+    switchPage(
+      $subscribeButton,
+      [],
+      [
+        ...[$shadow, $mcEmbedShell].map(($) => {
+          return { element: $, class: 'active', isAdding: true };
+        }),
+        { element: document.documentElement, class: 'active', isAdding: false },
+      ]
+    );
+    if (withMorse) {
+      playMorse(subscribeAudio, '... ..- -... ... -.-. .-. .. -... .');
+    }
+  } else if (path.startsWith('/artists') || path.startsWith('/artists/')) {
+    if (path === '/artists' || path === '/artists/') {
+      switchPage(
+        $artistsButton,
+        [
+          ...[$nav, $artistsDiv].map(($) => {
+            return {
+              element: $,
+              displayMode: 'block',
+            };
+          }),
+          {
+            element: $rareroomTitle,
+            displayMode: 'none',
+          },
+        ],
+        []
+      );
+      if (withMorse) {
+        playMorse(artistsAudio, '.- .-. - .. ... - ...');
+      }
+    } else {
+      let artistName = path.slice('/artists/'.length);
+      if (artistName.slice(-1) === '/') {
+        artistName = artistName.slice(0, artistName.length - 1);
+      }
+      switchPage(
+        null,
+        [
+          {
+            element: $artistDiv,
+            displayMode: 'flex',
+          },
+          ...[$rareroomTitle, $nav, $homeBackground].map(($) => {
+            return { element: $, displayMode: 'none' };
+          }),
+        ],
+        [
+          {
+            element: $homeLogoMorseContainer,
+            class: 'top',
+            isAdding: true,
+          },
+          {
+            element: $settingsArrowDown,
+            class: 'up-away',
+            isAdding: true,
+          },
+          {
+            element: $backgroundPicture,
+            class: 'active',
+            isAdding: false,
+          },
+          {
+            element: $main,
+            class: 'inverted',
+            isAdding: false,
+          },
+        ],
+        artistName
+      );
+      while ($artistSocials.firstChild) {
+        $artistSocials.removeChild($artistSocials.firstChild);
+      }
+      let artistImageLocation = `/images/${artistName}_artist.jpg`;
+      let artistNameLocation = `/images/${artistName}.png`;
+      $artistImage.src = artistImageLocation;
+      $artistName.src = artistNameLocation;
+
+      const thisArtistData = artistData[artistName];
+      const purpleClass =
+        thisArtistData['class'] === undefined
+          ? 'img-hover-purple'
+          : thisArtistData['class'];
+      if (thisArtistData !== undefined) {
+        const artistSite = thisArtistData['site'];
+        $artistName.className = '';
+        if (artistSite !== undefined) {
+          $artistNameLink.href = artistSite;
+          $artistName.classList.add(purpleClass);
+        }
+      }
     }
   } else {
-    switchPage($homeBackground, [
-      {
-        element: $nav,
-        displayMode: "block",
-      },
-    ]);
+    switchPage(
+      null,
+      [
+        {
+          element: $nav,
+          displayMode: 'block',
+        },
+        {
+          element: $rareroomTitle,
+          displayMode: 'none',
+        },
+      ],
+      []
+    );
     if (withMorse) {
-      playMorse(homeAudio, ".-. .- .-. . .-. --- --- --");
+      playMorse(homeAudio, '.-. .- .-. . .-. --- --- --');
     }
   }
 }
@@ -355,59 +464,340 @@ function stateChanged(withMorse) {
  * @param {String} stateName
  */
 function changeState(stateName) {
-  window.history.pushState({}, "", `/${stateName}`);
+  window.history.pushState({}, '', `/${stateName}`);
+  if (stateName !== '') {
+    removeFirstInverted();
+  }
   stateChanged(true);
+}
+/**
+ *
+ * @param {HTMLAnchorElement} $a
+ */
+function linkNewTab($a) {
+  $a.target = '_blank';
+  $a.rel = 'noopener noreferrer';
+}
+/**
+ * @typedef {Object} SocialMediaLinks
+ * @property {String} [site]
+ * @property {String} [youtube]
+ * @property {String} [instagram]
+ * @property {String} [facebook]
+ * @property {String} [twitter]
+ * @property {String} [tiktok]
+ */
+/**
+ *
+ * @param {SocialMediaLinks} links
+ * @returns {HTMLUListElement}
+ */
+function $socialMediaIconsFactory(links) {
+  const $result = document.createElement('ul');
+  $result.classList.add('social-media-icons');
+
+  const $$links = [
+    { url: links['site'], img: '/images/site.png' },
+    { url: links['youtube'], img: '/images/youtube.png' },
+    { url: links['instagram'], img: '/images/instagram.png' },
+    { url: links['facebook'], img: '/images/facebook.png' },
+    { url: links['twitter'], img: '/images/x_twitter.png' },
+    { url: links['tiktok'], img: '/images/tiktok.png' },
+  ]
+    .map(
+      /**
+       * @typedef {Object} Info
+       * @property {String} [url]
+       * @property {String} img
+       */
+      /**
+       *
+       * @param {Info} info
+       */
+      (info) => {
+        if (info.url !== undefined) {
+          const $a = document.createElement('a');
+          const $img = document.createElement('img');
+
+          $a.href = info.url;
+          linkNewTab($a);
+          $img.src = info.img;
+
+          $a.classList.add('img-hover-purple');
+
+          $a.appendChild($img);
+
+          return $a;
+        } else {
+          return null;
+        }
+      }
+    )
+    .filter(($link) => $link != null);
+
+  const $$doubleSlashes = Array.from({ length: $$links.length - 1 }, () => {
+    const $doubleSlash = document.createElement('img');
+    $doubleSlash.src = '/images/double_slash.png';
+    $doubleSlash.alt = '//';
+    return $doubleSlash;
+  });
+
+  const startingDelta = 50;
+  const delayDelta = 50;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const $ = entry.target;
+        if (entry.isIntersecting) {
+          let index = $$links.indexOf($);
+          if (index === -1) {
+            index = $$doubleSlashes.indexOf($) + 0.5;
+          }
+
+          const delay = startingDelta + index * 2 * delayDelta;
+
+          setTimeout(() => {
+            $.classList.add('seen');
+          }, delay);
+        } else {
+          $.classList.remove('seen');
+        }
+      });
+    },
+    { threshold: 0.1 }
+  ); // threshold = 10% visible
+
+  const lastIndex = $$links.length - 1;
+  $$links.forEach(($link, i) => {
+    observer.observe($link);
+    $result.appendChild($link);
+    if (i < lastIndex) {
+      const $doubleSlash = $$doubleSlashes[i];
+      observer.observe($doubleSlash);
+      $result.appendChild($doubleSlash);
+    }
+  });
+
+  return $result;
+}
+function addContactLinks() {
+  $socialMediaIcons = $socialMediaIconsFactory({
+    youtube: 'https://www.youtube.com/@rareroomeast',
+    instagram:
+      'https://www.instagram.com/rareroomeast/?utm_source=ig_web_button_share_sheet',
+    facebook: 'https://www.facebook.com/rareroomeast',
+    twitter: 'https://x.com/therobotixmusic',
+    tiktok: 'https://www.tiktok.com/@rareroomeast',
+  });
+  $socialMediaIcons.style.setProperty('display', 'none');
+  $socialMediaIcons.id = 'social-media-icons';
+  $socialMediaIcons.classList.add('contact');
+
+  $$contacts.push($socialMediaIcons);
+
+  $content.insertBefore($socialMediaIcons, $artistDiv);
+}
+function removeFirstInverted() {
+  $main.classList.remove('first-inverted');
+  setTimeout(() => {
+    $backgroundContent.style.setProperty('--opacity-transition', '250ms');
+  }, 1000);
+}
+function removeIntro() {
+  removeFirstInverted();
+  changeState('');
 }
 
 // Event Listeners
-window.addEventListener("DOMContentLoaded", main);
-window.addEventListener("load", updataContentPosition);
-window.addEventListener("resize", updataContentPosition);
-window.addEventListener("popstate", () => {
+window.addEventListener('DOMContentLoaded', main);
+window.addEventListener('popstate', () => {
   stateChanged(true);
 });
-$contactButton.addEventListener("click", () => {
-  changeState("contact");
+$contactButton.addEventListener('click', () => {
+  changeState('contact');
 });
-$aboutButton.addEventListener("click", () => {
-  changeState("about");
+$aboutButton.addEventListener('click', () => {
+  changeState('about');
 });
-$homeLogo.addEventListener("click", () => {
-  changeState("");
+$artistsButton.addEventListener('click', () => {
+  changeState('artists');
 });
-$settingsArrowDown.addEventListener("click", () => {
-  $settings.classList.add("active");
-  $settingsArrowDown.classList.remove("active");
+$homeLogo.addEventListener('click', removeIntro);
+$clickHereMessage.addEventListener('click', removeIntro);
+$content.addEventListener('scroll', () => {
+  if ($content.scrollTop > 5) {
+    $homeLogoMorseContainer.classList.add('scrolled');
+  } else {
+    $homeLogoMorseContainer.classList.remove('scrolled');
+  }
 });
-$settingsX.addEventListener("click", () => {
-  $settings.classList.remove("active");
-  $settingsArrowDown.classList.add("active");
+$studioButton.addEventListener('click', () => {
+  $studioDiv.classList.add('active');
 });
+$studioX.addEventListener('click', () => {
+  $studioDiv.classList.remove('active');
+});
+$privacyPolicyButton.addEventListener('click', () => {
+  $privacyPolicyDiv.classList.add('active');
+});
+$privacyPolicyX.addEventListener('click', () => {
+  $privacyPolicyDiv.classList.remove('active');
+});
+$$imageHoverPurples.forEach(($imageHoverPurple) => {
+  $imageHoverPurple.addEventListener('click', () => {
+    $imageHoverPurple.classList.remove('flash');
+    void $imageHoverPurple.offsetWidth; // force reflow (resets animation)
+    $imageHoverPurple.classList.add('flash');
+    setTimeout(
+      () => $imageHoverPurple.classList.remove('flash'),
+      mobilePurplePulseMS
+    ); // match animation duration
+  });
+});
+if (window.visualViewport) {
+  // Add an event listener for when the viewport resizes (zooms)
+  window.visualViewport.addEventListener('resize', () => {
+    // Check if the user is fully zoomed out (scale = 1)
+    if (window.visualViewport.scale === 1) {
+      if (!previouslyWasZoomedOut) {
+        const iterations = 6;
+        const deltaT = 25;
+        let i = 0;
+        // A tiny delay ensures the browser has finished its zoom logic
+        const interval = setInterval(() => {
+          // Force the scroll position back to the top-left corner
+          window.scrollTo(0, 0);
+          if (i >= iterations) {
+            clearInterval(interval);
+          }
+          i++;
+        }, deltaT);
+      }
+      previouslyWasZoomedOut = true;
+    } else {
+      previouslyWasZoomedOut = false;
+    }
+  });
+}
 /**
  * @typedef {Object} ElementSettings
  * @property {HTMLElement} element
  * @property {String} displayMode
  */
 /**
- *
- * @param {HTMLIFrameElement} background
- * @param {ElementSettings[]} elementSettings
+ * @typedef {Object} ClassSettings
+ * @property {HTMLElement} element
+ * @property {String} class
+ * @property {boolean} isAdding
  */
-function switchPage(background, elementSettings) {
-  if (background.style.zIndex != 0) {
-    [$nav, ...$$aboutParagraphImgs, $aboutLink, ...$$contacts].forEach((element) => {
-      element.style.display = "none";
-    });
-    elementSettings.forEach((elementSetting) => {
-      elementSetting.element.style.display = elementSetting.displayMode;
-    });
-    $settings.classList.remove("active");
-    $settingsArrowDown.classList.add("active");
-    setBackground(background);
+/**
+ *
+ * @param {HTMLButtonElement} selectedNavButton
+ * @param {ElementSettings} elementSettings
+ * @param {ClassSettings[]} classSettings
+ * @param {string} [artistName]
+ */
+function switchPage(
+  selectedNavButton,
+  elementSettings,
+  classSettings,
+  artistName
+) {
+  settingsSwitchPageDefaults();
+  [
+    ...$$aboutParagraphImgs,
+    $aboutContainer,
+    ...$$contacts,
+    $artistsDiv,
+    $artistDiv,
+  ].forEach((element) => {
+    element.style.display = 'none';
+  });
+  $homeLogoMorseContainer.classList.remove('top');
+  [$rareroomTitle, $homeBackground].forEach(
+    (element) => (element.style.display = 'block')
+  );
+  [$shadow, $mcEmbedShell].forEach(($) => {
+    $.classList.remove('active');
+  });
+  $main.classList.remove('inverted');
+
+  elementSettings.forEach((elementSetting) => {
+    elementSetting.element.style.display = elementSetting.displayMode;
+  });
+  classSettings.forEach((classSetting) => {
+    if (classSetting.isAdding) {
+      classSetting.element.classList.add(classSetting.class);
+    } else {
+      classSetting.element.classList.remove(classSetting.class);
+    }
+  });
+
+  $$navButtons.forEach(($navButton) => {
+    $navButton.classList.remove('active');
+  });
+  if (selectedNavButton != null) {
+    selectedNavButton.classList.add('active');
+  }
+
+  if (artistData !== undefined && artistData[artistName] !== undefined) {
+    setTimeout(() => {
+      $artistSocials.appendChild(
+        $socialMediaIconsFactory(artistData[artistName])
+      );
+    }, 50);
   }
 }
+function addBandButtons() {
+  linkNewTab($artistNameLink);
+
+  const lastIndex = bands.length - 1;
+  bands.forEach((band, i) => {
+    const $band = (() => {
+      const bandFileName = wordsToFilename(band);
+      const artistImageLocation = `/images/${bandFileName}_artist.jpg`;
+      const artistNameLocation = `/images/${bandFileName}.png`;
+
+      const $band = document.createElement('button'); // document.createElement('button');
+
+      const $img = document.createElement('img');
+      $img.src = artistNameLocation;
+      // $span.innerHTML = band + (i == lastIndex ? '' : ',');
+
+      $band.onmouseover = (e) => {
+        if (window.innerWidth <= 600) return;
+
+        $backgroundPicture.classList.add('active');
+        $backgroundPictureImg.src = artistImageLocation;
+        $main.classList.add('inverted');
+      };
+
+      $band.onmouseleave = (e) => {
+        $backgroundPicture.classList.remove('active');
+        $main.classList.remove('inverted');
+      };
+      $band.onclick = (e) => {
+        changeState(`artists/${bandFileName}`);
+      };
+
+      [$img].forEach(($child) => $band.appendChild($child));
+
+      return $band;
+    })();
+    $band.onmouseenter = closeSettings;
+    $bandsNav.appendChild($band);
+    if (i != lastIndex) {
+      const $comma = document.createElement('img');
+      $comma.src = '/images/comma.png';
+      $comma.alt = ',';
+      $comma.classList.add('comma');
+      $bandsNav.appendChild($comma);
+    }
+  });
+}
 function removeCurtainAfterImagesLoad() {
-  const $$images = [...document.querySelectorAll("img")];
+  const $$images = [...document.querySelectorAll('img')];
   const proms = $$images.map(($image) => {
     if ($image.complete) {
       return Promise.resolve();
@@ -418,18 +808,16 @@ function removeCurtainAfterImagesLoad() {
     });
   });
 
-  const $curtain = document.getElementById("curtain");
+  const $curtain = document.getElementById('curtain');
 
   const finish = (() => {
     let done = false;
     return () => {
       if (done) return;
       done = true;
-      $curtain.classList.remove("active");
+      $curtain.classList.remove('active');
       const milliseconds = secondsToMilliseconds(
-        getComputedStyle($curtain)
-          .getPropertyValue("--transition-time")
-          .trim(),
+        getComputedStyle($curtain).getPropertyValue('--transition-time').trim()
       );
       setTimeout(() => {
         $curtain.remove();
@@ -441,15 +829,40 @@ function removeCurtainAfterImagesLoad() {
   setTimeout(finish, 10000);
 }
 function secondsToMilliseconds(timeStr) {
-    const match = timeStr.match(/^([\d.]+)s$/);
-    if (!match) throw new Error("Invalid time format. Must end in 's'.");
-    return Math.round(parseFloat(match[1]) * 1000);
+  const match = timeStr.match(/^([\d.]+)s$/);
+  if (!match) throw new Error("Invalid time format. Must end in 's'.");
+  return Math.round(parseFloat(match[1]) * 1000);
 }
-// Classes
-class Settings {
-  constructor({ light = false, sound = true, previouslyVisited = false } = {}) {
-    this.light = light;
-    this.sound = sound;
-    this.previouslyVisited = previouslyVisited;
-  }
+async function checkPassword() {
+  return new Promise((resolve, reject) => {
+    const allowedStored = localStorage.getItem('allowed');
+    if (allowedStored !== null) {
+      if (JSON.parse(allowedStored)) {
+        resolve();
+        return;
+      }
+    }
+
+    const correctPassword = 'rareroom';
+    while (true) {
+      const enteredPassword = prompt('Enter password:').toLowerCase().trim();
+
+      if (enteredPassword === correctPassword) {
+        localStorage.setItem('allowed', JSON.stringify(true));
+        resolve();
+        return;
+      } else {
+        alert('Access Denied. Incorrect password.');
+      }
+    }
+  });
 }
+/**
+ *
+ * @param {string} words
+ */
+function wordsToFilename(words) {
+  return words.trim().replace(/\s/g, '-').toLowerCase();
+}
+
+export { $main, changeState };
