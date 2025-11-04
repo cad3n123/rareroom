@@ -1081,6 +1081,9 @@ img.comma {
   main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
     height: 1rem;
   }
+  main nav button:not(.active):hover::before {
+    width: 0;
+  }
   #bands-nav button {
     width: max-content;
     margin: auto;
