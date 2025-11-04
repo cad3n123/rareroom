@@ -1069,7 +1069,7 @@ img.comma {
     opacity: 1;
   }
   #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
-    height: 0.7rem;
+    height: 0.725rem;
   }
   main > div #content #bands-nav {
     display: flex;
