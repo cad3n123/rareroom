@@ -658,6 +658,7 @@ main > div #content a.contact:hover {
 #artist-images img {
   display: none;
   width: 100%;
+  margin: auto;
 }
 
 #artist-images img.active {
