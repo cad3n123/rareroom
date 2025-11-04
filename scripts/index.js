@@ -58,7 +58,7 @@ const [
   $studioX,
   $privacyPolicyX,
   $rareroomTitle,
-  $artistImage,
+  $artistImages,
   $artistName,
   $artistNameLink,
   $artistSocials,
@@ -84,7 +84,7 @@ const [
   'studio-x',
   'privacy-policy-x',
   'rareroom-title',
-  'artist-image',
+  'artist-images',
   'artist-name',
   'artist-name-link',
   'artist-socials',
@@ -120,9 +120,6 @@ const $$imageHoverPurples = [
 const [$$navButtons] = [':scope button'].map((descriptor) =>
   $nav.querySelectorAll(descriptor)
 );
-const [[$backgroundPictureImg]] = ['img'].map((descriptor) =>
-  Array.from($backgroundPicture.querySelectorAll(descriptor))
-);
 const [[$studioBack], [$studioTrack], [$studioForward]] = [
   '.back',
   '.carousel-track',
@@ -136,9 +133,9 @@ async function main() {
   addContactLinks();
 
   addBandButtons();
-  preloadArtistImages(bands);
   populateStudioImages();
   await updateArtistData();
+  preloadArtistImages();
 
   stateChanged(false);
 
@@ -175,13 +172,15 @@ function populateStudioImages() {
 
 /**
  * Preloads the artist background images to prevent jank on hover.
- * @param {string[]} bands - Array of band names.
  */
-function preloadArtistImages(bands) {
-  bands.forEach((band) => {
-    const filename = wordsToFilename(band);
-    const img = new Image();
-    img.src = `/images/${filename}_artist.jpg`; // This starts the download and caches the image.
+function preloadArtistImages() {
+  Object.entries(artistData).forEach(([artist, artistData]) => {
+    const $img = new Image();
+    $img.src = artistData.image;
+    $img.classList.add(artist);
+
+    $backgroundPicture.appendChild($img);
+    $artistImages.appendChild($img.cloneNode(true));
   });
 }
 
@@ -420,22 +419,32 @@ function stateChanged(withMorse) {
       while ($artistSocials.firstChild) {
         $artistSocials.removeChild($artistSocials.firstChild);
       }
-      let artistImageLocation = `/images/${artistName}_artist.jpg`;
       let artistNameLocation = `/images/${artistName}.png`;
-      $artistImage.src = artistImageLocation;
       $artistName.src = artistNameLocation;
 
       const thisArtistData = artistData[artistName];
-      const purpleClass =
-        thisArtistData['class'] === undefined
-          ? 'img-hover-purple'
-          : thisArtistData['class'];
       if (thisArtistData !== undefined) {
+        const purpleClass =
+          thisArtistData['class'] === undefined
+            ? 'img-hover-purple'
+            : thisArtistData['class'];
+
         const artistSite = thisArtistData['site'];
         $artistName.className = '';
         if (artistSite !== undefined) {
           $artistNameLink.href = artistSite;
           $artistName.classList.add(purpleClass);
+        }
+
+        const artistImgSource = thisArtistData['image'];
+        if (artistImgSource !== undefined) {
+          for (const $artistImage of $artistImages.children) {
+            $artistImage.classList.remove('active');
+
+            if ($artistImage.classList.contains(artistName)) {
+              $artistImage.classList.add('active');
+            }
+          }
         }
       }
     }
@@ -769,7 +778,13 @@ function addBandButtons() {
         if (window.innerWidth <= 600) return;
 
         $backgroundPicture.classList.add('active');
-        $backgroundPictureImg.src = artistImageLocation;
+
+        for (const $img of $backgroundPicture.children) {
+          $img.classList.remove('active');
+          if ($img.classList.contains(bandFileName)) {
+            $img.classList.add('active');
+          }
+        }
         $main.classList.add('inverted');
       };
 

@@ -176,8 +176,13 @@ body:has(main.first-inverted) #background-content {
 }
 
 #background-picture img {
+  display: none;
   object-fit: cover;
   height: 66%;
+}
+
+#background-picture img.active {
+  display: block;
 }
 
 #background-picture.active {
@@ -644,10 +649,19 @@ main > div #content a.contact:hover {
   object-fit: contain;
 }
 
-#artist-image {
+#artist-images {
   width: 150svh;
   max-width: 85vw;
   margin: auto;
+}
+
+#artist-images img {
+  display: none;
+  width: 100%;
+}
+
+#artist-images img.active {
+  display: block;
 }
 
 #artist-name-container {
@@ -1090,7 +1104,7 @@ img.comma {
   #bands-nav img.comma {
     display: none;
   }
-  #artist-image {
+  #artist-images img {
     width: 75vw;
   }
   #settings {
