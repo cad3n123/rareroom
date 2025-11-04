@@ -434,7 +434,7 @@ main > div #content nav > span > span button img, main > div #content nav > span
 }
 
 main > div #content nav > span > img.vertical-line {
-  height: 1rem;
+  height: 0.9rem;
 }
 
 #bands-nav {
@@ -465,7 +465,7 @@ main nav:not(#bands-nav) button img:hover {
 }
 
 main nav:not(#bands-nav) button.active img:hover {
-  filter: invert(10%);
+  filter: invert(9%);
 }
 
 main.inverted #bands-nav img,
@@ -525,7 +525,7 @@ main button span::before, main nav button::before {
   bottom: 0%;
   background-color: var(--secondary);
 
-  transition: background-color 250ms, width 0.25s ease;
+  transition: width 0.25s ease;
 }
 
 main nav button::before {
@@ -534,13 +534,14 @@ main nav button::before {
 
 main #bands-nav button::before {
   bottom: 20%;
+  background-color: var(--secondary);
 }
 
 main nav button:not(.active):hover::before, main nav button.active::before {
   width: 100%;
 }
 
-main.inverted nav:not(#bands-nav) button::before,
+main.inverted nav button::before,
 main.first-inverted nav button::before {
   background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
 }
@@ -1077,11 +1078,12 @@ img.comma {
     margin-top: 0.5rem;
     width: 100%;
   }
-  #bands-nav button {
-    width: 100%;
+  main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
+    height: 1rem;
   }
-  main nav button:not(.active):hover::before {
-    width: 0;
+  #bands-nav button {
+    width: max-content;
+    margin: auto;
   }
   #bands-nav img.comma {
     display: none;
