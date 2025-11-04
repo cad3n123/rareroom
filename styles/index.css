@@ -1085,8 +1085,7 @@ img.comma {
     width: 0;
   }
   #bands-nav button {
-    width: max-content;
-    margin: auto;
+    width: 100%;
   }
   #bands-nav img.comma {
     display: none;
