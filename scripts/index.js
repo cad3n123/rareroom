@@ -33,7 +33,7 @@ let flashingInterval = null;
 /** @type {AudioBufferSourceNode} */
 let currentAudioBufferSource = null;
 let $socialMediaIcons = document.createElement('ul');
-let artistData = {};
+let artistData = [];
 let previouslyWasZoomedOut = true;
 
 // Elements
@@ -174,10 +174,10 @@ function populateStudioImages() {
  * Preloads the artist background images to prevent jank on hover.
  */
 function preloadArtistImages() {
-  Object.entries(artistData).forEach(([artist, artistData]) => {
+  artistData.forEach((artist) => {
     const $img = new Image();
-    $img.src = artistData.image;
-    $img.classList.add(artist);
+    $img.src = artist.image;
+    $img.classList.add(artist.name);
 
     $backgroundPicture.appendChild($img);
     $artistImages.appendChild($img.cloneNode(true));
@@ -186,10 +186,16 @@ function preloadArtistImages() {
 
 // Functions
 async function updateArtistData() {
+  const S3_URL =
+    'https://rareroom-bucket.s3.us-east-2.amazonaws.com/rareroom/data.json';
+
   try {
-    const res = await fetch('/data/artist-socials.json');
-    const data = await res.json();
-    artistData = data;
+    const response = await fetch(S3_URL);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    artistData = data.artists;
   } catch (err) {
     console.error('Failed to fetch artist data:', err);
   }
@@ -422,7 +428,7 @@ function stateChanged(withMorse) {
       let artistNameLocation = `/images/${artistName}.png`;
       $artistName.src = artistNameLocation;
 
-      const thisArtistData = artistData[artistName];
+      const thisArtistData = getArtist(artistName);
       if (thisArtistData !== undefined) {
         const purpleClass =
           thisArtistData['class'] === undefined
@@ -750,12 +756,13 @@ function switchPage(
     selectedNavButton.classList.add('active');
   }
 
-  if (artistData !== undefined && artistData[artistName] !== undefined) {
-    setTimeout(() => {
-      $artistSocials.appendChild(
-        $socialMediaIconsFactory(artistData[artistName])
-      );
-    }, 50);
+  if (artistData !== undefined) {
+    const artist = getArtist(artistName);
+    if (artist !== undefined) {
+      setTimeout(() => {
+        $artistSocials.appendChild($socialMediaIconsFactory(artist));
+      }, 50);
+    }
   }
 }
 function addBandButtons() {
@@ -878,6 +885,14 @@ async function checkPassword() {
  */
 function wordsToFilename(words) {
   return words.trim().replace(/\s/g, '-').toLowerCase();
+}
+/**
+ *
+ * @param {string} artistName
+ * @returns {string | undefined}
+ */
+function getArtist(artistName) {
+  return artistData.find((artist) => artist.name && artist.name === artistName);
 }
 
 export { $main, changeState };

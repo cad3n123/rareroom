@@ -1,0 +1,53 @@
+#privacy-policy-div {
+  font-family: Source_Code_Pro;
+}
+
+#privacy-policy-div > div {
+  --margin: 4rem;
+  margin: calc(1.1 * var(--margin)) 0;
+  padding: 0 var(--margin);
+  height: calc(100% - var(--margin));
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+#privacy-policy-div > div:last-child {
+  padding-bottom: 80vh;
+}
+
+#privacy-policy-div section {
+  --margin-top: 1rem;
+  width: 100%;
+  max-width: 850px;
+  margin-top: var(--margin-top);
+}
+
+#privacy-policy-div section h1 {
+  text-transform: uppercase;
+  background-color: #000;
+  margin: 0;
+  padding: 1rem 1rem 1rem 0;
+  font-family: Alike;
+  font-size: 1.75rem;
+  position: sticky;
+  top: 0;
+}
+
+#privacy-policy-div * {
+  color: #fff;
+}
+
+@media only screen and (width <= 600px) {
+  #privacy-policy-div > div {
+    --margin: 3rem;
+  }
+
+  #privacy-policy-div h1 {
+    font-size: 1.25rem;
+  }
+
+  #privacy-policy-div p {
+    font-size: 1rem;
+  }
+}
+/*# sourceMappingURL=Rare Room.5d3f6f3f.css.map */

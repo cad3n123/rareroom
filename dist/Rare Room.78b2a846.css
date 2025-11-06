@@ -1,0 +1,1170 @@
+@font-face {
+  font-family: EliteMath;
+  src: url("Elite Math Regular.1332385e.ttf");
+  font-family: Alike;
+  src: url("Alike-Regular.f5220fd3.ttf");
+  font-family: Helvetica;
+  src: url("Helvetica.f612938c.ttf");
+  font-family: Source_Code_Pro;
+  src: url("SourceCodePro-Regular.f6045166.ttf");
+}
+
+:root {
+  --primary: #cacbcf;
+  --secondary: #2d2423;
+  color: var(--secondary);
+  background-color: #000;
+  font-family: Alike;
+  font-size: min(max(.5vw + 8px, 10px), 18px);
+}
+
+* {
+  -webkit-touch-callout: none;
+  user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-drag: none;
+  touch-action: manipulation;
+}
+
+button, a {
+  color: var(--secondary);
+  cursor: pointer;
+  font-family: Alike;
+}
+
+.img-hover-purple, .img-hover-purpler, .img-hover-3-purple {
+  transition: filter .25s;
+}
+
+.img-hover-purple-0-5:hover {
+  filter: brightness(.375) sepia() hue-rotate(270deg) saturate(1.5);
+}
+
+.img-hover-purple:hover {
+  filter: brightness(.475) sepia() hue-rotate(270deg) saturate(1.5);
+}
+
+.img-hover-purple-1-5:hover {
+  filter: brightness(.475) sepia() hue-rotate(270deg) saturate(2.25);
+}
+
+.img-hover-purpler:hover {
+  filter: brightness(.8) sepia() hue-rotate(270deg) saturate(3);
+}
+
+.img-hover-3-purple:hover {
+  filter: brightness(1.5) sepia() hue-rotate(270deg) saturate(16) brightness(.6);
+}
+
+main:not(.inverted):not(.first-inverted) nav button.active {
+  filter: brightness() sepia() hue-rotate(270deg) saturate(8);
+}
+
+html, body {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+body div img {
+  user-select: none;
+}
+
+#curtain {
+  --transition-time: .5s;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100dvh;
+  transition: opacity var(--transition-time) ease, visibility 0s linear var(--transition-time);
+  background-color: #000;
+  position: fixed;
+}
+
+#curtain.active {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity var(--transition-time) ease;
+}
+
+body:has(main.inverted) #background-content {
+  opacity: .18;
+}
+
+body:has(main.first-inverted) #background-content {
+  opacity: 0;
+}
+
+#background-content {
+  --opacity-transition: 1.5s;
+  z-index: -10;
+  opacity: 1;
+  width: 100vw;
+  height: 100dvh;
+  transition: opacity var(--opacity-transition);
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+#background-content #loading-background {
+  background-color: var(--primary);
+}
+
+#background-content img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  object-fit: cover;
+  border: none;
+  width: 100%;
+  max-width: 100vw;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#background-content #background {
+  height: 100%;
+}
+
+#background-picture {
+  z-index: -1;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100vw;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#background-picture img {
+  object-fit: cover;
+  height: 66%;
+  display: none;
+}
+
+#background-picture img.active {
+  display: block;
+}
+
+#background-picture.active {
+  display: flex;
+}
+
+main {
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+main > div {
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 2.5rem 0;
+  display: flex;
+}
+
+main > div:has(#home-logo-morse-container.top) {
+  justify-content: start;
+  padding: 0;
+}
+
+#home-logo-morse-container img.underline {
+  width: calc(100% - 1.1rem);
+  display: none;
+  position: absolute;
+  bottom: -.28rem;
+}
+
+#home-logo-morse-container.top {
+  z-index: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: .75rem 1.75rem;
+  transition: opacity .25s;
+  display: flex;
+  position: absolute;
+}
+
+#home-logo-morse-container .fuzz-background {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#home-logo-morse-container.top .background {
+  background-color: #000;
+  background-image: url("black_sand_zoomed.ec176f66.jpg");
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
+#home-logo-morse-container.top img.underline {
+  opacity: 1;
+  display: block;
+}
+
+#home-logo-morse-container.scrolled.top img.underline {
+  opacity: 0;
+}
+
+#home-logo-morse-container .background {
+  opacity: 0;
+  filter: blur(1px);
+  background-size: cover;
+  border-bottom: 1px solid #000;
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+  width: 100%;
+  height: 100%;
+  transition: opacity .3s, border-bottom .3s;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#home-logo-morse-container.scrolled.top {
+  border-color: #0000;
+  transition: border-color .3s, background-color .3s;
+}
+
+#home-logo-morse-container.scrolled.top .background {
+  opacity: 1;
+}
+
+#home-logo-morse-container.top #home-logo-container {
+  width: 6rem;
+  transform: translateY(4%);
+}
+
+#home-logo-morse-container.top > .morse img {
+  display: none;
+}
+
+#home-logo-morse-container {
+  width: min-content;
+  min-width: 0;
+  transition: background-color .25s;
+  position: relative;
+}
+
+#home-logo-morse-container img.morse {
+  object-fit: contain;
+  height: .325rem;
+  margin-top: .25rem;
+}
+
+#home-logo-morse-container > span, #home-logo-morse-container > button {
+  height: min-content;
+  min-height: 0;
+  padding: 0;
+  display: block;
+  position: relative;
+}
+
+#home-logo-container {
+  background: none;
+  border: none;
+  outline: none;
+  width: 12rem;
+  min-width: 0;
+  max-width: 100vw;
+  min-height: 0;
+  max-height: 100svh;
+}
+
+#home-logo-container img {
+  cursor: pointer;
+}
+
+#home-logo-morse-container > span img, #home-logo-morse-container > button img {
+  object-fit: contain;
+  width: 100%;
+  min-width: 0;
+  max-width: 100vw;
+  height: auto;
+  min-height: 0;
+  max-height: 100svh;
+}
+
+main {
+  --brightness: .2;
+  --text-brightness: calc(1 - var(--brightness) * (3 / 4));
+  --image-brightness: var(--brightness);
+}
+
+main img {
+  will-change: filter;
+}
+
+main.inverted img, main.first-inverted img {
+  filter: invert(100%) brightness(calc(1 + var(--image-brightness)));
+  transition: filter .25s;
+}
+
+main.inverted #home-logo, main.first-inverted #home-logo, main > div:has(#home-logo-morse-container.scrolled.top) #home-logo-morse-container #home-logo {
+  filter: invert(100%) brightness(calc(.85 + var(--image-brightness)));
+}
+
+main.first-inverted #loading-div {
+  height: 0;
+  display: block;
+}
+
+main #loading-div {
+  display: none;
+  transform: translateY(1.25rem);
+}
+
+main #loading-div button {
+  border: unset;
+  background-color: #0000;
+}
+
+main #loading-div img.message {
+  object-fit: cover;
+  width: auto;
+  height: 1rem;
+}
+
+main > div #content {
+  opacity: 1;
+  width: 100%;
+  min-height: 0;
+  padding-top: .75rem;
+  transition: opacity .25s;
+  position: relative;
+  overflow-y: auto;
+}
+
+main.first-inverted > div #content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+main > div:has(#home-logo-morse-container.top) #content {
+  padding-top: 4rem;
+}
+
+main > div #content nav {
+  width: max-content;
+  margin: auto;
+  padding-bottom: 1rem;
+}
+
+main > div #content nav > span {
+  gap: .4rem;
+  display: flex;
+}
+
+main > div #content nav > span > span {
+  flex-direction: column;
+  align-items: center;
+  gap: .1rem;
+  display: inline-flex;
+}
+
+main > div #content nav > span > span img {
+  object-fit: contain;
+  height: .4rem;
+}
+
+main > div #content nav > span > span button img {
+  align-self: center;
+}
+
+main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
+  object-fit: contain;
+  height: 1rem;
+}
+
+main > div #content nav > span > img.vertical-line {
+  height: .9rem;
+}
+
+#bands-nav {
+  display: flex;
+  position: relative;
+}
+
+#bands-nav img {
+  height: 1rem;
+}
+
+main nav button {
+  background-color: #0000;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+main.inverted nav img, main.first-inverted nav img {
+  transition: filter .25s;
+}
+
+main.inverted nav img, main.first-inverted nav img, main nav:not(#bands-nav) button img:hover {
+  filter: invert(90%);
+}
+
+main nav:not(#bands-nav) button.active img:hover {
+  filter: invert(9%);
+}
+
+main.inverted #bands-nav img, main.first-inverted #bands-nav img {
+  filter: invert();
+}
+
+main > div #content #rareroom-title {
+  width: 4rem;
+  margin: auto auto .5rem;
+}
+
+#about-container {
+  width: max-content;
+  height: max-content;
+  margin: auto;
+  padding-left: 1.5%;
+  position: relative;
+}
+
+#about-container img {
+  width: 20rem;
+}
+
+body:has(#curtain) main > div #content #pollish-link {
+  opacity: 0;
+}
+
+main > div #content #pollish-link {
+  letter-spacing: .015rem;
+  opacity: 1;
+  font-size: 85%;
+  transition: opacity .25s;
+  position: absolute;
+  top: 40%;
+  right: 1.5%;
+}
+
+main > div #content .contact {
+  margin: auto auto .5rem;
+}
+
+main button span, main button span:before, main nav button {
+  transition: color .25s;
+  position: relative;
+}
+
+main button span:before, main nav button:before {
+  box-sizing: border-box;
+  content: "";
+  background-color: var(--secondary);
+  width: 0%;
+  height: 1px;
+  transition: width .25s;
+  position: absolute;
+  bottom: 0%;
+}
+
+main nav button:before {
+  bottom: 10%;
+}
+
+main #bands-nav button:before {
+  background-color: var(--secondary);
+  bottom: 20%;
+}
+
+main nav button:not(.active):hover:before, main nav button.active:before {
+  width: 100%;
+}
+
+main.inverted nav button:before, main.first-inverted nav button:before {
+  background-color: rgb(calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255), calc(var(--text-brightness) * 255));
+}
+
+main nav button:hover:before {
+  filter: invert(.9);
+}
+
+main nav button.active:hover:before {
+  filter: invert(.05);
+}
+
+main button:not(.nav-button) span {
+  font-size: .95rem;
+}
+
+main .nav-button.active span {
+  text-underline-offset: 2.5px;
+  text-decoration: underline .5px;
+}
+
+.image-a {
+  color: #0000;
+  mix-blend-mode: screen;
+  background-color: #651b56;
+}
+
+.image-a:hover {
+  background-color: #300225;
+}
+
+.social-media-icons {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.social-media-icons a, .social-media-icons > img {
+  opacity: 0;
+  height: .75rem;
+}
+
+.social-media-icons a.seen, .social-media-icons > img.seen {
+  opacity: 1;
+}
+
+.social-media-icons a img {
+  object-fit: cover;
+  height: 100%;
+  display: block;
+}
+
+main > div #content #social-media-icons {
+  width: max-content;
+  height: max-content;
+  margin: auto;
+}
+
+main > div #content ul a {
+  color: var(--secondary);
+  padding: .25rem;
+  font-size: 1.75rem;
+}
+
+main > div #content ul a svg {
+  --size: 1.3rem;
+  height: var(--size);
+  width: var(--size);
+  line-height: 1;
+  display: block;
+}
+
+#contact-email {
+  width: max-content;
+}
+
+#contact-email img {
+  object-fit: contain;
+  height: .7rem;
+}
+
+main > div #content a.contact:hover {
+  opacity: 1;
+}
+
+#artist-div {
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 0;
+  padding: 2rem 0;
+  display: flex;
+}
+
+#artist-div img {
+  object-fit: contain;
+}
+
+#artist-images {
+  width: 150svh;
+  max-width: 85vw;
+  margin: auto;
+}
+
+#artist-images img {
+  width: 100%;
+  margin: auto;
+  display: none;
+}
+
+#artist-images img.active {
+  display: block;
+}
+
+#artist-name-container {
+  align-items: center;
+  height: 2.75rem;
+  margin: -.5rem auto .5rem;
+  display: inline-grid;
+  position: relative;
+}
+
+#artist-name-link {
+  display: block;
+}
+
+#artist-name {
+  width: auto;
+  height: 1.5rem;
+  display: block;
+}
+
+#artist-name-container .underline {
+  object-fit: fill;
+  width: 100%;
+  height: 1rem;
+  position: absolute;
+  bottom: -.5rem;
+  left: 0;
+}
+
+#artist-socials {
+  width: 100%;
+}
+
+#artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
+  flex-shrink: 0;
+  height: 1rem;
+}
+
+.black-overlay-page {
+  visibility: hidden;
+  z-index: 2;
+  opacity: 0;
+  background-color: #000;
+  width: 100vw;
+  height: 100dvh;
+  transition: opacity .25s, visibility .25s;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.black-overlay-page.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.black-overlay-page .x {
+  z-index: 1;
+  background-color: #0000;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+}
+
+.black-overlay-page .x img {
+  object-fit: cover;
+  width: 1.6rem;
+}
+
+.black-overlay-page .x img, #studio-div .carousel button img {
+  filter: invert();
+  transition: filter .25s;
+}
+
+.black-overlay-page .x img:hover, #studio-div .carousel button img:hover {
+  filter: invert(80%);
+}
+
+#studio-div .carousel {
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+#studio-div .carousel-track {
+  width: 100%;
+  height: 100%;
+  transition: transform .6s;
+  display: flex;
+}
+
+#studio-div .carousel-track img {
+  object-fit: contain;
+  object-position: center;
+  background-color: #000;
+  flex-shrink: 0;
+  width: 100vw;
+  height: 100dvh;
+}
+
+#studio-div .carousel button {
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  background-color: #ffffff1a;
+  border: none;
+  padding: .5rem;
+  font-size: 1.5rem;
+  transition: background-color .3s;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#studio-div .carousel button:hover {
+  background-color: #ffffff4d;
+}
+
+#studio-div .carousel button img {
+  object-fit: fill;
+  width: 1rem;
+  height: 1.6rem;
+  display: block;
+}
+
+#studio-div .carousel button.back {
+  left: 1rem;
+}
+
+#studio-div .carousel button.forward {
+  right: 1rem;
+}
+
+#loading-bar {
+  display: none;
+}
+
+img.comma {
+  margin-left: .05rem;
+  margin-right: .4rem;
+  transform: translateY(.1rem);
+}
+
+#home-logo-morse-container span.morse {
+  justify-content: space-around;
+  font-family: EliteMath;
+  display: flex;
+}
+
+#home-logo-morse-container span.morse p {
+  font-weight: bold;
+}
+
+#home-logo-shadow {
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#home-logo-shadow.active {
+  opacity: .4;
+}
+
+#settings {
+  --closed-top: -30rem;
+  transform: translate(calc(32vw - 16rem), var(--closed-top));
+  transition: transform .5s;
+  display: flex;
+  position: absolute;
+  top: .45rem;
+  left: 0;
+}
+
+#settings > :not(#settings-arrow-down) {
+  opacity: 0;
+  transition: opacity .25s;
+}
+
+#settings #settings-border {
+  filter: brightness(1.5) contrast(.5);
+}
+
+#settings #settings-arrow-down {
+  --margin-top: 0;
+  --margin-left: 0;
+  --top: 0;
+  --left: 0;
+  width: max-content;
+  margin-top: var(--margin-top);
+  margin-left: var(--left);
+  opacity: 0;
+  pointer-events: none;
+  cursor: default;
+  background-color: #0000;
+  border: none;
+  padding: .5rem .5rem 1rem;
+  transition: opacity .25s;
+  animation: 1s linear infinite backandforth;
+}
+
+#settings #settings-arrow-down img {
+  object-fit: contain;
+  height: 1rem;
+}
+
+#settings #settings-arrow-down.active {
+  opacity: 1;
+  display: block;
+}
+
+#settings #settings-arrow-down:not(.up-away).active {
+  pointer-events: unset;
+  cursor: pointer;
+}
+
+#settings #settings-arrow-down.up-away img {
+  transition: transform .25s;
+  transform: translateY(-3rem);
+}
+
+#settings #settings-x {
+  --size: .85rem;
+  cursor: pointer;
+  width: var(--size);
+  height: var(--size);
+  background-color: #0000;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  display: flex;
+  top: 1.8rem;
+  right: 2rem;
+}
+
+#settings #settings-x img {
+  object-fit: contain;
+  width: 100%;
+  position: absolute;
+}
+
+#settings .content {
+  width: 100%;
+  margin-top: .3rem;
+  padding: 2.65rem 2rem 2rem;
+}
+
+#settings .content button {
+  box-sizing: border-box;
+  background-color: #0000;
+  border: none;
+  height: 100%;
+  margin: 0;
+  padding: 0 .125rem;
+  font-size: .5rem;
+}
+
+#settings .content > div {
+  justify-content: space-between;
+  width: 100%;
+  height: .9rem;
+  margin-bottom: .3rem;
+  display: flex;
+}
+
+#settings .content > div img {
+  object-fit: cover;
+  width: auto;
+  height: 100%;
+}
+
+#settings .content > div span {
+  gap: .5rem;
+  display: flex;
+}
+
+#settings .content > div span * {
+  display: inline-block;
+}
+
+#settings .content > div span button img {
+  object-fit: cover;
+  width: auto;
+  height: 100%;
+}
+
+#settings .content > div span button.active img {
+  filter: brightness(.8) sepia() hue-rotate(270deg) saturate(4);
+}
+
+#home-logo {
+  transition: filter .3s, opacity .3s;
+}
+
+#home-logo:hover {
+  opacity: .8;
+}
+
+#settings .content p {
+  text-align: center;
+  color: gray;
+  margin-top: .9rem;
+  margin-bottom: .5rem;
+  padding: 0;
+  font-family: Source_Code_Pro;
+  font-size: .5rem;
+}
+
+#settings.active {
+  transform: translate(calc(32vw - 16rem));
+}
+
+#settings.active > :not(#settings-arrow-down) {
+  opacity: 1;
+}
+
+@media only screen and (width <= 600px) {
+  :root {
+    font-size: 3.5vw;
+  }
+
+  .img-hover-purple-0-5, .img-hover-purple, .img-hover-purple-1-5, .img-hover-purpler, .img-hover-3-purple {
+    --purple-pulse-ms: 100%;
+  }
+
+  .img-hover-purple-0-5:hover, .img-hover-purple:hover, .img-hover-purple-1-5:hover, .img-hover-purpler:hover, .img-hover-3-purple:hover {
+    filter: unset;
+  }
+
+  .img-hover-purple-0-5.flash {
+    animation: img-hover-purple-0-5 var(--purple-pulse-ms) ease;
+  }
+
+  .img-hover-purple.flash {
+    animation: img-hover-purple var(--purple-pulse-ms) ease;
+  }
+
+  .img-hover-purple-1-5.flash {
+    animation: img-hover-purple-1-5 var(--purple-pulse-ms) ease;
+  }
+
+  .img-hover-purpler.flash {
+    animation: img-hover-purpler var(--purple-pulse-ms) ease;
+  }
+
+  .img-hover-3-purple.flash {
+    animation: img-hover-3-purple var(--purple-pulse-ms) ease;
+  }
+
+  main nav:not(#bands-nav) button.active img:hover, main nav button.active:hover:before, main nav:not(#bands-nav) button img:hover {
+    filter: unset;
+  }
+
+  main > div {
+    margin: 0;
+    padding-top: 4.25rem;
+  }
+
+  #home-background {
+    display: none !important;
+  }
+
+  main #loading-div {
+    top: 22%;
+  }
+
+  main > div {
+    justify-content: start;
+  }
+
+  main > div #content #pollish-link {
+    right: 1.5%;
+  }
+
+  main nav button:hover:before, main.inverted nav button:before, main nav button:hover:before, main.first-inverted nav button:before {
+    background-color: var(--secondary);
+  }
+
+  #home-logo:hover {
+    opacity: 1;
+  }
+
+  #artist-socials .social-media-icons a, #artist-socials .social-media-icons > img {
+    height: .725rem;
+  }
+
+  main > div #content #bands-nav {
+    flex-direction: column;
+    gap: .25rem;
+    width: 100%;
+    margin-top: .5rem;
+    display: flex;
+  }
+
+  main > div #content nav > span > span button img, main > div #content nav > span > img.vertical-line {
+    height: 1rem;
+  }
+
+  main nav button:not(.active):hover:before {
+    width: 0;
+  }
+
+  #bands-nav button {
+    width: 100%;
+  }
+
+  #bands-nav img.comma {
+    display: none;
+  }
+
+  #artist-images img {
+    width: 75vw;
+  }
+
+  #settings {
+    bottom: var(--closed-top);
+    top: unset;
+    left: 50%;
+    transform: translate(-50%);
+  }
+
+  #settings img {
+    --left: 0;
+  }
+
+  #settings #settings-arrow-down {
+    margin-top: calc(-1 * var(--top)  + 12px);
+    animation: 1s linear infinite upanddown;
+    top: 0;
+    transform: rotate(-180deg);
+  }
+
+  #settings.active {
+    transform: translate(-50%, -14rem);
+  }
+}
+
+@keyframes backandforth {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  25% {
+    transform: translateY(.25rem);
+  }
+
+  75% {
+    transform: translateY(-.25rem);
+  }
+}
+
+@keyframes upanddown {
+  0%, 100% {
+    transform: rotate(-180deg)translateY(0);
+  }
+
+  25% {
+    transform: rotate(-180deg)translateY(.25rem);
+  }
+
+  75% {
+    transform: rotate(-180deg)translateY(-.25rem);
+  }
+}
+
+@keyframes img-hover-purple-0-5 {
+  0% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+
+  50% {
+    filter: brightness(.375) sepia() hue-rotate(270deg) saturate(1.5);
+  }
+
+  100% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+}
+
+@keyframes img-hover-purple {
+  0% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+
+  50% {
+    filter: brightness(.475) sepia() hue-rotate(270deg) saturate(1.5);
+  }
+
+  100% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+}
+
+@keyframes img-hover-purple-1-5 {
+  0% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+
+  50% {
+    filter: brightness(.475) sepia() hue-rotate(270deg) saturate(2.25);
+  }
+
+  100% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+}
+
+@keyframes img-hover-purpler {
+  0% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+
+  50% {
+    filter: brightness(.8) sepia() hue-rotate(270deg) saturate(3);
+  }
+
+  100% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+}
+
+@keyframes img-hover-3-purple {
+  0% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+
+  50% {
+    filter: brightness(1.5) sepia() hue-rotate(270deg) saturate(16) brightness(.6);
+  }
+
+  100% {
+    filter: brightness() sepia(0) hue-rotate() saturate();
+  }
+}
+/*# sourceMappingURL=Rare Room.78b2a846.css.map */
