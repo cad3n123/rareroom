@@ -1,4 +1,11 @@
 {
+  "social-links": {
+    "youtube": "https://www.youtube.com/@rareroomeast",
+    "instagram": "https://www.instagram.com/rareroomeast/?utm_source=ig_web_button_share_sheet",
+    "facebook": "https://www.facebook.com/rareroomeast",
+    "twitter": "https://x.com/therobotixmusic",
+    "tiktok": "https://www.tiktok.com/@rareroomeast"
+  },
   "artists": [
     {
       "name": "pollish",

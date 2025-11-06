@@ -34,6 +34,7 @@ let flashingInterval = null;
 let currentAudioBufferSource = null;
 let $socialMediaIcons = document.createElement('ul');
 let artistData = [];
+let socialLinks = {};
 let previouslyWasZoomedOut = true;
 
 // Elements
@@ -130,12 +131,15 @@ async function main() {
   audioMain();
   settingsMain();
   subscribeMain();
-  addContactLinks();
+
+  (async () => {
+    await updateArtistData();
+    preloadArtistImages();
+    addContactLinks();
+  })();
 
   addBandButtons();
   populateStudioImages();
-  await updateArtistData();
-  preloadArtistImages();
 
   stateChanged(false);
 
@@ -196,6 +200,7 @@ async function updateArtistData() {
     }
     const data = await response.json();
     artistData = data.artists;
+    socialLinks = data['social-links'];
   } catch (err) {
     console.error('Failed to fetch artist data:', err);
   }
@@ -597,14 +602,7 @@ function $socialMediaIconsFactory(links) {
   return $result;
 }
 function addContactLinks() {
-  $socialMediaIcons = $socialMediaIconsFactory({
-    youtube: 'https://www.youtube.com/@rareroomeast',
-    instagram:
-      'https://www.instagram.com/rareroomeast/?utm_source=ig_web_button_share_sheet',
-    facebook: 'https://www.facebook.com/rareroomeast',
-    twitter: 'https://x.com/therobotixmusic',
-    tiktok: 'https://www.tiktok.com/@rareroomeast',
-  });
+  $socialMediaIcons = $socialMediaIconsFactory(socialLinks);
   $socialMediaIcons.style.setProperty('display', 'none');
   $socialMediaIcons.id = 'social-media-icons';
   $socialMediaIcons.classList.add('contact');
