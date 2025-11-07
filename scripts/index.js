@@ -125,7 +125,7 @@ const [[$studioBack], [$studioTrack], [$studioForward]] = [
   '.back',
   '.carousel-track',
   '.forward',
-].map((descriptor) => $studioDiv.querySelectorAll(descariptor));
+].map((descriptor) => $studioDiv.querySelectorAll(descriptor));
 
 async function main() {
   audioMain();
