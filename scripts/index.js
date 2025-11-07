@@ -125,18 +125,16 @@ const [[$studioBack], [$studioTrack], [$studioForward]] = [
   '.back',
   '.carousel-track',
   '.forward',
-].map((descriptor) => $studioDiv.querySelectorAll(descriptor));
+].map((descriptor) => $studioDiv.querySelectorAll(descariptor));
 
 async function main() {
   audioMain();
   settingsMain();
   subscribeMain();
 
-  (async () => {
-    await updateArtistData();
-    preloadArtistImages();
-    addContactLinks();
-  })();
+  await updateArtistData();
+  preloadArtistImages();
+  addContactLinks();
 
   addBandButtons();
   populateStudioImages();
