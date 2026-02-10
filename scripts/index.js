@@ -140,8 +140,7 @@ async function main() {
   populateStudioImages();
 
   stateChanged(false);
-
-  await checkPassword();
+  
   removeCurtainAfterImagesLoad();
 }
 
@@ -850,30 +849,6 @@ function secondsToMilliseconds(timeStr) {
   const match = timeStr.match(/^([\d.]+)s$/);
   if (!match) throw new Error("Invalid time format. Must end in 's'.");
   return Math.round(parseFloat(match[1]) * 1000);
-}
-async function checkPassword() {
-  return new Promise((resolve, reject) => {
-    const allowedStored = localStorage.getItem('allowed');
-    if (allowedStored !== null) {
-      if (JSON.parse(allowedStored)) {
-        resolve();
-        return;
-      }
-    }
-
-    const correctPassword = 'rareroom';
-    while (true) {
-      const enteredPassword = prompt('Enter password:').toLowerCase().trim();
-
-      if (enteredPassword === correctPassword) {
-        localStorage.setItem('allowed', JSON.stringify(true));
-        resolve();
-        return;
-      } else {
-        alert('Access Denied. Incorrect password.');
-      }
-    }
-  });
 }
 /**
  *
