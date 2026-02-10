@@ -188,10 +188,23 @@ body:has(main.first-inverted) #background-content {
   border-radius: 1.5rem;
 }
 
-#background-picture .image-wrapper.loaded {
-  background-image: url(/images/black_sand.jpg);
+#background-picture .image-wrapper.loaded::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image);
   background-size: cover;
+  background-position: center;
+  filter: blur(20px);
+  transform: scale(1.1);
+  z-index: -1;
 }
+
+#background-picture .image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
 
 #background-picture .image-wrapper.active {
   display: flex;
@@ -694,9 +707,16 @@ main>div #content a.contact:hover {
   border-radius: 1.5rem;
 }
 
-#artist-images .image-wrapper.loaded {
-  background-image: url(/images/black_sand.jpg);
+#artist-images .image-wrapper.loaded::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image);
   background-size: cover;
+  background-position: center;
+  filter: blur(20px);
+  transform: scale(1.1);
+  z-index: -1;
 }
 
 #artist-images .image-wrapper.active {

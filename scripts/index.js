@@ -25,7 +25,7 @@ const [homeAudio, aboutAudio, contactAudio, artistsAudio, subscribeAudio] = [
   'ARTISTS',
   'SUBSCRIBE',
 ].map((name) => `/audios/${name} MORSE.m4a`);
-const bands = ['POLLISH', 'KELSI KEE'];
+const bands = ['KELSI KEE', 'POLLISH'];
 const mobilePurplePulseMS = 750;
 
 // Global vars
@@ -189,6 +189,7 @@ function preloadArtistImages() {
         $wrapper.classList.add('loaded');
       });
       $img.src = src;
+      $wrapper.style.setProperty('--bg-image', `url(${src})`);
 
       $wrapper.appendChild($img);
       return $wrapper;
