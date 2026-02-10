@@ -283,10 +283,11 @@ main>div:has(#home-logo-morse-container.top) {
   background-image: url(/images/black_sand_zoomed.jpg);
   background-position: top center;
   background-repeat: no-repeat;
+  opacity: 1;
 }
 
 #home-logo-morse-container.top img.underline {
-  opacity: 1;
+  opacity: 0;
   display: block;
 }
 
@@ -396,7 +397,7 @@ main.first-inverted img {
 
 main.inverted #home-logo,
 main.first-inverted #home-logo,
-main>div:has(#home-logo-morse-container.scrolled.top) #home-logo-morse-container #home-logo {
+main>div:has(#home-logo-morse-container.top) #home-logo-morse-container #home-logo {
   filter: invert(100%) brightness(calc(0.85 + var(--image-brightness)));
 }
 
