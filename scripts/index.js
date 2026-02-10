@@ -140,7 +140,6 @@ async function main() {
   populateStudioImages();
 
   stateChanged(false);
-  
   removeCurtainAfterImagesLoad();
 }
 
@@ -176,12 +175,22 @@ function populateStudioImages() {
  */
 function preloadArtistImages() {
   artistData.forEach((artist) => {
-    const $img = new Image();
-    $img.src = artist.image;
-    $img.classList.add(artist.name);
+    /**
+     * @param {string} src
+     * @param {string} name
+     */
+    const createImage = (src, name) => {
+      const $img = new Image();
+      $img.addEventListener('load', () => {
+        $img.classList.add('loaded');
+      });
+      $img.src = src;
+      $img.classList.add(name);
+      return $img;
+    };
 
-    $backgroundPicture.appendChild($img);
-    $artistImages.appendChild($img.cloneNode(true));
+    $backgroundPicture.appendChild(createImage(artist.image, artist.name));
+    $artistImages.appendChild(createImage(artist.image, artist.name));
   });
 }
 
