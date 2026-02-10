@@ -180,13 +180,18 @@ function preloadArtistImages() {
      * @param {string} name
      */
     const createImage = (src, name) => {
+      const $wrapper = document.createElement('div');
+      $wrapper.classList.add('image-wrapper');
+      $wrapper.classList.add(name);
+
       const $img = new Image();
       $img.addEventListener('load', () => {
-        $img.classList.add('loaded');
+        $wrapper.classList.add('loaded');
       });
       $img.src = src;
-      $img.classList.add(name);
-      return $img;
+
+      $wrapper.appendChild($img);
+      return $wrapper;
     };
 
     $backgroundPicture.appendChild(createImage(artist.image, artist.name));

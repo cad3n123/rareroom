@@ -180,20 +180,29 @@ body:has(main.first-inverted) #background-content {
   justify-content: center;
 }
 
-#background-picture img {
+#background-picture .image-wrapper {
   display: none;
-  object-fit: cover;
   height: 66%;
-
-  border: 5px solid transparent;
+  box-sizing: border-box;
+  padding: 5px;
+  border-radius: 1.5rem;
 }
 
-#background-picture img.loaded {
-  border-image: url(/images/black_sand.jpg) 30 stretch;
+#background-picture .image-wrapper.loaded {
+  background-image: url(/images/black_sand.jpg);
+  background-size: cover;
 }
 
-#background-picture img.active {
+#background-picture .image-wrapper.active {
+  display: flex;
+}
+
+#background-picture .image-wrapper img {
   display: block;
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(1.5rem - 5px);
 }
 
 #background-picture.active {
@@ -676,19 +685,29 @@ main>div #content a.contact:hover {
   margin: auto;
 }
 
-#artist-images img {
+#artist-images .image-wrapper {
   display: none;
   width: 100%;
   margin: auto;
-  border: 5px solid transparent;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 1.5rem;
 }
 
-#artist-images img.loaded {
-  border-image: url(/images/black_sand.jpg) 30 stretch;
+#artist-images .image-wrapper.loaded {
+  background-image: url(/images/black_sand.jpg);
+  background-size: cover;
 }
 
-#artist-images img.active {
+#artist-images .image-wrapper.active {
   display: block;
+}
+
+#artist-images .image-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(1.5rem - 5px);
 }
 
 #artist-name-container {
