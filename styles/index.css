@@ -1249,6 +1249,15 @@ img.comma {
     position: relative;
     overflow: hidden;
   }
+
+  #artist-images {
+    margin: 0 auto;
+  }
+
+  #artist-div {
+    justify-content: center;
+    min-height: calc(100dvh - 8rem);
+  }
 }
 
 @keyframes backandforth {
