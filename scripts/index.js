@@ -14,7 +14,7 @@ import {
 } from '/scripts/subscribe.js';
 
 // Constant Variables
-const numStudioImages = 7;
+const numStudioImages = 9;
 const dot = 120;
 const dash = 240;
 const letterGap = 120;
