@@ -712,7 +712,11 @@ main>div #content a.contact:hover {
 #artist-images .image-wrapper.loaded::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: auto;
+  left: 0;
+  right: 0;
+  top: var(--bg-top, 0);
+  height: var(--bg-height, 100%);
   background-image: var(--bg-image);
   background-size: cover;
   background-position: center;

@@ -490,6 +490,7 @@ function stateChanged(withMorse) {
       playMorse(homeAudio, '.-. .- .-. . .-. --- --- --');
     }
   }
+  updateArtistBackground();
 }
 /**
  *
@@ -629,6 +630,16 @@ function removeFirstInverted() {
     $backgroundContent.style.setProperty('--opacity-transition', '250ms');
   }, 1000);
 }
+function updateArtistBackground() {
+  if (window.innerWidth <= 600) return;
+
+  const $activeWrapper = $artistImages.querySelector('.image-wrapper.active');
+  if (!$activeWrapper) return;
+
+  const rect = $activeWrapper.getBoundingClientRect();
+  $activeWrapper.style.setProperty('--bg-top', `${-rect.top}px`);
+  $activeWrapper.style.setProperty('--bg-height', `${rect.bottom}px`);
+}
 function removeIntro() {
   removeFirstInverted();
   changeState('');
@@ -639,6 +650,8 @@ window.addEventListener('DOMContentLoaded', main);
 window.addEventListener('popstate', () => {
   stateChanged(true);
 });
+window.addEventListener('resize', updateArtistBackground);
+
 $contactButton.addEventListener('click', () => {
   changeState('contact');
 });
@@ -656,6 +669,7 @@ $content.addEventListener('scroll', () => {
   } else {
     $homeLogoMorseContainer.classList.remove('scrolled');
   }
+  updateArtistBackground();
 });
 $studioButton.addEventListener('click', () => {
   $studioDiv.classList.add('active');
