@@ -279,10 +279,7 @@ main>div:has(#home-logo-morse-container.top) {
 }
 
 #home-logo-morse-container.top .background {
-  background-color: black;
-  background-image: url(/images/black_sand_zoomed.jpg);
-  background-position: top center;
-  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.95);
   opacity: 1;
 }
 
@@ -711,18 +708,23 @@ main>div #content a.contact:hover {
 
 #artist-images .image-wrapper.loaded::before {
   content: "";
-  position: absolute;
-  inset: auto;
-  left: 0;
-  right: 0;
-  top: var(--bg-top, 0);
-  height: var(--bg-height, 100%);
+  /* Fixed, constant-size layer pinned to the viewport, overscanned by 5% on
+     each side so the blur's feathered edges stay off-screen. Because its size
+     and background never change on scroll, the (expensive) blur is rasterized
+     once and cached; only the mask gradient below moves, which is cheap and
+     avoids the choppy re-blur when fast-scrolling the top into view. */
+  position: fixed;
+  inset: -5vh -5vw;
   background-image: var(--bg-image);
   background-size: cover;
   background-position: center;
   filter: blur(20px);
-  transform: scale(1.1);
   z-index: -1;
+  /* Fade the backdrop out so it ends softly at the bottom of the artist image.
+     --bg-fade-end (set in JS, measured from the layer's top edge) marks the
+     image bottom; the gradient goes transparent there and is opaque above it. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--bg-fade-end, 200%) - 2.5rem), transparent var(--bg-fade-end, 200%));
+  mask-image: linear-gradient(to bottom, #000 calc(var(--bg-fade-end, 200%) - 2.5rem), transparent var(--bg-fade-end, 200%));
 }
 
 #artist-images .image-wrapper.active {

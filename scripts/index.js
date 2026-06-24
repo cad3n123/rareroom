@@ -636,9 +636,22 @@ function updateArtistBackground() {
   const $activeWrapper = $artistImages.querySelector('.image-wrapper.active');
   if (!$activeWrapper) return;
 
+  // The blurred backdrop is a fixed layer overscanned by 5vh/5vw (see CSS), so
+  // its top edge sits 5vh above the viewport. Fade it out at the bottom of the
+  // artist image: --bg-fade-end is the image bottom measured from that top edge.
+  // Moving the mask gradient (instead of resizing the layer) keeps the cached
+  // blur bitmap, avoiding the choppy re-blur when scrolling.
   const rect = $activeWrapper.getBoundingClientRect();
-  $activeWrapper.style.setProperty('--bg-top', `${-rect.top}px`);
-  $activeWrapper.style.setProperty('--bg-height', `${rect.bottom}px`);
+  const overscan = window.innerHeight * 0.05;
+  $activeWrapper.style.setProperty('--bg-fade-end', `${rect.bottom + overscan}px`);
+}
+let artistBackgroundRafId = null;
+function scheduleArtistBackgroundUpdate() {
+  if (artistBackgroundRafId !== null) return;
+  artistBackgroundRafId = requestAnimationFrame(() => {
+    artistBackgroundRafId = null;
+    updateArtistBackground();
+  });
 }
 function removeIntro() {
   removeFirstInverted();
@@ -650,7 +663,7 @@ window.addEventListener('DOMContentLoaded', main);
 window.addEventListener('popstate', () => {
   stateChanged(true);
 });
-window.addEventListener('resize', updateArtistBackground);
+window.addEventListener('resize', scheduleArtistBackgroundUpdate);
 
 $contactButton.addEventListener('click', () => {
   changeState('contact');
@@ -669,7 +682,7 @@ $content.addEventListener('scroll', () => {
   } else {
     $homeLogoMorseContainer.classList.remove('scrolled');
   }
-  updateArtistBackground();
+  scheduleArtistBackgroundUpdate();
 });
 $studioButton.addEventListener('click', () => {
   $studioDiv.classList.add('active');
