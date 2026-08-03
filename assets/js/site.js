@@ -1,0 +1,115 @@
+/* =============================================================================
+   RARE ROOM — single-page app (hash-routed) entry point.
+
+   Everything lives on one document so the AudioContext (and morse state) stays
+   alive across "page" switches. The app is split into focused modules:
+     config.js   — content + settings (the one file to edit for content)
+     dom.js      — query/create helpers
+     state.js    — shared mutable state (current page key)
+     icons.js    — inline SVG icons
+     morse.js    — morse table, rendering, and the sound/flash engine
+     views.js    — per-route HTML templates + cards + reveal + intro curtain
+     header.js   — the sticky nav (built once)
+     footer.js   — the footer (built once)
+     lightbox.js — the studio carousel popup
+     router.js   — hash routing, loading bar, nav-morse fitting
+   This file just wires them together at boot.
+   ============================================================================= */
+import { STUDIO, hydrateFromRemote } from './config.js';
+import { buildHeader } from './header.js';
+import { buildFooter } from './footer.js';
+import { buildLightbox, openLightbox } from './lightbox.js';
+import { state } from './state.js';
+import {
+  primeAudioOnGesture, ensureAudio, runMorse, soundOn, flashOn, PAGE_MORSE,
+} from './morse.js';
+import { navigate, fitAllNavMorse } from './router.js';
+
+async function boot() {
+  // First visit: make sure both morse channels start OFF (only sets the default
+  // when there's no stored preference — returning visitors keep their choice).
+  ['rr-sound', 'rr-flash'].forEach((k) => {
+    if (localStorage.getItem(k) == null) localStorage.setItem(k, 'off');
+  });
+  // Fold the live S3 roster (images + social links) into the config before we
+  // build anything, so the footer/header/artist pages render with it.
+  await hydrateFromRemote();
+  buildHeader();
+  buildFooter();
+  buildLightbox(STUDIO.images);
+  primeAudioOnGesture();
+  fitAllNavMorse();
+
+  document.addEventListener('click', (e) => {
+    // Open the studio carousel from any "Studio" control (header, footer, mobile).
+    const trigger = e.target.closest('[data-action="studio"]');
+    if (trigger) {
+      e.preventDefault();
+      openLightbox(0);
+      return;
+    }
+    // The footer "Artists" control mirrors the header: on desktop it pops the
+    // top-nav dropdown open (focus-within), on mobile it opens the hamburger menu
+    // and expands the Artists accordion.
+    const footerArtists = e.target.closest('[data-footer-artists]');
+    if (footerArtists) {
+      e.preventDefault();
+      const isMobile = window.matchMedia('(max-width: 760px)').matches;
+      if (isMobile) {
+        const menu = document.querySelector('#mobileMenu');
+        const menuToggle = document.querySelector('[data-menu-toggle]');
+        if (menu && !menu.classList.contains('open')) menuToggle?.click();
+        const drop = document.querySelector('#mobileMenu [data-mobile-drop]');
+        if (drop && !drop.closest('.mobile-drop')?.classList.contains('open')) drop.click();
+      } else {
+        // Force the top-nav dropdown open (the sticky header keeps it in view), then
+        // let the next outside click / pointer-leave dismiss it.
+        const item = document.querySelector('#site-header .nav__item--dropdown');
+        if (item) {
+          item.classList.remove('is-dismissed');
+          item.classList.add('is-pinned');
+          const unpin = () => {
+            item.classList.remove('is-pinned');
+            document.removeEventListener('click', onDocClick, true);
+          };
+          const onDocClick = (ev) => {
+            if (!item.contains(ev.target)) unpin();
+          };
+          item.addEventListener('mouseleave', unpin, { once: true });
+          setTimeout(() => document.addEventListener('click', onDocClick, true), 0);
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+    // The big hero logo always replays the home flash — even when you're already
+    // on the home page (where the hash wouldn't change to re-trigger it).
+    const logo = e.target.closest('.hero__logo');
+    if (logo) {
+      // Momentary "press-in" (works the same on desktop + touch, never sticks).
+      logo.classList.add('is-pressed');
+      setTimeout(() => logo.classList.remove('is-pressed'), 650);
+    }
+    if (logo && state.currentPageKey === 'home') {
+      e.preventDefault();
+      ensureAudio();
+      // Respect the toggles — if flash (and sound) are off, clicking the logo does
+      // nothing rather than always flashing.
+      if (soundOn() || flashOn()) {
+        runMorse(PAGE_MORSE.home, { sound: soundOn(), flash: flashOn(), gesture: true });
+      }
+    }
+  });
+
+  let fitTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(fitAllNavMorse, 150);
+  });
+  window.addEventListener('load', fitAllNavMorse); // re-fit once web fonts settle
+
+  window.addEventListener('hashchange', navigate);
+  navigate();
+}
+
+document.addEventListener('DOMContentLoaded', boot);

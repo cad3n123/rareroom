@@ -1,0 +1,24 @@
+/* =============================================================================
+   RARE ROOM — design system (entry point)
+   -----------------------------------------------------------------------------
+   The stylesheet is split into focused partials (imported below, in cascade
+   order). Edit the relevant partial rather than this file:
+     base.css     — fonts, tokens, reset, primitives, buttons, links, morse, photo
+     header.css   — sticky nav, dropdown, toggles, artist-invert, loading bar, mobile menu
+     hero.css     — home/about/contact hero lockup, scroll cue, privacy body
+     content.css  — grids & cards, home sub-sections, about copy, artist detail, roster
+     studio.css   — studio gallery + full-screen lightbox
+     contact.css  — contact grid + newsletter form/input
+     footer.css   — full-width subscribe band + black footer body
+     misc.css     — reveal-on-scroll, intro curtain, responsive
+   (Partials live in this same folder so their relative url() paths resolve the
+   same way this file's did.)
+   ============================================================================= */
+@import url('base.css');
+@import url('header.css');
+@import url('hero.css');
+@import url('content.css');
+@import url('studio.css');
+@import url('contact.css');
+@import url('footer.css');
+@import url('misc.css');

@@ -1,0 +1,725 @@
+/* =============================================================================
+   CONTENT — grids & cards (artist / release / product), the placeholder banner,
+   home sub-sections, the about page copy, the immersive artist detail page, and
+   the (currently unused) roster hover layout.
+   ============================================================================= */
+.grid {
+  display: grid;
+  gap: var(--gap);
+}
+
+.grid--roster {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.grid--releases {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.grid--shop {
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+/* Artist card */
+.artist-card {
+  display: block;
+}
+
+.artist-card .photo {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+}
+
+.artist-card__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding-top: 0.9rem;
+}
+
+.artist-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+}
+
+.artist-card__role {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  text-align: right;
+}
+
+/* Release card */
+.release {
+  display: flex;
+  flex-direction: column;
+}
+
+.cover {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: var(--photo-filter);
+}
+
+.cover--stamp {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: linear-gradient(150deg, var(--paper-2), var(--panel));
+  color: var(--ink);
+}
+
+.cover--stamp .cover__cat {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+}
+
+.cover--stamp .cover__mark {
+  position: absolute;
+  inset: 10px;
+  border: 1.5px solid var(--line);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.cover__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  opacity: 0;
+  background: linear-gradient(0deg, color-mix(in srgb, var(--ink) 55%, transparent), transparent 60%);
+  transition: opacity 0.3s var(--ease);
+}
+
+.release:hover .cover__play {
+  opacity: 1;
+}
+
+.cover__play a {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 0.3em 0.55em;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  transition: background 0.2s var(--ease), border-color 0.2s;
+}
+
+.cover__play a:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.release__meta {
+  padding-top: 0.85rem;
+}
+
+.release__cat {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-3);
+}
+
+.release__title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  margin-top: 0.15rem;
+}
+
+.release__sub {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  margin-top: 0.2rem;
+}
+
+/* Product card */
+.product {
+  display: flex;
+  flex-direction: column;
+}
+
+.product .cover {
+  background: linear-gradient(150deg, var(--paper-2), var(--panel));
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+}
+
+.product .cover .prod-ico {
+  width: 34%;
+  opacity: 0.5;
+}
+
+.product__tag {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 0.2em 0.5em;
+  border-radius: 2px;
+}
+
+.product__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding-top: 0.85rem;
+}
+
+.product__name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+}
+
+.product__price {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.product__variant {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-3);
+  margin-top: 0.15rem;
+}
+
+.product .btn {
+  margin-top: 0.8rem;
+}
+
+/* Placeholder banner for flagged sections */
+.placeholder-note {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  background: var(--panel);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.placeholder-note b {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* =============================================================================
+   HOME sub-sections
+   ============================================================================= */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.split .photo {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+}
+
+.stack>*+* {
+  margin-top: 1.1rem;
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pill {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 0.4em 0.9em;
+}
+
+/* Studio strip on home */
+.strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(240px, 1fr);
+  gap: 0.7rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+}
+
+.strip .photo {
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius);
+  scroll-snap-align: start;
+}
+
+/* =============================================================================
+   ABOUT page
+   ============================================================================= */
+.typed {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.5vw, 1.22rem);
+  line-height: 1.75;
+  letter-spacing: -0.01em;
+  max-width: 60ch;
+}
+
+.typed .lead-dash {
+  color: inherit; /* the leading em-dash matches the copy, not the accent */
+}
+
+/* About page: paragraph sitting under the hero logo + morse */
+.about-hero-min {
+  overflow: visible;
+}
+
+.about-copy {
+  margin-top: 0.5rem;
+  max-width: 56ch;
+  text-align: left;
+  color: var(--ink);
+  font-size: clamp(0.72rem, 0.9vw, 0.84rem);
+  line-height: 1.6;
+  text-transform: uppercase;
+  font-weight: 600;
+  /* never break words with a hyphen at line-ends (the long uppercase words were
+     getting auto-hyphenated) */
+  -webkit-hyphens: none;
+  hyphens: none;
+  overflow-wrap: normal;
+}
+
+/* Black paragraph copy with purple inline links (→ black on hover). */
+.about-link {
+  color: var(--accent);
+  transition: color 0.2s var(--ease);
+}
+
+.about-link:hover {
+  color: var(--ink);
+}
+
+/* Contact page (mirrors the about hero) — email is a stamped image in brackets */
+.contact-email {
+  margin-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  /* a small amount of breathing room between the brackets and the address */
+  gap: 0.12rem;
+  cursor: pointer;
+  /* typewriter treatment baked into the images (tools/bake_typewriter.py) */
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+:root[data-theme='dark'] .contact-email {
+  filter: invert(1);
+  /* baked dark ink → light on dark paper */
+}
+
+.contact-email__addr {
+  height: clamp(8px, 1.4vw, 12px);
+  width: auto;
+}
+
+.contact-email__bracket {
+  height: clamp(9px, 1.5vw, 13px);
+  width: auto;
+}
+
+/* Hover matches the artist-name link — a small lift + fade. */
+.contact-email:hover {
+  transform: translateY(-2px);
+  opacity: 0.72;
+}
+
+.contact-socials {
+  margin-top: 0.7rem;
+}
+
+/* Socials that fade in one-by-one, left → right */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+.reveal-item.in {
+  opacity: 1;
+  transform: none;
+}
+
+.about-hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--gap);
+}
+
+.value {
+  border-top: 1px solid var(--line);
+  padding-top: 1.1rem;
+}
+
+.value h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.4rem;
+}
+
+.value .num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+/* =============================================================================
+   ARTIST DETAIL
+   ============================================================================= */
+/* Immersive artist page: a near-full-height photo sitting over a blurred copy
+   of itself that fades away toward the bottom of the image (like the old site). */
+.artist-detail {
+  position: relative;
+  /* height follows the content so the footer sits right under it (instead of
+     being forced a full screen down) */
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 var(--pad-x) clamp(2.5rem, 6vh, 4rem);
+}
+
+/* Editorial split: portrait on one side, a left-anchored masthead (eyebrow →
+   name → role → hairline → socials) on the other — echoing the about/contact
+   asymmetric lockup instead of a dead-centred stack. */
+.artist-detail__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(1.6rem, 5vw, 4.5rem);
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  padding-top: clamp(2rem, 7vh, 5rem);
+}
+
+/* Portrait sits in the right column. */
+.artist-detail__photo {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  margin: 0;
+}
+
+/* Size the image to its own aspect ratio, capped by height AND width, so the
+   element box hugs the photo exactly — no transparent letterbox bands. */
+.artist-detail__photo img {
+  display: block;
+  height: auto;
+  width: auto;
+  max-height: min(72vh, 780px);
+  max-width: 100%;
+  filter: var(--photo-filter);
+  border-radius: var(--radius);
+}
+
+/* Left masthead column. */
+.artist-detail__meta {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: clamp(0.55rem, 1.5vh, 1rem);
+}
+
+.artist-detail__name {
+  height: clamp(20px, 3vw, 34px);
+  width: auto;
+  /* typewriter treatment baked into the PNG (tools/bake_typewriter.py) */
+}
+
+:root[data-theme='dark'] .artist-detail__name {
+  filter: invert(1);
+}
+
+/* The name is a link to the artist's own site — nudge + brighten on hover. */
+.artist-detail__name-link {
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+.artist-detail__name-link:hover {
+  transform: translateY(-2px);
+  opacity: 0.72;
+}
+
+.artist-detail__name-text {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5.5vw, 3.2rem);
+}
+
+.artist-detail__meta .hero-rule {
+  margin: 0.2rem 0;
+}
+
+.artist__socials {
+  justify-content: flex-start;
+  margin-top: 0.2rem;
+}
+
+/* Keep the artist's social row on ONE line — as the column narrows, shrink the
+   type (and tighten the gaps) rather than wrapping links onto a second line. */
+.artist-detail__meta .artist__socials {
+  flex-wrap: nowrap;
+  gap: 0.15rem 0.28rem;
+}
+.artist-detail__meta .artist__socials a {
+  font-size: clamp(0.5rem, 1.35vw, 0.66rem);
+  white-space: nowrap;
+}
+.artist-detail__meta .artist__socials .sep {
+  font-size: clamp(0.5rem, 1.35vw, 0.66rem);
+}
+
+/* Stack on phones: portrait on top, masthead centred beneath it. */
+@media (max-width: 760px) {
+  /* Match the other pages: hold just short of a full screen so the footer peeks. */
+  .artist-detail {
+    min-height: calc(100dvh - var(--header-h) - 5.5rem);
+  }
+  /* Contact email shrank too much on phones — bump it up (socials stay put). */
+  .contact-email__addr {
+    height: clamp(10px, 2.7vw, 13px);
+  }
+  .contact-email__bracket {
+    height: clamp(11px, 2.9vw, 14px);
+  }
+
+  .artist-detail__inner {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    max-width: 460px;
+  }
+
+  .artist-detail__photo {
+    grid-column: 1;
+    grid-row: 1; /* photo on top … */
+  }
+
+  .artist-detail__meta {
+    grid-column: 1;
+    grid-row: 2; /* … masthead stacked beneath (not overlapping in one cell) */
+    align-items: center;
+    text-align: center;
+  }
+
+  .artist-detail__meta .artist__socials {
+    justify-content: center;
+  }
+
+  /* Phones stack the artist page into one column, so there's room to bring the
+     social row up to the same size the contact page uses (0.66rem). Allow it to
+     wrap here too (like contact) so it never clips on the narrowest phones. */
+  .artist-detail__meta .artist__socials {
+    flex-wrap: wrap;
+  }
+  .artist-detail__meta .artist__socials a,
+  .artist-detail__meta .artist__socials .sep {
+    font-size: 0.66rem;
+  }
+
+  .artist-detail__meta .hero-rule {
+    align-self: center;
+  }
+}
+
+.social-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.3rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.social-row .sep {
+  color: var(--ink-3);
+  user-select: none;
+  font-size: 0.66rem;
+}
+
+.social-row a {
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  transition: color 0.2s var(--ease);
+}
+
+.social-row a:hover {
+  color: var(--accent);
+}
+
+.back-link {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  display: inline-flex;
+  gap: 0.5em;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+/* =============================================================================
+   ARTISTS (roster) page — name list with hover-reveal artist image
+   ============================================================================= */
+.roster-hero {
+  overflow: visible;
+}
+
+.roster-names {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.1rem 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.roster-name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 4.5vw, 2.9rem);
+  line-height: 1.12;
+  color: var(--ink);
+  transition: color 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+.roster-name:hover {
+  color: var(--accent);
+}
+
+.roster-sep {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  color: var(--ink-3);
+}
+
+/* Full-screen artist image that fades in on hover — as the old site did */
+.roster-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.roster-bg__item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+
+.roster-bg__item.active {
+  opacity: 1;
+}
+
+.roster-bg__blur {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: blur(28px) brightness(0.4) grayscale(0.4);
+  transform: scale(1.15);
+}
+
+.roster-bg__img {
+  position: relative;
+  height: 66%;
+  width: auto;
+  max-width: 84vw;
+  object-fit: contain;
+  filter: grayscale(1) brightness(0.92);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+}
+
+/* While an image is showing, flip the hero content light for contrast */
+.roster-hero.has-bg .hero__stamp {
+  filter: invert(1);
+}
+
+.roster-hero.has-bg .hero__morse .morse {
+  color: #fff;
+}
+
+.roster-hero.has-bg .roster-name {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.roster-hero.has-bg .roster-name.hot {
+  color: #fff;
+}
+
+.roster-hero.has-bg .roster-sep {
+  color: rgba(255, 255, 255, 0.3);
+}

@@ -1,0 +1,82 @@
+/* =============================================================================
+   CONTACT + FORMS — the (legacy) contact grid and the newsletter form/input.
+   ============================================================================= */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 5vw, 4rem);
+}
+.contact-block + .contact-block {
+  margin-top: 2rem;
+}
+.contact-block .eyebrow {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.contact-block a.big {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  color: var(--ink);
+}
+.contact-block a.big:hover {
+  color: var(--accent);
+}
+
+/* Newsletter form */
+.news-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.field {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+}
+/* Inline subscribe result — absolutely positioned just under the form so showing
+   it never adds a row (and never grows the white subscribe band). */
+.news-msg {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  left: 0.2rem;
+  right: 0.2rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-2);
+}
+.news-msg:empty {
+  display: none;
+}
+.news-msg.is-ok {
+  color: var(--accent);
+}
+.news-msg.is-err {
+  color: #b3261e;
+}
+.input {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.85em 1em;
+  transition: border-color 0.2s var(--ease);
+  width: 100%;
+}
+.input::placeholder {
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+select.input {
+  appearance: none;
+}

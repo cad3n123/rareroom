@@ -1,0 +1,115 @@
+/* =============================================================================
+   MISC — reveal-on-scroll, the intro curtain, and responsive breakpoints.
+   ============================================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Intro curtain — an INVERTED replica of the home hero lockup: a dark screen with
+   a white (inverted) logo + morse. It uses the same `.hero` markup + a matching top
+   offset, so the lockup lands in exactly the same size/position as the real hero;
+   when the curtain fades out, the logo appears to hold still and simply recolours
+   into the paper page beneath it. */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--ink);
+  /* push the replica hero down past where the (hidden) sticky header sits, so its
+     centred lockup matches the real hero's vertical centre exactly. */
+  padding-top: var(--header-h);
+  transition: opacity 0.7s var(--ease), visibility 0.7s;
+}
+.curtain.gone {
+  opacity: 0;
+  visibility: hidden;
+}
+/* The replica .hero inherits the same responsive min-height as the real hero, so
+   no size/position override is needed — only the entrance flourish, which settles
+   onto the exact resting frame. */
+.curtain .hero {
+  overflow: visible;
+}
+/* Invert the baked-ink logo + morse to white so they read on the dark curtain. */
+.curtain .hero__stamp {
+  filter: invert(1);
+  animation: introStamp 0.9s var(--ease) both;
+}
+.curtain .hero__morse {
+  filter: invert(1);
+  animation: fadeUp 0.6s var(--ease) 0.4s both;
+}
+/* Same entrance as before but without touching `filter`, so the invert holds. */
+@keyframes introStamp {
+  0% {
+    opacity: 0;
+    transform: scale(1.15) rotate(-1.5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* =============================================================================
+   RESPONSIVE
+   ============================================================================= */
+@media (max-width: 900px) {
+  .split,
+  .about-hero,
+  .contact-grid,
+  .footer-cta {
+    grid-template-columns: 1fr;
+  }
+  .split .order-first {
+    order: -1;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --header-h: 74px;
+  }
+  .nav {
+    display: none;
+  }
+  .nav-toggle {
+    display: grid;
+  }
+  /* Hamburger left, logo centred, flash/sound toggles right. The side columns are
+     minmax(0,1fr) (not 1fr) so their differing content widths — a lone hamburger
+     on the left vs. two toggles on the right — can't make the tracks unequal and
+     shove the centred logo off to one side. */
+  .site-header .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .nav-toggle {
+    justify-self: start;
+  }
+  .brand {
+    justify-self: center;
+  }
+  .header-tools {
+    justify-self: end;
+  }
+}
+
+@media (min-width: 761px) {
+  .mobile-menu {
+    display: none;
+  }
+}

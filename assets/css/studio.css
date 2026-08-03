@@ -1,0 +1,129 @@
+/* =============================================================================
+   STUDIO — the gallery grid + the full-screen lightbox carousel popup.
+   ============================================================================= */
+.gallery-note {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 1.4rem;
+}
+.gallery {
+  columns: 3;
+  column-gap: var(--gap);
+}
+.gallery .photo {
+  break-inside: avoid;
+  margin-bottom: var(--gap);
+  border-radius: var(--radius);
+  cursor: zoom-in;
+}
+.gallery .photo img {
+  filter: none;
+}
+.gallery .photo::after {
+  display: none;
+}
+@media (max-width: 860px) {
+  .gallery {
+    columns: 2;
+  }
+}
+@media (max-width: 520px) {
+  .gallery {
+    columns: 1;
+  }
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: #000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s var(--ease), visibility 0.3s;
+}
+.lightbox.open {
+  opacity: 1;
+  visibility: visible;
+}
+/* Fill the full height of the screen (no top/bottom gap); the counter overlaps.
+   When the image is wider than the viewport, cap the width to the screen so it
+   scales down (letterboxed top/bottom) instead of overflowing. */
+.lightbox__img {
+  height: 100dvh;
+  width: auto;
+  max-width: 100vw;
+  object-fit: contain;
+}
+.lightbox__btn {
+  position: absolute;
+  /* sit above the image — otherwise the (earlier-in-DOM) prev arrow paints
+     behind the full-bleed photo and vanishes, notably on mobile Safari. */
+  z-index: 2;
+  color: #fff;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  opacity: 0.8;
+  transition: opacity 0.2s, color 0.2s;
+}
+.lightbox__btn:hover {
+  opacity: 1;
+  color: var(--accent-2);
+}
+.lightbox__close {
+  top: 1rem;
+  right: 1rem;
+}
+.lightbox__x {
+  width: 21.6px;
+  height: 21.6px;
+  object-fit: contain;
+  filter: invert(1); /* black stamp X → white on the dark backdrop */
+}
+/* The old site's stamped arrows (baked crisp) — inverted to read white on the
+   black lightbox, same as the X. */
+.lightbox__arrow {
+  width: clamp(10px, 1.7vw, 15px);
+  height: auto;
+  object-fit: contain;
+  filter: invert(1);
+}
+.lightbox__prev {
+  left: 0.5rem;
+  top: 50%;
+  translate: 0 -50%;
+}
+.lightbox__next {
+  right: 0.5rem;
+  top: 50%;
+  translate: 0 -50%;
+}
+/* On phones keep the arrows the SAME size as desktop (just tuck them a touch
+   closer to the edges). */
+@media (max-width: 760px) {
+  .lightbox__prev {
+    left: 0.25rem;
+  }
+  .lightbox__next {
+    right: 0.25rem;
+  }
+}
+.lightbox__count {
+  position: absolute;
+  bottom: 1.1rem;
+  left: 50%;
+  translate: -50% 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.7);
+}

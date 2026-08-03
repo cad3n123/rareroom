@@ -1,0 +1,572 @@
+/* =============================================================================
+   HEADER — the sticky nav (brand, links + morse underlines, dropdown, toggles,
+   Subscribe), the artist-page inverted variant, the route loading bar, and the
+   mobile menu.
+   ============================================================================= */
+/* The header is injected into #site-header; make that wrapper transparent to
+   layout so the sticky header sticks to the viewport, not the short wrapper. */
+#site-header {
+  display: contents;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  background: color-mix(in srgb, var(--paper) 82%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.brand__mark {
+  width: 80px;
+  height: 40px;
+  object-fit: contain;
+  filter: var(--stamp-filter, none);
+}
+
+/* Hovering the nav logo gives the same glow as hovering the big hero logo */
+.brand:hover .brand__mark {
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--flash-purple) 18%, transparent));
+}
+
+:root:not([data-theme='dark']) .brand__mark {
+  /* stamp art is dark-on-transparent; leave as-is on paper */
+}
+
+:root[data-theme='dark'] .brand__mark {
+  filter: invert(1);
+}
+
+.brand__name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  font-size: 0.9rem;
+  padding-left: 0.34em;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.9rem, 2vw, 1.8rem);
+}
+
+.nav__link {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 0.4rem 0;
+  transition: color 0.25s var(--ease);
+}
+
+.nav__link:hover,
+.nav__link[aria-current='page'] {
+  color: var(--ink);
+}
+
+/* The "underline" is the word's own morse code, wiped in from the left on
+   hover the same way a growing underline would. */
+.nav__morse {
+  position: absolute;
+  left: 0;
+  bottom: -0.5rem;
+  color: var(--accent);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.32s var(--ease);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* JS (fitNavMorse) sets the strip width to the word's width and scales the
+   morse to fit, so the underline is exactly as long as the word. */
+.nav__morse .morse {
+  /* inherit the strip's colour — base .morse forces var(--ink), which would
+     make the dots/dashes dark (invisible on the dark artist-nav & footer). */
+  color: inherit;
+  gap: 0.3em;
+  transform: scale(0.5);
+  transform-origin: left center;
+}
+
+.nav__morse .m-letter {
+  gap: 0.18em;
+}
+
+.nav__link:hover .nav__morse,
+.nav__link[aria-current='page'] .nav__morse {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Artists dropdown */
+.nav__item--dropdown {
+  position: relative;
+}
+
+.nav__link--parent {
+  /* button used as a nav item — strip native chrome */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav__item--dropdown .nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.nav__item--dropdown .nav__link svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.28s var(--ease);
+}
+
+.nav__item--dropdown:hover .nav__link svg,
+.nav__item--dropdown:focus-within .nav__link svg {
+  transform: rotate(180deg);
+}
+
+.nav__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  padding-top: 0.7rem;
+  /* bridges the gap so hover doesn't drop */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease),
+    visibility 0.25s var(--ease);
+}
+
+.nav__item--dropdown:hover .nav__dropdown,
+.nav__item--dropdown:focus-within .nav__dropdown,
+.nav__item--dropdown.is-pinned .nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* After a pick, force the panel closed (until the pointer leaves and re-enters) */
+.nav__item--dropdown.is-dismissed .nav__dropdown {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.nav__dropdown-panel {
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.4rem;
+}
+
+.nav__dropdown-panel a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 0.5rem 0.7rem;
+  white-space: nowrap;
+  transition: color 0.2s var(--ease);
+}
+
+.nav__dropdown-panel a:hover {
+  color: var(--accent);
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius);
+  color: var(--ink-2);
+  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+/* Only paint the hover background on devices that actually hover — on touch the
+   hover state sticks after a tap and leaves a grey box behind the toggle. */
+@media (hover: hover) {
+  .icon-btn:hover {
+    color: var(--ink);
+    background: var(--line-2);
+  }
+}
+
+.icon-btn>span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.icon-btn svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+/* The morse toggles read like quick pen sketches rather than polished UI glyphs
+   — a slightly heavier, rounded stroke roughened by the #sketch displacement
+   filter so the lines wobble like they were hand-drawn. */
+.icon-btn--flash svg,
+.icon-btn--sound svg {
+  filter: url(#sketch);
+  stroke-width: 1.9;
+  overflow: visible;
+}
+
+.icon-btn .i-on {
+  display: none;
+}
+
+.icon-btn.is-on .i-on {
+  display: block;
+}
+
+.icon-btn.is-on .i-off {
+  display: none;
+}
+
+.icon-btn.is-on {
+  color: var(--accent);
+}
+
+.nav-toggle {
+  display: none;
+}
+
+/* Subscribe sits in the nav and looks like the other nav items (no button
+   chrome, dark text, morse underline on hover). */
+.nav__subscribe {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 0.4rem 0;
+}
+
+.nav__subscribe:hover {
+  color: var(--ink);
+}
+
+/* Artist page: the header inverts to black with white elements. Uses the exact
+   footer background colour so the two black bars match. */
+body[data-page='artist'] .site-header {
+  background: var(--ink);
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+body[data-page='artist'] .brand__mark {
+  filter: invert(1);
+}
+
+body[data-page='artist'] .brand:hover .brand__mark {
+  filter: invert(1) drop-shadow(0 0 4px color-mix(in srgb, var(--flash-purple) 24%, transparent));
+}
+
+/* Keep the logo inverted even while the morse flash runs, and give the "lit"
+   pulse a stronger purple glow so it's clearly visible on the dark bar. */
+body[data-page='artist'] .brand__mark.flashing {
+  filter: invert(1) !important;
+}
+
+body[data-page='artist'] .brand__mark.flashing.lit {
+  filter: invert(1) drop-shadow(0 0 6px color-mix(in srgb, var(--flash-purple) 92%, transparent)) !important;
+}
+
+/* The nav morse underline inverts to white so it reads on the dark bar. */
+body[data-page='artist'] .nav__morse {
+  color: #fff;
+}
+
+body[data-page='artist'] .nav__link,
+body[data-page='artist'] .nav__subscribe {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+body[data-page='artist'] .nav__link:hover,
+body[data-page='artist'] .nav__link[aria-current='page'],
+body[data-page='artist'] .nav__subscribe:hover {
+  color: #fff;
+}
+
+body[data-page='artist'] .icon-btn {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (hover: hover) {
+  body[data-page='artist'] .icon-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+body[data-page='artist'] .icon-btn.is-on {
+  color: var(--accent);
+}
+
+body[data-page='artist'] .nav__dropdown-panel {
+  background: color-mix(in srgb, var(--ink) 92%, transparent);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+body[data-page='artist'] .nav__dropdown-panel a {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+body[data-page='artist'] .nav__dropdown-panel a:hover {
+  color: var(--accent);
+}
+
+/* Route loading bar — sits exactly over the header's 1px divider line and
+   sweeps a darker-purple bar left→right (with a slight stutter) while the page
+   loads, then fades back to the normal nav line. Content under the nav stays
+   blank until ready. */
+.route-loader {
+  /* absolutely positioned inside the sticky .site-header, sitting exactly on its
+     bottom divider line — so it tracks the header 1:1 during rubber-band
+     overscroll instead of drifting out of alignment. */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-1px);
+  z-index: 51;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease);
+}
+
+.route-loader.active {
+  opacity: 1;
+}
+
+.route-loader__bar {
+  height: 100%;
+  width: 0;
+  /* the one site-wide purple, no glow — matches the nav underlines exactly */
+  background: var(--loader-purple);
+}
+
+/* Inverted (dark) artist header: keep the same purple, just make the bar 2px so
+   it still reads against the black bar. */
+body[data-page='artist'] .route-loader {
+  height: 2px;
+  transform: translateY(-2px);
+}
+body[data-page='artist'] .route-loader__bar {
+  background: var(--loader-purple);
+}
+
+/* Hide the content instantly while loading (no transition), then fade it back
+   in when the loader finishes — otherwise the new page briefly fades OUT from
+   full opacity and you'd glimpse it half-loaded. */
+#app {
+  position: relative;
+  /* a very quick fade-in once the loader hands off (see router.js) */
+  transition: opacity 0.3s var(--ease);
+}
+
+#app.is-loading {
+  opacity: 0;
+  transition: none;
+}
+
+/* ============================ Mobile menu ==================================
+   The hamburger stays in the header (the header is NOT hidden while the menu is
+   open — the menu drops in beneath it), crossfading between the bars and the
+   stamped X. */
+.nav-toggle {
+  position: relative;
+  color: var(--ink);
+}
+.nav-toggle__ico {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.nav-toggle__ico svg {
+  /* a little bigger than the toggle icons, and in full --ink */
+  width: 24px;
+  height: 24px;
+}
+.nav-toggle__x img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+:root[data-theme='dark'] .nav-toggle__x img,
+body[data-page='artist'] .nav-toggle__x img {
+  /* white X on the dark artist-page header (and in dark theme) */
+  filter: invert(1);
+}
+.nav-toggle__x {
+  opacity: 0;
+  transform: scale(0.7) rotate(-45deg);
+}
+.nav-toggle.is-open .nav-toggle__bars {
+  opacity: 0;
+  transform: scale(0.7) rotate(45deg);
+}
+.nav-toggle.is-open .nav-toggle__x {
+  opacity: 1;
+  transform: none;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40; /* below the sticky header (50) so the nav bar stays on top */
+  background: var(--paper);
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), visibility 0.35s;
+  display: flex;
+  flex-direction: column;
+  padding: 1.4rem var(--pad-x) 2rem;
+  overflow-y: auto;
+}
+.mobile-menu.open {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+.mobile-menu__nav {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Every item reads the same — mono, uppercase, no special Sign-Up chrome. */
+.mobile-menu__link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line-2);
+  font-family: var(--font-mono);
+  font-size: clamp(1.17rem, 5.4vw, 1.62rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 0.7rem 0;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), padding-left 0.25s var(--ease);
+}
+.mobile-menu__link:hover {
+  color: var(--accent);
+  padding-left: 0.5rem;
+}
+
+/* Artists accordion — same idea as the desktop dropdown, tap to expand. */
+.mobile-drop__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+.mobile-drop__toggle svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.3s var(--ease);
+}
+.mobile-drop.open .mobile-drop__toggle svg {
+  transform: rotate(180deg);
+}
+.mobile-drop__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s var(--ease);
+}
+.mobile-drop.open .mobile-drop__panel {
+  grid-template-rows: 1fr;
+}
+.mobile-drop__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.mobile-drop__item {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(0.85rem, 3.9vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 0.5rem 0 0.5rem 1rem;
+  border-bottom: 1px solid var(--line-2);
+  transition: color 0.2s var(--ease), padding-left 0.25s var(--ease);
+}
+.mobile-drop__item:hover {
+  color: var(--accent);
+  padding-left: 1.4rem;
+}
+
+/* Socials pinned to the bottom of the open menu. */
+.mobile-menu__socials {
+  margin-top: auto;
+  padding-top: 2rem;
+  justify-content: flex-start;
+}
+.mobile-menu__socials a {
+  font-size: 0.8rem;
+}
+
+/* On phones the inverted (artist-page) logo flash reads too hot — dial the
+   purple glow of the "lit" pulse back a bit. */
+@media (max-width: 760px) {
+  body[data-page='artist'] .brand__mark.flashing.lit {
+    filter: invert(1)
+      drop-shadow(0 0 5px color-mix(in srgb, var(--flash-purple) 73%, transparent)) !important;
+  }
+}

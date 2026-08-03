@@ -1,0 +1,146 @@
+/* =============================================================================
+   FOOTER — a full-width white subscribe band above the black footer body
+   (brand, footer nav with white morse underlines, socials, decorative morse).
+   ============================================================================= */
+.site-footer {
+  /* divider line above the subscribe band, in the loading-bar purple */
+  border-top: 1px solid var(--loader-purple);
+  background: var(--ink);
+  color: var(--paper);
+  padding-block: 0;
+  margin-top: 2rem;
+  /* own stacking context above the about/contact .page-bg backdrop (which is a
+     tall absolute layer inside #app) so the typewriter texture can't bleed over
+     the subscribe band. */
+  position: relative;
+  z-index: 1;
+}
+/* The subscribe/email block is its own full-width white section band, sitting
+   flush above the black footer body. */
+.footer-cta {
+  background: var(--paper);
+  color: var(--ink);
+  padding-block: clamp(2.34rem, 5.4vw, 4.14rem);
+}
+.footer-cta .news-form {
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+  margin-top: 0;
+  /* anchor for the absolutely-positioned inline subscribe result (so the message
+     never adds a row and grows the white band). */
+  position: relative;
+}
+/* The subscribe button keeps the default black styling (→ purple on hover). */
+.footer-main {
+  padding-block: clamp(2.7rem, 5.4vw, 4.5rem);
+}
+.footer-cta h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.footer-brand img {
+  width: 46px;
+  filter: var(--photo-filter);
+}
+:root[data-theme='dark'] .footer-brand img {
+  filter: invert(1);
+}
+.footer-brand .mono {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  line-height: 1.5;
+}
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+}
+.footer-nav .nav__link {
+  font-size: 0.66rem;
+}
+.footer-morse {
+  margin: 1.6rem 0 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--ink-3);
+}
+.footer-morse .line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.footer-morse__img {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  opacity: 0.55;
+}
+.footer-morse__img img {
+  height: 8px;
+  width: auto;
+  /* keep the width, halve the visual height so the morse reads thinner */
+  transform: scaleY(0.5);
+  filter: invert(1); /* black stamp → white on the dark footer */
+}
+
+/* ---- Footer runs on a black background, so everything inside inverts to white
+   (the newsletter block .footer-cta is the deliberate exception — it stays a
+   white card with black text, so its input/button keep their default styling). */
+.site-footer .footer-brand img {
+  filter: invert(1);
+}
+.site-footer .footer-brand .mono {
+  color: rgba(255, 255, 255, 0.62);
+}
+.site-footer .nav__link {
+  color: rgba(255, 255, 255, 0.72);
+}
+.site-footer .nav__link:hover,
+.site-footer .nav__link[aria-current='page'] {
+  color: #fff;
+}
+.site-footer .social-row a {
+  color: rgba(255, 255, 255, 0.82);
+}
+.site-footer .social-row a:hover {
+  color: var(--loader-purple);
+}
+.site-footer .social-row .sep {
+  color: rgba(255, 255, 255, 0.4);
+}
+.site-footer .link-u {
+  color: #fff;
+}
+.site-footer .link-u:hover {
+  color: var(--loader-purple);
+}
+/* The Orchard credit: a plain link (no underline sweep), just a hover colour. */
+.site-footer .footer-orchard {
+  color: #fff;
+  transition: color 0.2s var(--ease);
+}
+.site-footer .footer-orchard:hover {
+  color: var(--loader-purple);
+}
+.site-footer .footer-morse .line {
+  background: rgba(255, 255, 255, 0.16);
+}
+/* The footer nav morse underline inverts to white so it reads on the black
+   background (matching the top nav's morse behaviour, just inverted colour). */
+.site-footer .nav__morse {
+  color: #fff;
+}

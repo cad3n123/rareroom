@@ -1,0 +1,502 @@
+/* =============================================================================
+   HERO — the home/about/contact centred lockup (logo + morse + optional
+   wordmark), the scroll cue, and the privacy-policy body.
+   ============================================================================= */
+.hero {
+  position: relative;
+  min-height: calc(100dvh - var(--header-h));
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: clamp(3rem, 8vh, 6rem) 0;
+  overflow: hidden;
+}
+
+.hero__ghost {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: min(115vw, 1500px);
+  opacity: 0.05;
+  filter: var(--photo-filter);
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme='dark'] .hero__ghost {
+  mix-blend-mode: screen;
+  opacity: 0.07;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* Old-site typewriter-text backdrop on about/contact. Absolutely positioned at
+   the top of #app (which is position:relative) so it fills the viewport width,
+   sits above the paper grain but below the content, and scrolls up with the
+   page rather than staying pinned. */
+.page-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* hidden (zero-area triangle at bottom-left) until the route finishes loading,
+     then the router adds .is-revealed to sweep it open diagonally. */
+  clip-path: polygon(0% 100%, 0% 100%, 0% 100%);
+}
+
+/* Diagonal wipe: the reveal front sweeps from the bottom-left corner out to the
+   top-right over 1s, uncovering the typewriter backdrop. */
+.page-bg.is-revealed {
+  animation: bg-diag-reveal 1.4s forwards;
+}
+
+@keyframes bg-diag-reveal {
+  from {
+    clip-path: polygon(0% 100%, 0% 100%, 0% 100%);
+  }
+
+  to {
+    clip-path: polygon(0% 100%, 200% 100%, 0% -100%);
+  }
+}
+
+/* Contact sweeps the other way — from the top-right corner down to the
+   bottom-left (mirror of the About wipe). */
+body[data-page='contact'] .page-bg {
+  clip-path: polygon(100% 0%, 100% 0%, 100% 0%);
+}
+
+body[data-page='contact'] .page-bg.is-revealed {
+  animation-name: bg-diag-reveal-rev;
+}
+
+@keyframes bg-diag-reveal-rev {
+  from {
+    clip-path: polygon(100% 0%, 100% 0%, 100% 0%);
+  }
+
+  to {
+    clip-path: polygon(100% 0%, -100% 0%, 100% 200%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-bg {
+    clip-path: none;
+  }
+
+  .page-bg.is-revealed {
+    animation: none;
+  }
+}
+
+.page-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 1;
+  /* The threshold + white-keying is now BAKED into the PNG (tools/bake_typewriter.py)
+     so it stays crisp at any zoom and the browser does no per-frame filtering. */
+}
+
+/* On dark paper flip the baked ink to light so it reads on the dark background. */
+:root[data-theme='dark'] .page-bg img {
+  filter: invert(1);
+  opacity: 0.85;
+}
+
+/* Keep the backdrop and the content in OPPOSITE diagonal corners so they never
+   overlap — a hard diagonal mask removes the half that sits behind the content.
+   About: content is lower-left, so keep only the top-right text cluster.
+   Contact: content is top-right, so keep only the bottom-left text cluster. */
+body[data-page='about'] .page-bg img {
+  -webkit-mask-image: linear-gradient(to top right, transparent 48%, #000 52%);
+  mask-image: linear-gradient(to top right, transparent 48%, #000 52%);
+}
+
+body[data-page='contact'] .page-bg img {
+  -webkit-mask-image: linear-gradient(to top right, #000 48%, transparent 52%);
+  mask-image: linear-gradient(to top right, #000 48%, transparent 52%);
+}
+
+/* =============================================================================
+   ABOUT + CONTACT — asymmetric, left-anchored editorial layout (inspired by the
+   Mom+Pop about page): the lockup + body drop into the lower-left behind a big
+   indent, leaving the upper-right open as negative space (where the diagonal
+   typewriter backdrop reveals), instead of a dead-centred column.
+   ============================================================================= */
+.editorial.about-hero-min {
+  place-items: end start;
+  /* anchor the column to the lower-left corner */
+  text-align: left;
+  padding: clamp(2rem, 7vh, 4.5rem) var(--pad-x) clamp(3rem, 12vh, 7rem);
+  /* The single "scoot" the whole cluster shares: BOTH the content's indent and
+     the vertical title's inset read from this, so the title and content always
+     move inward together (and, when the viewport can't afford the scoot, they
+     shrink it together instead of drifting apart). */
+  --edit-scoot: clamp(2rem, 7.5vw, 5.5rem);
+}
+
+.editorial .hero__inner {
+  align-items: flex-start;
+  gap: clamp(0.7rem, 1.7vh, 1.2rem);
+  max-width: min(560px, 100%);
+  padding-left: var(--edit-scoot);
+}
+
+.editorial__mast {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Letterhead-scale mark on these pages — smaller than the home hero, with the
+   morse container matched to the stamp width so the two morse halves stay put
+   under the two logo boxes. */
+.editorial .hero__stamp,
+.editorial .hero__morse {
+  width: clamp(128px, 18vw, 196px);
+}
+
+.editorial .hero__morse-half {
+  width: clamp(46px, 6.5vw, 70px);
+}
+
+.editorial .wordmark {
+  margin-top: 0.9rem;
+}
+
+/* Short divider between the masthead and the body — the old site's stamped
+   horizontal rule (baked crisp), not a flat CSS hairline. */
+.hero-rule {
+  display: block;
+  width: clamp(90px, 13vw, 150px);
+  height: clamp(7px, 0.9vw, 11px);
+  background: url('../img/brand/horizontal-line.png') left center / contain no-repeat;
+  opacity: 0.8;
+  margin: 0.35rem 0 0.15rem;
+}
+
+/* baked dark ink → light on dark paper */
+:root[data-theme='dark'] .hero-rule {
+  filter: invert(1);
+}
+
+/* Page name set vertically in the far-left margin — the old site's stamped nav
+   title image (baked crisp), rotated to read bottom→top. The box is laid out
+   horizontally then rotated 90°.
+
+   The nav-title PNGs have DIFFERENT aspect ratios (longer words are wider), so
+   sizing by width made each word's letters a different height ("different fonts").
+   Instead we pin the LETTER HEIGHT (the rotated strip's thickness) to a constant
+   and let width:auto set the word's length — every title now reads at the same
+   glyph size. The strip is centred at --pi-inset with a width-independent
+   translate so a longer word can't drift the centre. */
+.page-index {
+  /* constant letter-height, tuned to the About title (which looked right). */
+  --pi-h: clamp(11.3px, 1.41vw, 15.5px);
+  /* how far the title's centre sits in from the screen edge — the SAME scoot the
+     content uses (see --edit-scoot), so the two stay locked together. */
+  --pi-inset: var(--edit-scoot, clamp(2rem, 7.5vw, 5.5rem));
+  position: absolute;
+  top: 50%;
+  left: var(--pi-inset);
+  height: var(--pi-h);
+  width: auto;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  transform-origin: center center;
+  opacity: 0.9;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* baked dark ink → light on dark paper */
+:root[data-theme='dark'] .page-index {
+  filter: invert(1);
+}
+
+/* The artist page's lockup is CENTRED (not left-anchored like about/contact), but
+   we still want the vertical title to keep the SAME minimum side gap from the edge
+   as the content does, so it reads consistently across pages (the wide, centred
+   artist column leaves the far-left gutter free for it). */
+body[data-page='artist'] .page-index {
+  --pi-inset: clamp(2rem, 3vw, 2.6rem);
+}
+
+/* Contact mirrors About across the diagonal: its content is anchored to the
+   TOP-right (with the backdrop cluster kept in the bottom-left). */
+body[data-page='contact'] .editorial.about-hero-min {
+  place-items: start end;
+}
+
+body[data-page='contact'] .editorial .hero__inner {
+  align-items: flex-end;
+  text-align: right;
+  padding-left: 0;
+  padding-right: var(--edit-scoot);
+}
+
+body[data-page='contact'] .editorial__mast {
+  align-items: flex-end;
+}
+
+/* label moves to the right margin, reading top→down to lean into the content. */
+body[data-page='contact'] .page-index {
+  left: auto;
+  right: var(--pi-inset);
+  transform: translate(50%, -50%) rotate(90deg);
+}
+
+@media (max-width: 760px) {
+
+  /* Footer peeks from below the fold on every page — hold the section just short
+     of a full screen so a sliver of the footer always shows. */
+  .hero {
+    min-height: calc(100dvh - var(--header-h) - 5.5rem);
+  }
+
+  .editorial.about-hero-min {
+    place-items: center start;
+    padding-bottom: clamp(2.5rem, 8vh, 5rem);
+  }
+
+  /* The about/contact lockup shrank too much on phones — bump the mark, morse and
+     wordmark back up. (Socials + the about paragraph are left as-is.)
+     Sized 10% smaller than before per request — the morse strip + its halves scale
+     down together so they stay aligned under the logo. */
+  .editorial .hero__stamp,
+  .editorial .hero__morse {
+    width: clamp(151px, 41.4vw, 187px);
+  }
+
+  .editorial .hero__morse-half {
+    width: clamp(54px, 14.4vw, 67px);
+  }
+
+  .editorial .wordmark {
+    width: clamp(62px, 17vw, 80px);
+  }
+
+  /* Both typewriter backdrops nudged slightly left on phones. object-position is
+     inverse: a value just past centre pulls the visible text leftward AND keeps
+     it inside the top-right region the diagonal mask preserves (a hard-left value
+     instead crops to the blank source margin and the text disappears). */
+  .page-bg img {
+    object-position: 58% top;
+  }
+
+  /* Contact uses the SAME backdrop + reveal as About on mobile: the cluster is
+     kept on the right (top-right), and the wipe sweeps bottom-left → top-right. */
+  body[data-page='contact'] .page-bg {
+    clip-path: polygon(0% 100%, 0% 100%, 0% 100%);
+  }
+
+  body[data-page='contact'] .page-bg.is-revealed {
+    animation-name: bg-diag-reveal;
+  }
+
+  body[data-page='contact'] .page-bg img {
+    -webkit-mask-image: linear-gradient(to top right, transparent 48%, #000 52%);
+    mask-image: linear-gradient(to top right, transparent 48%, #000 52%);
+  }
+
+  .editorial .hero__inner {
+    padding-left: 0;
+    max-width: 100%;
+  }
+
+  .page-index {
+    display: none;
+  }
+
+  /* on phones, drop Contact back to the simple left-aligned stack too */
+  body[data-page='contact'] .editorial.about-hero-min {
+    place-items: center start;
+  }
+
+  body[data-page='contact'] .editorial .hero__inner {
+    align-items: flex-start;
+    text-align: left;
+    padding-right: 0;
+  }
+
+  body[data-page='contact'] .editorial__mast {
+    align-items: flex-start;
+  }
+}
+
+.hero__logo {
+  display: inline-block;
+  padding: 0;
+  border: none;
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease);
+}
+
+/* Press-in is driven by a JS-toggled class (not :active) — on mobile :active
+   sticks until the next tap, which left the logo stuck scaled-down. The class is
+   added on click and removed on a timer, so it eases in and back out cleanly on
+   both desktop and touch. */
+.hero__logo.is-pressed {
+  transform: scale(0.95);
+}
+
+.hero__stamp {
+  width: clamp(160px, 27vw, 280px);
+  filter: var(--photo-filter);
+  transition: filter 0.3s var(--ease);
+}
+
+/* Hover matches the morse "flash" glow — same subtle, shape-following shadow */
+.hero__logo:hover .hero__stamp {
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--flash-purple) 18%, transparent));
+}
+
+/* Stamped morse images aligned under the two logo boxes: RARE under the left r, ROOM under the right */
+.hero__morse {
+  position: relative;
+  width: clamp(160px, 27vw, 280px);
+  height: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+.hero__morse-half {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(58px, 9.6vw, 98px);
+  height: auto;
+}
+
+.hero__morse-half:first-child {
+  left: 25%;
+}
+
+.hero__morse-half:last-child {
+  left: 75%;
+}
+
+/* RAREROOM wordmark image (about + contact heroes) — small, tight spacing.
+   The gap above RAREROOM (from the logo/morse lockup) is kept equal to the gap
+   below it — hero__inner adds a uniform `gap`, so the wordmark's margin-top and
+   the following element's margin-top match. */
+.wordmark {
+  margin-top: 0.5rem;
+  width: clamp(46px, 7vw, 76px);
+  height: auto;
+  /* typewriter treatment is baked into the PNG (tools/bake_typewriter.py) */
+}
+
+:root[data-theme='dark'] .wordmark {
+  filter: invert(1);
+}
+
+/* Privacy policy page */
+.policy {
+  max-width: 760px;
+}
+
+.policy section {
+  border-top: 1px solid var(--line);
+  padding-top: 1.4rem;
+  margin-top: 1.8rem;
+}
+
+.policy h2 {
+  font-size: 1.3rem;
+  margin-bottom: 0.6rem;
+}
+
+.policy p {
+  color: var(--ink-2);
+  margin-bottom: 0.8rem;
+}
+
+.hero__title {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  font-size: clamp(1.9rem, 6.5vw, 4.2rem);
+  padding-left: 0.42em;
+  line-height: 1;
+}
+
+.hero__tag {
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1.4vw, 0.92rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.hero__intro {
+  max-width: 42ch;
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.hero__cta {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.4rem;
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 1.4rem;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  animation: floaty 2.4s ease-in-out infinite;
+}
+
+@keyframes floaty {
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+/* Subtle "you can scroll" cue on the hero-styled pages (home + about) — the
+   old site's down-arrow image, faded black. */
+.scroll-cue {
+  position: absolute;
+  bottom: 0.4rem;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 1;
+  width: 36px;
+  height: auto;
+  opacity: 0.72;
+  filter: var(--photo-filter) contrast(1.4);
+  pointer-events: none;
+  animation: floaty 1.8s ease-in-out infinite;
+}
