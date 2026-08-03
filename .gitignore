@@ -1,9 +1,6 @@
 # Local reference material (old site + label research) — not part of the site
 references/
 
-# Claude Code workspace (also covered by the global excludes file)
-.claude/
-
 # OS / editor cruft
 .DS_Store
 Thumbs.db
