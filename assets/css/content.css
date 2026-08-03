@@ -322,7 +322,6 @@
   color: var(--ink);
   font-size: clamp(0.72rem, 0.9vw, 0.84rem);
   line-height: 1.6;
-  text-transform: uppercase;
   font-weight: 600;
   /* never break words with a hyphen at line-ends (the long uppercase words were
      getting auto-hyphenated) */
