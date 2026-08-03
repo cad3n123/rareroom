@@ -75,7 +75,7 @@
   font-size: 0.74rem;
   font-weight: 600;
   letter-spacing: 0.18em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--ink-2);
   padding: 0.4rem 0;
   transition: color 0.25s var(--ease);
@@ -195,7 +195,7 @@
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.16em;
-  text-transform: uppercase;
+  text-transform: capitalize;
   color: var(--ink-2);
   padding: 0.5rem 0.7rem;
   white-space: nowrap;
@@ -282,7 +282,7 @@
   font-size: 0.74rem;
   font-weight: 600;
   letter-spacing: 0.18em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--ink-2);
   padding: 0.4rem 0;
 }
@@ -397,6 +397,7 @@ body[data-page='artist'] .route-loader {
   height: 2px;
   transform: translateY(-2px);
 }
+
 body[data-page='artist'] .route-loader__bar {
   background: var(--loader-purple);
 }
@@ -423,6 +424,7 @@ body[data-page='artist'] .route-loader__bar {
   position: relative;
   color: var(--ink);
 }
+
 .nav-toggle__ico {
   position: absolute;
   inset: 0;
@@ -430,29 +432,35 @@ body[data-page='artist'] .route-loader__bar {
   place-items: center;
   transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
 }
+
 .nav-toggle__ico svg {
   /* a little bigger than the toggle icons, and in full --ink */
   width: 24px;
   height: 24px;
 }
+
 .nav-toggle__x img {
   width: 22px;
   height: 22px;
   object-fit: contain;
 }
+
 :root[data-theme='dark'] .nav-toggle__x img,
 body[data-page='artist'] .nav-toggle__x img {
   /* white X on the dark artist-page header (and in dark theme) */
   filter: invert(1);
 }
+
 .nav-toggle__x {
   opacity: 0;
   transform: scale(0.7) rotate(-45deg);
 }
+
 .nav-toggle.is-open .nav-toggle__bars {
   opacity: 0;
   transform: scale(0.7) rotate(45deg);
 }
+
 .nav-toggle.is-open .nav-toggle__x {
   opacity: 1;
   transform: none;
@@ -464,7 +472,8 @@ body[data-page='artist'] .nav-toggle__x img {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 40; /* below the sticky header (50) so the nav bar stays on top */
+  z-index: 40;
+  /* below the sticky header (50) so the nav bar stays on top */
   background: var(--paper);
   opacity: 0;
   transform: translateY(-8px);
@@ -475,11 +484,13 @@ body[data-page='artist'] .nav-toggle__x img {
   padding: 1.4rem var(--pad-x) 2rem;
   overflow-y: auto;
 }
+
 .mobile-menu.open {
   opacity: 1;
   transform: none;
   visibility: visible;
 }
+
 .mobile-menu__nav {
   display: flex;
   flex-direction: column;
@@ -497,12 +508,13 @@ body[data-page='artist'] .nav-toggle__x img {
   font-size: clamp(1.17rem, 5.4vw, 1.62rem);
   font-weight: 600;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: lowercase;
   color: var(--ink);
   padding: 0.7rem 0;
   cursor: pointer;
   transition: color 0.2s var(--ease), padding-left 0.25s var(--ease);
 }
+
 .mobile-menu__link:hover {
   color: var(--accent);
   padding-left: 0.5rem;
@@ -515,38 +527,45 @@ body[data-page='artist'] .nav-toggle__x img {
   justify-content: space-between;
   gap: 0.6rem;
 }
+
 .mobile-drop__toggle svg {
   width: 15px;
   height: 15px;
   transition: transform 0.3s var(--ease);
 }
+
 .mobile-drop.open .mobile-drop__toggle svg {
   transform: rotate(180deg);
 }
+
 .mobile-drop__panel {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.32s var(--ease);
 }
+
 .mobile-drop.open .mobile-drop__panel {
   grid-template-rows: 1fr;
 }
+
 .mobile-drop__inner {
   min-height: 0;
   overflow: hidden;
 }
+
 .mobile-drop__item {
   display: block;
   font-family: var(--font-mono);
   font-size: clamp(0.85rem, 3.9vw, 1.15rem);
   font-weight: 600;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+  text-transform: capitalize;
   color: var(--ink);
   padding: 0.5rem 0 0.5rem 1rem;
   border-bottom: 1px solid var(--line-2);
   transition: color 0.2s var(--ease), padding-left 0.25s var(--ease);
 }
+
 .mobile-drop__item:hover {
   color: var(--accent);
   padding-left: 1.4rem;
@@ -558,6 +577,7 @@ body[data-page='artist'] .nav-toggle__x img {
   padding-top: 2rem;
   justify-content: flex-start;
 }
+
 .mobile-menu__socials a {
   font-size: 0.8rem;
 }
@@ -566,7 +586,6 @@ body[data-page='artist'] .nav-toggle__x img {
    purple glow of the "lit" pulse back a bit. */
 @media (max-width: 760px) {
   body[data-page='artist'] .brand__mark.flashing.lit {
-    filter: invert(1)
-      drop-shadow(0 0 5px color-mix(in srgb, var(--flash-purple) 73%, transparent)) !important;
+    filter: invert(1) drop-shadow(0 0 5px color-mix(in srgb, var(--flash-purple) 73%, transparent)) !important;
   }
 }

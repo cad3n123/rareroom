@@ -14,7 +14,7 @@
 @font-face {
   font-family: 'Inter';
   src: url('../fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
-  font-weight: 600;
+  font-weight: 400;
   font-display: swap;
 }
 
@@ -62,7 +62,8 @@
   --pad-x: clamp(1.1rem, 5vw, 4.5rem);
   --radius: 3px;
 
-  --header-h: 82px; /* ~5% shorter nav */
+  --header-h: 82px;
+  /* ~5% shorter nav */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
