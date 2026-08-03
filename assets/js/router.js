@@ -1,6 +1,6 @@
 /* =============================================================================
-   Router — hash routing, the between-page loading bar, nav-morse fitting, and
-   the per-route render + post-render wiring.
+   Router — clean-URL (History API) routing, the between-page loading bar,
+   nav-morse fitting, and the per-route render + post-render wiring.
    ============================================================================= */
 import { SITE, ARTISTS, RELEASES, PRODUCTS, featureOn } from './config.js';
 import { $, $$, el } from './dom.js';
@@ -15,9 +15,96 @@ import {
 import { setActiveNav } from './header.js';
 
 function parseRoute() {
-  const raw = location.hash.replace(/^#\/?/, '').replace(/\/$/, '');
+  // Clean URLs: /about, /artist/slug, / (home). Fall back to the old #/hash form
+  // so any stale bookmark or shared #/link still lands on the right page.
+  const hash = location.hash.replace(/^#\/?/, '').replace(/\/+$/, '');
+  const path = location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+  const raw = path || hash;
   const [name, param] = raw.split('/');
   return { name: name || 'home', param: param || '' };
+}
+
+/* --------------------------- Per-route SEO metadata ------------------------ */
+/* Each route gets a distinct <title>, description, canonical URL and Open Graph/
+   Twitter tags so every clean URL indexes as its own real page (and Google can
+   use the page-specific titles as sitelink labels), even though it's all one SPA
+   shell. Titles read "Page - RAREROOM" (page-specific term first for SEO). */
+const SITE_URL = `https://${SITE.domain}`;
+
+function headTag(selector, make) {
+  let el = document.head.querySelector(selector);
+  if (!el) {
+    el = make();
+    document.head.appendChild(el);
+  }
+  return el;
+}
+function metaName(name, content) {
+  headTag(`meta[name="${name}"]`, () => {
+    const m = document.createElement('meta');
+    m.setAttribute('name', name);
+    return m;
+  }).setAttribute('content', content);
+}
+function metaProp(prop, content) {
+  headTag(`meta[property="${prop}"]`, () => {
+    const m = document.createElement('meta');
+    m.setAttribute('property', prop);
+    return m;
+  }).setAttribute('content', content);
+}
+function setCanonical(url) {
+  headTag('link[rel="canonical"]', () => {
+    const l = document.createElement('link');
+    l.setAttribute('rel', 'canonical');
+    return l;
+  }).setAttribute('href', url);
+}
+
+function applyMeta(pageKey, artist) {
+  const brand = SITE.name;
+  const url = SITE_URL + (location.pathname === '/' ? '/' : location.pathname);
+  let title;
+  let desc;
+  switch (pageKey) {
+    case 'about':
+      title = `About - ${brand}`;
+      desc = `${brand} is a recording studio, record label, and development firm led by producer Logan Gladden — a home for artists and creatives in music and visual arts.`;
+      break;
+    case 'contact':
+      title = `Contact - ${brand}`;
+      desc = `Get in touch with ${brand} — demo submissions, booking, press, and general enquiries.`;
+      break;
+    case 'artist':
+      title = `${artist.name} - ${brand}`;
+      desc =
+        (artist.bio && artist.bio[0]) ||
+        `${artist.name}${artist.role ? ` — ${artist.role}` : ''} on ${brand}.`;
+      break;
+    case 'privacy':
+      title = `Privacy Policy - ${brand}`;
+      desc = `How ${brand} collects, uses, and protects your personal information.`;
+      break;
+    case 'releases':
+      title = `Releases - ${brand}`;
+      desc = `Records made and released by ${brand} — stream or buy on your platform of choice.`;
+      break;
+    case 'shop':
+      title = `Shop - ${brand}`;
+      desc = `Vinyl, apparel, and goods from ${brand}. Limited runs, pressed and printed with care.`;
+      break;
+    default:
+      title = `${brand} - Recording Studio & Record Label`;
+      desc = SITE.intro;
+  }
+  document.title = title;
+  metaName('description', desc);
+  setCanonical(url);
+  metaProp('og:title', title);
+  metaProp('og:description', desc);
+  metaProp('og:url', url);
+  metaName('twitter:title', title);
+  metaName('twitter:description', desc);
 }
 
 /* --------------------------- Route loader --------------------------------- */
@@ -119,9 +206,11 @@ export function navigate() {
 
   let pageKey = name;
   let html;
+  let artist = null;
 
   if (name === 'artist') {
     const a = ARTISTS.find((x) => x.slug === param) || ARTISTS[0];
+    artist = a;
     html = viewArtist(a);
   } else if (name === 'about') {
     html = viewAbout();
@@ -144,7 +233,7 @@ export function navigate() {
   state.currentPageKey = pageKey;
   app.innerHTML = html;
   if (useLoader) app.classList.add('is-loading'); // stay blank until the loader finishes
-  document.title = 'RAREROOM'; // the tab title is always just "RAREROOM"
+  applyMeta(pageKey, artist); // per-route <title> + description + canonical + OG/Twitter
   document.body.dataset.page = pageKey;
 
   // Leaving a page clears any lingering newsletter state in the footer (the inline
@@ -178,7 +267,11 @@ export function navigate() {
     : pageKey === 'artist'
       ? $('.artist__socials', app)
       : null;
-  primeRow(socialsRow);
+  // On phones the artist page skips the staggered social pop-in (it renders them
+  // straight away); the contact page keeps the animation everywhere.
+  const isMobile = window.matchMedia('(max-width: 760px)').matches;
+  const animateSocials = !(pageKey === 'artist' && isMobile);
+  if (animateSocials) primeRow(socialsRow);
   if (pageKey === 'about' || pageKey === 'contact') bindBgGrow(app);
   if (pageKey === 'releases') RELEASES.forEach((r) => $('#releases-grid').append(releaseCard(r)));
   if (pageKey === 'shop') PRODUCTS.forEach((p) => $('#shop-grid').append(productCard(p)));
@@ -200,7 +293,7 @@ export function navigate() {
   // Everything that should happen once the page is actually visible: the socials
   // pop-in, then the arrival morse.
   const onArrive = () => {
-    revealRow(socialsRow);
+    if (animateSocials) revealRow(socialsRow);
     playArrival();
   };
 

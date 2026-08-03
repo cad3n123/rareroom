@@ -307,7 +307,8 @@
 }
 
 .typed .lead-dash {
-  color: inherit; /* the leading em-dash matches the copy, not the accent */
+  color: inherit;
+  /* the leading em-dash matches the copy, not the accent */
 }
 
 /* About page: paragraph sitting under the hero logo + morse */
@@ -506,6 +507,19 @@
   opacity: 0.72;
 }
 
+/* The portrait links to the same site with the same lift-on-hover feedback as
+   the name (a gentler fade — a photo dimmed to 0.72 reads as broken). */
+.artist-detail__photo-link {
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+.artist-detail__photo-link:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
 .artist-detail__name-text {
   font-family: var(--font-serif);
   font-size: clamp(2rem, 5.5vw, 3.2rem);
@@ -526,24 +540,30 @@
   flex-wrap: nowrap;
   gap: 0.15rem 0.28rem;
 }
+
 .artist-detail__meta .artist__socials a {
   font-size: clamp(0.5rem, 1.35vw, 0.66rem);
   white-space: nowrap;
+  text-transform: uppercase;
 }
+
 .artist-detail__meta .artist__socials .sep {
   font-size: clamp(0.5rem, 1.35vw, 0.66rem);
 }
 
 /* Stack on phones: portrait on top, masthead centred beneath it. */
 @media (max-width: 760px) {
+
   /* Match the other pages: hold just short of a full screen so the footer peeks. */
   .artist-detail {
     min-height: calc(100dvh - var(--header-h) - 5.5rem);
   }
+
   /* Contact email shrank too much on phones — bump it up (socials stay put). */
   .contact-email__addr {
     height: clamp(10px, 2.7vw, 13px);
   }
+
   .contact-email__bracket {
     height: clamp(11px, 2.9vw, 14px);
   }
@@ -556,12 +576,14 @@
 
   .artist-detail__photo {
     grid-column: 1;
-    grid-row: 1; /* photo on top … */
+    grid-row: 1;
+    /* photo on top … */
   }
 
   .artist-detail__meta {
     grid-column: 1;
-    grid-row: 2; /* … masthead stacked beneath (not overlapping in one cell) */
+    grid-row: 2;
+    /* … masthead stacked beneath (not overlapping in one cell) */
     align-items: center;
     text-align: center;
   }
@@ -576,6 +598,7 @@
   .artist-detail__meta .artist__socials {
     flex-wrap: wrap;
   }
+
   .artist-detail__meta .artist__socials a,
   .artist-detail__meta .artist__socials .sep {
     font-size: 0.66rem;
@@ -599,6 +622,10 @@
   color: var(--ink-3);
   user-select: none;
   font-size: 0.66rem;
+}
+
+#contact-socials a {
+  text-transform: uppercase;
 }
 
 .social-row a {

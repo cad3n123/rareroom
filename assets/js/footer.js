@@ -27,12 +27,12 @@ export function buildFooter() {
           `<button type="button" class="nav__link nav__link--parent" data-footer-artists>${n.label}${navMorseHTML(n.label)}</button>`,
         ];
       if (n.route)
-        return [`<a class="nav__link" href="#/${n.route}">${n.label}${navMorseHTML(n.label)}</a>`];
+        return [`<a class="nav__link" href="/${n.route}">${n.label}${navMorseHTML(n.label)}</a>`];
       return [];
     })
     .concat([
       `<button type="button" class="nav__link nav__link--parent" data-action="studio">Studio${navMorseHTML('Studio')}</button>`,
-      `<a class="nav__link" href="#/privacy">Privacy${navMorseHTML('Privacy')}</a>`,
+      `<a class="nav__link" href="/privacy">Privacy${navMorseHTML('Privacy')}</a>`,
     ])
     .join('');
 
@@ -47,7 +47,8 @@ export function buildFooter() {
           <div style="position:absolute;left:-9999px" aria-hidden="true">
             <input type="text" name="${SITE.mailchimp.botField}" tabindex="-1" value="" autocomplete="off">
           </div>
-          <button class="btn btn--center" type="submit">Sign Up</button>
+          <button class="nav__subscribe news-submit" type="submit" aria-label="Subscribe"><img class="nav__subscribe-img" src="assets/img/brand/subscribe.png" alt="Subscribe"></button>
+          <p class="news-consent">By subscribing you agree to receive emails from RAREROOM. See our <a href="/privacy">Privacy Policy</a>.</p>
           <p class="news-msg" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -55,7 +56,7 @@ export function buildFooter() {
     <div class="wrap footer-main">
       <div class="footer-bottom">
         <div class="footer-brand">
-          <a href="#/" aria-label="RAREROOM home"><img src="assets/img/brand/stamp.png" alt="RAREROOM"></a>
+          <a href="/" aria-label="RAREROOM home"><img src="assets/img/brand/stamp.png" alt="RAREROOM"></a>
           <span class="mono">© ${new Date().getFullYear()} RAREROOM<br><a href="https://${SITE.domain}" target="_blank" rel="noopener">${SITE.domain}</a><br>distributed by <a class="footer-orchard" href="https://www.theorchard.com/" target="_blank" rel="noopener">The Orchard</a></span>
         </div>
         <nav class="footer-nav" aria-label="Footer">${footNav}</nav>

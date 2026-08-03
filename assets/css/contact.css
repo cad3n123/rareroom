@@ -34,11 +34,36 @@
   display: flex;
   flex-direction: column;
 }
-/* Inline subscribe result — absolutely positioned just under the form so showing
-   it never adds a row (and never grows the white subscribe band). */
+/* Consent line — sits full-width on its own row beneath the input + button, and
+   reads like the small credit text next to the footer logo (same size, spacing
+   and muted colour as .footer-brand .mono). */
+.news-consent {
+  flex-basis: 100%;
+  width: 100%;
+  margin: 0.5rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+/* the Privacy Policy link specifically is set in Inter */
+.news-consent a {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s var(--ease);
+}
+.news-consent a:hover {
+  color: var(--accent);
+}
+
+/* Inline subscribe result — absolutely positioned just below the whole form (so
+   it lands under the consent line) and never adds a row that grows the band. */
 .news-msg {
   position: absolute;
-  top: calc(100% + 0.45rem);
+  top: calc(100% + 0.4rem);
   left: 0.2rem;
   right: 0.2rem;
   margin: 0;

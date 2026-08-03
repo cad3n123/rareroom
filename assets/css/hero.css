@@ -235,11 +235,16 @@ body[data-page='contact'] .page-bg img {
 }
 
 /* The artist page's lockup is CENTRED (not left-anchored like about/contact), but
-   we still want the vertical title to keep the SAME minimum side gap from the edge
-   as the content does, so it reads consistently across pages (the wide, centred
-   artist column leaves the far-left gutter free for it). */
+   the vertical title should hug the content the SAME way it does there — sitting a
+   --pad-x gap to the left of the content column (exactly the title→content gap on
+   about/contact), so it stays near the content instead of drifting out to the far
+   edge on wide screens. The content's left edge is max(--pad-x, (100vw − column)/2);
+   back off by --pad-x, with a small floor so the rotated strip never clips the edge. */
 body[data-page='artist'] .page-index {
-  --pi-inset: clamp(2rem, 3vw, 2.6rem);
+  --pi-col: 1080px;
+  /* .artist-detail__inner max-width */
+  --pi-inset: max(0.9rem,
+      calc(max(var(--pad-x), (100vw - var(--pi-col)) / 2) - var(--pad-x)));
 }
 
 /* Contact mirrors About across the diagonal: its content is anchored to the
@@ -413,6 +418,15 @@ body[data-page='contact'] .page-index {
 }
 
 /* Privacy policy page */
+
+/* Every bit of text on the privacy page is set in Inter (title, headings, body),
+   overriding the serif headings — scoped to #app so the header/footer are left
+   as-is. */
+body[data-page='privacy'] #app,
+body[data-page='privacy'] #app * {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
 .policy {
   max-width: 760px;
 }
@@ -421,6 +435,11 @@ body[data-page='contact'] .page-index {
   border-top: 1px solid var(--line);
   padding-top: 1.4rem;
   margin-top: 1.8rem;
+}
+
+.h-1,
+.policy h2 {
+  text-transform: uppercase;
 }
 
 .policy h2 {

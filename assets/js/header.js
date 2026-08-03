@@ -12,7 +12,7 @@ export function navLinks() {
 }
 function dropdownItems(kind) {
   if (kind === 'artists')
-    return ARTISTS.map((a) => ({ label: a.name, href: `#/artist/${a.slug}` }));
+    return ARTISTS.map((a) => ({ label: a.name, href: `/artist/${a.slug}` }));
   return [];
 }
 
@@ -32,12 +32,13 @@ export function buildHeader() {
       }
       if (n.action === 'studio')
         return `<button type="button" class="nav__link nav__link--parent" data-action="studio">${n.label}${navMorseHTML(n.label)}</button>`;
-      return `<a class="nav__link" href="#/${n.route}" data-route="${n.route}">${n.label}${navMorseHTML(n.label)}</a>`;
+      return `<a class="nav__link" href="/${n.route}" data-route="${n.route}">${n.label}${navMorseHTML(n.label)}</a>`;
     })
     .join('');
-  // "Sign Up" scrolls down to the newsletter block in the footer instead of
-  // navigating away.
-  const subscribeBtn = `<button type="button" class="nav__link nav__subscribe" data-signup>Sign Up${navMorseHTML('Sign Up')}</button>`;
+  // "Subscribe" scrolls down to the newsletter block in the footer instead of
+  // navigating away. It reads as the stamped SUBSCRIBE serif label in a black
+  // chip (the same black-box / inverted-ink treatment as the vertical titles).
+  const subscribeBtn = `<button type="button" class="nav__subscribe" data-signup aria-label="Subscribe"><img class="nav__subscribe-img" src="assets/img/brand/subscribe.png" alt="Subscribe"></button>`;
 
   const mobileLinks = navLinks()
     .map((n) => {
@@ -54,7 +55,7 @@ export function buildHeader() {
         </div>`;
       if (n.action === 'studio')
         return `<button type="button" class="mobile-menu__link" data-action="studio">${n.label}</button>`;
-      return `<a class="mobile-menu__link" href="#/${n.route}">${n.label}</a>`;
+      return `<a class="mobile-menu__link" href="/${n.route}">${n.label}</a>`;
     })
     .join('');
   // Socials pinned to the bottom of the open menu.
@@ -72,7 +73,7 @@ export function buildHeader() {
         <span class="nav-toggle__ico nav-toggle__bars">${IC.menu}</span>
         <span class="nav-toggle__ico nav-toggle__x"><img src="assets/img/brand/x.png" alt=""></span>
       </button>
-      <a class="brand" href="#/" aria-label="RAREROOM home">
+      <a class="brand" href="/" aria-label="RAREROOM home">
         <img class="brand__mark js-flash" src="assets/img/brand/stamp.png" alt="RAREROOM" width="80" height="40">
       </a>
       <nav class="nav" aria-label="Primary">${links}${subscribeBtn}</nav>
@@ -89,7 +90,7 @@ export function buildHeader() {
   <div class="mobile-menu" id="mobileMenu">
     <nav class="mobile-menu__nav" aria-label="Mobile">
       ${mobileLinks}
-      <button type="button" class="mobile-menu__link" data-signup>Sign Up</button>
+      <button type="button" class="nav__subscribe mobile-menu__subscribe" data-signup aria-label="Subscribe"><img class="nav__subscribe-img" src="assets/img/brand/subscribe.png" alt="Subscribe"></button>
     </nav>
     <div class="mobile-menu__socials social-row">${mobileSocials}</div>
   </div>`;

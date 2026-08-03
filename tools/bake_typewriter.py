@@ -47,6 +47,7 @@ IMAGES = [
     "assets/img/brand/about-nav.png",         # vertical side titles …
     "assets/img/brand/artists-nav.png",
     "assets/img/brand/contact-nav.png",
+    "assets/img/brand/subscribe.png",         # SUBSCRIBE nav label (same serif set)
     "assets/img/brand/forward-arrow.png",     # studio carousel arrows
     "assets/img/brand/back-arrow.png",
     "assets/img/brand/x.png",                 # close X (studio lightbox + mobile menu)

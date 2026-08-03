@@ -4,14 +4,56 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RAREROOM</title>
+  <!-- Clean-URL routing (History API) serves the app from real paths like /about
+       and /artist/slug. Anchoring the base to "/" keeps every relative asset URL
+       resolving against the site root no matter how deep the current route is. -->
+  <base href="/">
+  <!-- Static tags below describe the home page (for crawlers that don't run JS);
+       the router overwrites title/description/canonical/OG per route on navigate. -->
+  <title>RAREROOM - Recording Studio &amp; Record Label</title>
   <meta name="description"
     content="RAREROOM — a recording studio, label, and development firm, and a destination for artists and creatives in music and visual arts. Distributed by The Orchard and under the guidance of producer Logan Gladden.">
-  <meta property="og:title" content="RAREROOM">
+  <link rel="canonical" href="https://rareroomeast.com/">
+  <meta property="og:site_name" content="RAREROOM">
+  <meta property="og:title" content="RAREROOM - Recording Studio &amp; Record Label">
   <meta property="og:description"
     content="A recording studio, label, and development firm — a destination for artists and creatives.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/img/brand/logo.png">
+  <meta property="og:url" content="https://rareroomeast.com/">
+  <meta property="og:image" content="https://rareroomeast.com/assets/img/brand/logo.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="RAREROOM - Recording Studio &amp; Record Label">
+  <meta name="twitter:description"
+    content="A recording studio, label, and development firm — a destination for artists and creatives.">
+  <meta name="twitter:image" content="https://rareroomeast.com/assets/img/brand/logo.png">
+  <!-- Structured data: tells Google who the brand is (name, logo, socials) so it
+       can build a knowledge panel and is more likely to generate sitelinks. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "RAREROOM",
+    "url": "https://rareroomeast.com/",
+    "logo": "https://rareroomeast.com/assets/img/brand/logo.png",
+    "email": "ops@rareroomeast.com",
+    "description": "A recording studio, record label, and development firm — a destination for artists and creatives in music and visual arts.",
+    "sameAs": [
+      "https://www.instagram.com/rareroomeast/",
+      "https://www.youtube.com/@rareroomeast",
+      "https://www.tiktok.com/@rareroomeast",
+      "https://www.facebook.com/rareroomeast",
+      "https://x.com/therobotixmusic"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "RAREROOM",
+    "url": "https://rareroomeast.com/"
+  }
+  </script>
   <link rel="icon" href="assets/img/brand/favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="assets/img/brand/favicon.ico">
   <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">

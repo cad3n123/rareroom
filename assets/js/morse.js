@@ -46,6 +46,11 @@ const MORSE_UNIT = 68; // ms per morse "dit"
 let audioCtx = null;
 let masterGain = null;
 let scheduledOscs = [];
+let soundOsc = null; // the currently-playing oscillator …
+let soundGain = null; // … and its gain envelope, kept so we can fade it out
+const FADE = 0.01; // 10ms attack / release — smooths onsets and (crucially) the
+// abrupt cut when a sequence is stopped mid-tone (e.g. switching pages), which
+// otherwise pops/clicks.
 let flashTimers = [];
 let morseEndsAt = 0;
 let pendingSound = null; // morse queued to play on the first user gesture
@@ -143,7 +148,7 @@ export function startSound() {
   gain.gain.setValueAtTime(0, base);
   osc.connect(gain).connect(masterGain);
 
-  const R = 0.006; // attack / release ramp — long enough to avoid click edges
+  const R = FADE; // attack / release ramp — long enough to avoid click edges
   let lastEnd = base;
   run.timeline.forEach((s) => {
     if (!s.on || s.end <= offset) return;
@@ -159,9 +164,45 @@ export function startSound() {
   });
   osc.start(base);
   osc.stop(lastEnd + 0.05);
+  soundOsc = osc;
+  soundGain = gain;
   scheduledOscs.push(osc, gain);
 }
 export function stopSound() {
+  // Fade the live tone out over ~10ms before killing the oscillator so a stop
+  // mid-tone (page switch, muting) glides to silence instead of clicking.
+  if (audioCtx && soundGain && soundOsc) {
+    const g = soundGain;
+    const osc = soundOsc;
+    const now = audioCtx.currentTime;
+    try {
+      if (g.gain.cancelAndHoldAtTime) g.gain.cancelAndHoldAtTime(now);
+      else {
+        g.gain.cancelScheduledValues(now);
+        g.gain.setValueAtTime(g.gain.value, now);
+      }
+      g.gain.linearRampToValueAtTime(0, now + FADE);
+      osc.stop(now + FADE + 0.005);
+      osc.onended = () => {
+        try {
+          osc.disconnect();
+          g.disconnect();
+        } catch {
+          /* already gone */
+        }
+      };
+    } catch {
+      try {
+        osc.stop();
+      } catch {
+        /* already stopped */
+      }
+    }
+    soundOsc = null;
+    soundGain = null;
+    scheduledOscs = scheduledOscs.filter((n) => n !== osc && n !== g);
+  }
+  // Any leftover nodes (belt and suspenders) — stop + disconnect immediately.
   scheduledOscs.forEach((n) => {
     try {
       n.stop?.();

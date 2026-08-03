@@ -69,7 +69,7 @@ export function artistSocialsHTML(a) {
 
 /* --------------------------- View templates ------------------------------- */
 const heroLogo = () =>
-  `<a class="hero__logo" href="#/" aria-label="RAREROOM — home"><img class="hero__stamp js-flash" src="assets/img/brand/stamp.png" alt="RAREROOM"></a>`;
+  `<a class="hero__logo" href="/" aria-label="RAREROOM — home"><img class="hero__stamp js-flash" src="assets/img/brand/stamp.png" alt="RAREROOM"></a>`;
 const heroMorse = () =>
   `<div class="hero__morse"><img class="hero__morse-half" src="assets/img/brand/rare-morse.png" alt=""><img class="hero__morse-half" src="assets/img/brand/room-morse.png" alt=""></div>`;
 const scrollCue = () =>
@@ -134,17 +134,22 @@ export function viewArtist(a) {
   const nameInner = a.nameImg
     ? `<img class="artist-detail__name" src="${a.nameImg}" alt="${a.name}">`
     : `<h1 class="artist-detail__name-text">${a.name}</h1>`;
-  // The name links out to the artist's own site (when they have one).
+  // Both the name AND the portrait link out to the artist's own site (when they
+  // have one), with the same lift-on-hover / press feedback.
   const site = a.links && a.links.site;
   const name = site
     ? `<a class="artist-detail__name-link" href="${site}" target="_blank" rel="noopener" aria-label="${a.name} — website">${nameInner}</a>`
     : nameInner;
+  const photoInner = `<img src="${a.photo}" alt="${a.name}">`;
+  const photo = site
+    ? `<a class="artist-detail__photo-link" href="${site}" target="_blank" rel="noopener" aria-label="${a.name} — website">${photoInner}</a>`
+    : photoInner;
   return `
   <section class="artist-detail">
     <img class="page-index" src="assets/img/brand/artists-nav.png" alt="Artists" aria-hidden="true">
     <div class="artist-detail__inner">
       <figure class="artist-detail__photo">
-        <img src="${a.photo}" alt="${a.name}">
+        ${photo}
       </figure>
       <div class="artist-detail__meta">
         ${name}

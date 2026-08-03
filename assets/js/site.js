@@ -41,6 +41,30 @@ async function boot() {
   fitAllNavMorse();
 
   document.addEventListener('click', (e) => {
+    // Clean-URL routing: intercept clicks on internal links (href starting with
+    // "/") and drive the SPA via History.pushState instead of a full page load.
+    // External links (mailto:, http…, target=_blank), downloads and
+    // modifier/middle clicks are left alone for the browser to handle normally.
+    const link = e.target.closest('a[href^="/"]');
+    if (
+      link &&
+      link.target !== '_blank' &&
+      !link.hasAttribute('download') &&
+      e.button === 0 &&
+      !e.metaKey &&
+      !e.ctrlKey &&
+      !e.shiftKey &&
+      !e.altKey
+    ) {
+      const href = link.getAttribute('href');
+      e.preventDefault();
+      if (href !== location.pathname) {
+        history.pushState({}, '', href);
+        navigate();
+      }
+      // Same route → don't re-render; fall through so the hero logo (an <a href="/">
+      // on the home page) can still replay its flash below.
+    }
     // Open the studio carousel from any "Studio" control (header, footer, mobile).
     const trigger = e.target.closest('[data-action="studio"]');
     if (trigger) {
@@ -108,7 +132,8 @@ async function boot() {
   });
   window.addEventListener('load', fitAllNavMorse); // re-fit once web fonts settle
 
-  window.addEventListener('hashchange', navigate);
+  // Back/forward buttons (and any pushState from the click handler above).
+  window.addEventListener('popstate', navigate);
   navigate();
 }
 

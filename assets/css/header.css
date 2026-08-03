@@ -274,21 +274,38 @@
   display: none;
 }
 
-/* Subscribe sits in the nav and looks like the other nav items (no button
-   chrome, dark text, morse underline on hover). */
+/* Subscribe sits in the nav as the stamped SUBSCRIBE serif label inside a black
+   chip — the same black-background / inverted-ink treatment as the vertical page
+   titles (just horizontal). */
 .nav__subscribe {
   position: relative;
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: lowercase;
-  color: var(--ink-2);
-  padding: 0.4rem 0;
+  display: inline-flex;
+  align-items: center;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  padding: 0.36rem 0.62rem;
+  line-height: 0;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+/* inverted chip: dark ink text on a light box (the baked PNG is dark ink, so no
+   filter needed); it flips to white text when the box fills dark on hover. */
+.nav__subscribe-img {
+  display: block;
+  height: 0.66rem;
+  width: auto;
+  filter: none;
+  transition: filter 0.2s var(--ease);
 }
 
 .nav__subscribe:hover {
-  color: var(--ink);
+  background: var(--ink);
+}
+
+.nav__subscribe:hover .nav__subscribe-img {
+  filter: invert(1);
 }
 
 /* Artist page: the header inverts to black with white elements. Uses the exact
@@ -321,16 +338,18 @@ body[data-page='artist'] .nav__morse {
   color: #fff;
 }
 
-body[data-page='artist'] .nav__link,
-body[data-page='artist'] .nav__subscribe {
+body[data-page='artist'] .nav__link {
   color: rgba(255, 255, 255, 0.72);
 }
 
 body[data-page='artist'] .nav__link:hover,
-body[data-page='artist'] .nav__link[aria-current='page'],
-body[data-page='artist'] .nav__subscribe:hover {
+body[data-page='artist'] .nav__link[aria-current='page'] {
   color: #fff;
 }
+
+/* The subscribe chip is deliberately left UNCHANGED when the header inverts: the
+   black box melts into the black bar and the white SUBSCRIBE text reads like the
+   other white nav labels (no re-invert, no outline). */
 
 body[data-page='artist'] .icon-btn {
   color: rgba(255, 255, 255, 0.72);
@@ -556,7 +575,8 @@ body[data-page='artist'] .nav-toggle__x img {
 .mobile-drop__item {
   display: block;
   font-family: var(--font-mono);
-  font-size: clamp(0.85rem, 3.9vw, 1.15rem);
+  /* the individual artist names read a touch smaller than the top-level items */
+  font-size: clamp(0.76rem, 3.5vw, 1.02rem);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: capitalize;
@@ -569,6 +589,19 @@ body[data-page='artist'] .nav-toggle__x img {
 .mobile-drop__item:hover {
   color: var(--accent);
   padding-left: 1.4rem;
+}
+
+/* The subscribe chip in the mobile menu — same black-box treatment as the nav,
+   scaled up to sit with the larger menu items. */
+.mobile-menu__subscribe {
+  align-self: flex-start;
+  margin-top: 1.1rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 3px;
+}
+
+.mobile-menu__subscribe .nav__subscribe-img {
+  height: 0.95rem;
 }
 
 /* Socials pinned to the bottom of the open menu. */

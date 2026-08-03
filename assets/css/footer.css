@@ -21,7 +21,15 @@
 .footer-cta {
   background: var(--paper);
   color: var(--ink);
-  padding-block: clamp(2.34rem, 5.4vw, 4.14rem);
+  padding-block: clamp(1.5rem, 3vw, 2.3rem);
+}
+
+/* Phones: nudge the band's top/bottom padding up a touch (the clamp otherwise
+   bottoms out at its 1.5rem minimum on narrow screens). */
+@media (max-width: 760px) {
+  .footer-cta {
+    padding-block: 1.9rem;
+  }
 }
 
 .footer-cta .news-form {
@@ -29,9 +37,18 @@
   max-width: 520px;
   margin-inline: auto;
   margin-top: 0;
+  /* keep the chip its natural size (matching the nav) instead of stretching it to
+     the input's height */
+  align-items: center;
   /* anchor for the absolutely-positioned inline subscribe result (so the message
      never adds a row and grows the white band). */
   position: relative;
+}
+
+/* The footer subscribe button is the exact nav chip — don't let the form's flex
+   row stretch it taller than the nav one. */
+.footer-cta .news-submit {
+  align-self: center;
 }
 
 /* The subscribe button keeps the default black styling (→ purple on hover). */
