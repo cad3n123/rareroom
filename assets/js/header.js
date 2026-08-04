@@ -12,7 +12,12 @@ export function navLinks() {
 }
 function dropdownItems(kind) {
   if (kind === 'artists')
-    return ARTISTS.map((a) => ({ label: a.name, href: `/artist/${a.slug}` }));
+    return ARTISTS
+      // list the roster alphabetically by name (copy first — don't reorder the
+      // source ARTISTS, which other things rely on in config order)
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((a) => ({ label: a.name, href: `/artist/${a.slug}` }));
   return [];
 }
 
