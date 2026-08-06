@@ -128,13 +128,16 @@ html {
   background-color: var(--paper);
 }
 
-/* Canvas follows the nav: --ink wherever the nav is inverted, so the island
-   strip reads as the dark bar simply continuing upward. */
-:root:has(body[data-page='artist']) {
-  background-color: var(--ink);
+/* Canvas follows the nav. On desktop the artist page's bar is true white, so the
+   overscroll gutters match it. */
+@media (min-width: 761px) {
+  :root:has(body[data-page='artist']) {
+    background-color: #fff;
+  }
 }
 
-/* Phones invert the nav on EVERY page, so the whole canvas goes dark here. */
+/* Phones invert the nav on EVERY page, so the whole canvas goes dark here — that
+   is what makes the strip behind the iOS island read as the bar continuing up. */
 @media (max-width: 760px) {
   html {
     background-color: var(--ink);
@@ -331,7 +334,8 @@ h3 {
 
 .h-1 {
   font-size: clamp(2rem, 5.5vw, 3.6rem);
-  font-weight: bold;
+  /* medium, not full bold — used only for the Privacy Policy title */
+  font-weight: 500;
 }
 
 .h-2 {

@@ -45,9 +45,13 @@
   filter: var(--stamp-filter, none);
 }
 
-/* Hovering the nav logo gives the same glow as hovering the big hero logo */
-.brand:hover .brand__mark {
-  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--flash-purple) 18%, transparent));
+/* Hovering the nav logo gives the same glow as hovering the big hero logo.
+   Gated on real hover: on touch the state sticks after a tap and the logo stays
+   lit until you press somewhere else. */
+@media (hover: hover) {
+  .brand:hover .brand__mark {
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--flash-purple) 18%, transparent));
+  }
 }
 
 :root:not([data-theme='dark']) .brand__mark {
@@ -311,84 +315,19 @@
   filter: invert(1);
 }
 
-/* =========================== Inverted (dark) nav ============================
-   The bar goes black with white elements. Two triggers:
-     · the artist page, at every width
-     · EVERY page at phone width (see the max-width:760px block at the bottom —
-       the phone nav is always inverted)
-   Desktop-only chrome (nav links, morse underlines, dropdown) is styled here
-   only; on phones those are display:none, so the mobile copy is much shorter.
-   ========================================================================== */
-body[data-page='artist'] .site-header {
-  background: var(--ink);
-}
-
-body[data-page='artist'] .brand__mark {
-  filter: invert(1);
-}
-
-/* On the dark bar the glow is pure WHITE, never purple — a clean lamp-like pulse
-   rather than a coloured one. */
-body[data-page='artist'] .brand:hover .brand__mark {
-  filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
-}
-
-/* Keep the logo inverted even while the morse flash runs, and give the "lit"
-   pulse a brighter white glow (two stacked shadows: a tight hot core plus a
-   wider halo) so it clearly reads as a light blinking on the dark bar. */
-body[data-page='artist'] .brand__mark.flashing {
-  filter: invert(1) !important;
-}
-
-body[data-page='artist'] .brand__mark.flashing.lit {
-  filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 1))
-    drop-shadow(0 0 11px rgba(255, 255, 255, 0.75)) !important;
-}
-
-/* The nav morse underline inverts to white so it reads on the dark bar. */
-body[data-page='artist'] .nav__morse {
-  color: #fff;
-}
-
-body[data-page='artist'] .nav__link {
-  color: rgba(255, 255, 255, 0.72);
-}
-
-body[data-page='artist'] .nav__link:hover,
-body[data-page='artist'] .nav__link[aria-current='page'] {
-  color: #fff;
-}
-
-/* The subscribe chip is deliberately left UNCHANGED when the header inverts: the
-   black box melts into the black bar and the white SUBSCRIBE text reads like the
-   other white nav labels (no re-invert, no outline). */
-
-body[data-page='artist'] .icon-btn {
-  color: rgba(255, 255, 255, 0.72);
-}
-
-@media (hover: hover) {
-  body[data-page='artist'] .icon-btn:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
+/* Artist page on DESKTOP: the nav does not invert. Its content sits on flat
+   white, so the bar matches it — true white and fully opaque, rather than the
+   translucent paper tone used elsewhere. The subscribe chip matches too.
+   Phones are excluded: below 761px the nav is inverted on every page (see the
+   max-width block at the bottom), and this rule would otherwise out-specify it. */
+@media (min-width: 761px) {
+  body[data-page='artist'] .site-header {
+    background: #fff;
   }
-}
 
-body[data-page='artist'] .icon-btn.is-on {
-  color: var(--accent);
-}
-
-body[data-page='artist'] .nav__dropdown-panel {
-  background: color-mix(in srgb, var(--ink) 92%, transparent);
-  border-color: rgba(255, 255, 255, 0.16);
-}
-
-body[data-page='artist'] .nav__dropdown-panel a {
-  color: rgba(255, 255, 255, 0.72);
-}
-
-body[data-page='artist'] .nav__dropdown-panel a:hover {
-  color: var(--accent);
+  body[data-page='artist'] .nav__subscribe {
+    background: #fff;
+  }
 }
 
 /* Route loading bar — sits exactly over the header's 1px divider line and
@@ -422,12 +361,6 @@ body[data-page='artist'] .nav__dropdown-panel a:hover {
   background: var(--loader-purple);
 }
 
-/* Inverted (dark) header: keep the same purple, just make the bar 2px so it
-   still reads against the black bar. */
-body[data-page='artist'] .route-loader {
-  height: 2px;
-  transform: translateY(-2px);
-}
 
 /* Hide the content instantly while loading (no transition), then fade it back
    in when the loader finishes — otherwise the new page briefly fades OUT from
@@ -472,9 +405,8 @@ body[data-page='artist'] .route-loader {
   object-fit: contain;
 }
 
-:root[data-theme='dark'] .nav-toggle__x img,
-body[data-page='artist'] .nav-toggle__x img {
-  /* white X on the inverted header (and in dark theme) */
+:root[data-theme='dark'] .nav-toggle__x img {
+  /* white X in dark theme (the baked art is dark ink) */
   filter: invert(1);
 }
 
@@ -632,8 +564,7 @@ body[data-page='artist'] .nav-toggle__x img {
 
   /* ---- Phones: the nav is ALWAYS inverted, on every page ------------------
      Only the chrome that actually exists at this width needs restating — the
-     nav links, morse underlines and dropdown are display:none here, so this is
-     the short version of the artist-page block above. */
+     nav links, morse underlines and dropdown are display:none here. */
   .site-header {
     background: var(--ink);
   }
@@ -642,18 +573,16 @@ body[data-page='artist'] .nav-toggle__x img {
     filter: invert(1);
   }
 
-  .brand:hover .brand__mark {
-    filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
-  }
-
   .brand__mark.flashing {
     filter: invert(1) !important;
   }
 
-  /* tighter halo than desktop (the mark is smaller) but the same bright white */
+  /* A restrained pulse: a tight core that hugs the stamp, plus a wide halo kept
+     very faint. The halo is what gives the blink its depth, so it stays — it was
+     only the strength (0.72 alpha) that read as "glowy", not its presence. */
   .brand__mark.flashing.lit {
-    filter: invert(1) drop-shadow(0 0 3px rgba(255, 255, 255, 1))
-      drop-shadow(0 0 9px rgba(255, 255, 255, 0.72)) !important;
+    filter: invert(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))
+      drop-shadow(0 0 8px rgba(255, 255, 255, 0.14)) !important;
   }
 
   /* hamburger, close-X, flash + sound toggles */
@@ -661,8 +590,10 @@ body[data-page='artist'] .nav-toggle__x img {
     color: rgba(255, 255, 255, 0.72);
   }
 
+  /* an active toggle reads bright white on the dark bar, not the purple accent
+     (which all but disappears against --ink) */
   .icon-btn.is-on {
-    color: var(--accent);
+    color: #fff;
   }
 
   .nav-toggle {
@@ -679,9 +610,15 @@ body[data-page='artist'] .nav-toggle__x img {
   }
 }
 
+/* Hover-only chrome for the inverted phone nav. Gated on (hover: hover) so a tap
+   can't leave the state stuck on touch. */
 @media (hover: hover) and (max-width: 760px) {
   .icon-btn:hover {
     color: #fff;
     background: rgba(255, 255, 255, 0.1);
+  }
+
+  .brand:hover .brand__mark {
+    filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
   }
 }
