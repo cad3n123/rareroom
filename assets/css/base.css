@@ -111,22 +111,55 @@ html {
   }
 }
 
-/* The root canvas — what shows "outside" the page: behind the iOS notch/island
-   strip and in the rubber-band overscroll gutters. Paint it to match the nav
-   (rather than the browser's default white) so the bar bleeds to the very top
-   edge of the phone. Normal pages: --paper. The inverted (artist) page: --ink,
-   so the strip above the content matches the dark nav + footer. */
+/* ------------------------- Background layering -----------------------------
+   Three stacked layers, so the strip behind the iOS island can be coloured
+   independently of the page itself:
+
+     <html>        the CANVAS — all that shows behind the island and in the
+                   rubber-band overscroll gutters. Matches the NAV.
+     body::after   the PAGE colour, a fixed sheet starting below the safe area.
+     body::before  the paper GRAIN, multiplied over that sheet.
+
+   <body> itself stays transparent — an opaque body would paint over both
+   pseudo-elements (they sit at negative z-index, which paints above the html
+   background but below body's own background box).
+   -------------------------------------------------------------------------- */
 html {
   background-color: var(--paper);
 }
 
+/* Canvas follows the nav: --ink wherever the nav is inverted, so the island
+   strip reads as the dark bar simply continuing upward. */
 :root:has(body[data-page='artist']) {
   background-color: var(--ink);
 }
 
-/* Artist page: the content sits on a clean pure-white card between the dark nav
-   and dark footer — no paper tone or grain behind it. */
-body[data-page='artist'] {
+/* Phones invert the nav on EVERY page, so the whole canvas goes dark here. */
+@media (max-width: 760px) {
+  html {
+    background-color: var(--ink);
+  }
+}
+
+/* The page's own colour. Starts below the safe-area strip so the canvas above
+   stays visible; on devices with no safe area env() is 0 and this simply covers
+   the viewport, with the canvas showing only in the overscroll gutters. Fixed
+   and untransitioned, and outside #app, so the route-change opacity fade can't
+   drag it and the colour snaps instantly on navigation. */
+body::after {
+  content: '';
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--paper);
+  z-index: -3;
+  pointer-events: none;
+}
+
+/* Artist page: flat white instead of the paper tone, and no grain over it. */
+body[data-page='artist']::after {
   background-color: #fff;
 }
 
@@ -139,7 +172,11 @@ body {
   font-size: clamp(15px, 0.55vw + 12.5px, 17px);
   line-height: 1.65;
   color: var(--ink);
-  background-color: var(--paper);
+  /* Deliberately transparent: <html> carries the page colour (above). If <body>
+     painted its own opaque background it would cover the paper-grain layer —
+     body::before sits at z-index:-2, which paints ABOVE the html background but
+     BELOW body's own background box, so an opaque body hides the texture. */
+  background-color: transparent;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   min-height: 100dvh;
@@ -185,11 +222,16 @@ code,
   --font-mono: var(--font-code);
 }
 
-/* Paper grain — the texture from the original site, whisper-quiet */
+/* Paper grain — the texture from the original site, whisper-quiet. Sits at -2,
+   directly above the page-colour sheet at -3, and is inset from the top by the
+   safe area for the same reason: the island strip belongs to the canvas. */
 body::before {
   content: '';
   position: fixed;
-  inset: 0;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: -2;
   background: url('../img/brand/paper.jpg') center / cover no-repeat;
   opacity: var(--paper-texture);

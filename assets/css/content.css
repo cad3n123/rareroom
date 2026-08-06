@@ -323,7 +323,7 @@
   color: var(--ink);
   font-size: clamp(0.72rem, 0.9vw, 0.84rem);
   line-height: 1.6;
-  font-weight: 600;
+  font-weight: 400;
   /* never break words with a hyphen at line-ends (the long uppercase words were
      getting auto-hyphenated) */
   -webkit-hyphens: none;
@@ -500,6 +500,9 @@
   display: inline-block;
   cursor: pointer;
   transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  /* hold the layer open so hovering doesn't spin one up (and force neighbouring
+     filtered elements — the vertical page title — to re-rasterize) */
+  will-change: transform, opacity;
 }
 
 .artist-detail__name-link:hover {
@@ -513,6 +516,7 @@
   display: inline-block;
   cursor: pointer;
   transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  will-change: transform, opacity;
 }
 
 .artist-detail__photo-link:hover {

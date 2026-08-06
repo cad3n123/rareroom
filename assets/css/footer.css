@@ -3,8 +3,6 @@
    (brand, footer nav with white morse underlines, socials, decorative morse).
    ============================================================================= */
 .site-footer {
-  /* divider line above the subscribe band, in the loading-bar purple */
-  border-top: 1px solid var(--loader-purple);
   background: var(--ink);
   color: var(--paper);
   padding-block: 0;
@@ -19,7 +17,10 @@
 /* The subscribe/email block is its own full-width white section band, sitting
    flush above the black footer body. */
 .footer-cta {
-  background: var(--paper);
+  /* pure white, not the paper tone — the band reads as a clean sheet against the
+     black footer body (the .site-footer stacking context sits above the grain
+     layer, so nothing tints it). */
+  background: #fff;
   color: var(--ink);
   padding-block: clamp(1.5rem, 3vw, 2.3rem);
 }
@@ -49,6 +50,19 @@
    row stretch it taller than the nav one. */
 .footer-cta .news-submit {
   align-self: center;
+}
+
+/* Input + button sit on pure white like the band behind them (the input's default
+   --panel tone and the chip's --paper read as grey/cream against it). */
+.footer-cta .input,
+.footer-cta .news-submit {
+  background: #fff;
+}
+
+/* re-assert the chip's hover fill — the rule above would otherwise beat the
+   header's .nav__subscribe:hover on source order. */
+.footer-cta .news-submit:hover {
+  background: var(--ink);
 }
 
 /* The subscribe button keeps the default black styling (→ purple on hover). */

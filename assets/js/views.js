@@ -230,7 +230,8 @@ export function bindBgGrow(app) {
       return;
     }
     const y = window.scrollY || 0;
-    const s = 1 + Math.min(0.22, y / 3200); // slow, but clearly noticeable — up to +22%
+    // twice as pronounced as before: grows at double the rate, to +44%
+    const s = 1 + Math.min(0.44, y / 1600);
     img.style.transform = `scale(${s})`;
   };
   const onScroll = () => {

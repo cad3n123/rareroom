@@ -1,6 +1,6 @@
 /* =============================================================================
    HEADER — the sticky nav (brand, links + morse underlines, dropdown, toggles,
-   Subscribe), the artist-page inverted variant, the route loading bar, and the
+   Subscribe), the route loading bar, and the
    mobile menu.
    ============================================================================= */
 /* The header is injected into #site-header; make that wrapper transparent to
@@ -311,30 +311,38 @@
   filter: invert(1);
 }
 
-/* Artist page: the header inverts to black with white elements. Uses the exact
-   footer background colour so the two black bars match. */
+/* =========================== Inverted (dark) nav ============================
+   The bar goes black with white elements. Two triggers:
+     · the artist page, at every width
+     · EVERY page at phone width (see the max-width:760px block at the bottom —
+       the phone nav is always inverted)
+   Desktop-only chrome (nav links, morse underlines, dropdown) is styled here
+   only; on phones those are display:none, so the mobile copy is much shorter.
+   ========================================================================== */
 body[data-page='artist'] .site-header {
   background: var(--ink);
-  /* no divider line under the inverted nav — it melts straight into the dark page */
-  border-bottom: none;
 }
 
 body[data-page='artist'] .brand__mark {
   filter: invert(1);
 }
 
+/* On the dark bar the glow is pure WHITE, never purple — a clean lamp-like pulse
+   rather than a coloured one. */
 body[data-page='artist'] .brand:hover .brand__mark {
-  filter: invert(1) drop-shadow(0 0 4px color-mix(in srgb, var(--flash-purple) 24%, transparent));
+  filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
 }
 
 /* Keep the logo inverted even while the morse flash runs, and give the "lit"
-   pulse a stronger purple glow so it's clearly visible on the dark bar. */
+   pulse a brighter white glow (two stacked shadows: a tight hot core plus a
+   wider halo) so it clearly reads as a light blinking on the dark bar. */
 body[data-page='artist'] .brand__mark.flashing {
   filter: invert(1) !important;
 }
 
 body[data-page='artist'] .brand__mark.flashing.lit {
-  filter: invert(1) drop-shadow(0 0 6px color-mix(in srgb, var(--flash-purple) 92%, transparent)) !important;
+  filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 1))
+    drop-shadow(0 0 11px rgba(255, 255, 255, 0.75)) !important;
 }
 
 /* The nav morse underline inverts to white so it reads on the dark bar. */
@@ -414,15 +422,11 @@ body[data-page='artist'] .nav__dropdown-panel a:hover {
   background: var(--loader-purple);
 }
 
-/* Inverted (dark) artist header: keep the same purple, just make the bar 2px so
-   it still reads against the black bar. */
+/* Inverted (dark) header: keep the same purple, just make the bar 2px so it
+   still reads against the black bar. */
 body[data-page='artist'] .route-loader {
   height: 2px;
   transform: translateY(-2px);
-}
-
-body[data-page='artist'] .route-loader__bar {
-  background: var(--loader-purple);
 }
 
 /* Hide the content instantly while loading (no transition), then fade it back
@@ -470,7 +474,7 @@ body[data-page='artist'] .route-loader__bar {
 
 :root[data-theme='dark'] .nav-toggle__x img,
 body[data-page='artist'] .nav-toggle__x img {
-  /* white X on the dark artist-page header (and in dark theme) */
+  /* white X on the inverted header (and in dark theme) */
   filter: invert(1);
 }
 
@@ -529,7 +533,7 @@ body[data-page='artist'] .nav-toggle__x img {
   border-bottom: 1px solid var(--line-2);
   font-family: var(--font-mono);
   font-size: clamp(1.17rem, 5.4vw, 1.62rem);
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.08em;
   text-transform: lowercase;
   color: var(--ink);
@@ -581,7 +585,7 @@ body[data-page='artist'] .nav-toggle__x img {
   font-family: var(--font-mono);
   /* the individual artist names read a touch smaller than the top-level items */
   font-size: clamp(0.76rem, 3.5vw, 1.02rem);
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: capitalize;
   color: var(--ink);
@@ -619,8 +623,6 @@ body[data-page='artist'] .nav-toggle__x img {
   font-size: 0.8rem;
 }
 
-/* On phones the inverted (artist-page) logo flash reads too hot — dial the
-   purple glow of the "lit" pulse back a bit. */
 @media (max-width: 760px) {
   /* Shrink the header logo ~20% on phones so it sits lighter in the tighter bar. */
   .brand__mark {
@@ -628,7 +630,58 @@ body[data-page='artist'] .nav-toggle__x img {
     height: 32px;
   }
 
-  body[data-page='artist'] .brand__mark.flashing.lit {
-    filter: invert(1) drop-shadow(0 0 5px color-mix(in srgb, var(--flash-purple) 73%, transparent)) !important;
+  /* ---- Phones: the nav is ALWAYS inverted, on every page ------------------
+     Only the chrome that actually exists at this width needs restating — the
+     nav links, morse underlines and dropdown are display:none here, so this is
+     the short version of the artist-page block above. */
+  .site-header {
+    background: var(--ink);
+  }
+
+  .brand__mark {
+    filter: invert(1);
+  }
+
+  .brand:hover .brand__mark {
+    filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
+  }
+
+  .brand__mark.flashing {
+    filter: invert(1) !important;
+  }
+
+  /* tighter halo than desktop (the mark is smaller) but the same bright white */
+  .brand__mark.flashing.lit {
+    filter: invert(1) drop-shadow(0 0 3px rgba(255, 255, 255, 1))
+      drop-shadow(0 0 9px rgba(255, 255, 255, 0.72)) !important;
+  }
+
+  /* hamburger, close-X, flash + sound toggles */
+  .icon-btn {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .icon-btn.is-on {
+    color: var(--accent);
+  }
+
+  .nav-toggle {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .nav-toggle__x img {
+    filter: invert(1);
+  }
+
+  .route-loader {
+    height: 2px;
+    transform: translateY(-2px);
+  }
+}
+
+@media (hover: hover) and (max-width: 760px) {
+  .icon-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
   }
 }

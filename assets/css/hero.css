@@ -227,6 +227,14 @@ body[data-page='contact'] .page-bg img {
   filter: invert(1);
   padding: 0.25rem;
   box-sizing: content-box;
+
+  /* Pin the label to its own compositing layer. It's a filtered + rotated box at
+     fractional coordinates, so when a neighbour (the artist name/photo link)
+     animates its transform on hover, the browser would otherwise re-rasterize
+     this element too — and the new subpixel rounding made the word visibly
+     shift/blur. Promoting it once keeps the raster stable. */
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 /* baked dark ink → light on dark paper */
