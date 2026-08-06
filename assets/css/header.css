@@ -13,13 +13,16 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  height: var(--header-h);
+  /* Grow the bar up into the iOS safe area (the notch / Dynamic Island strip) so
+     the nav background runs all the way to the very top of the screen, while the
+     brand + links still sit in the normal --header-h band below the island. */
+  height: calc(var(--header-h) + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
   display: flex;
   align-items: center;
   background: color-mix(in srgb, var(--paper) 82%, transparent);
   backdrop-filter: saturate(1.4) blur(14px);
   -webkit-backdrop-filter: saturate(1.4) blur(14px);
-  border-bottom: 1px solid var(--line);
 }
 
 .site-header .wrap {
@@ -312,7 +315,8 @@
    footer background colour so the two black bars match. */
 body[data-page='artist'] .site-header {
   background: var(--ink);
-  border-bottom-color: rgba(255, 255, 255, 0.16);
+  /* no divider line under the inverted nav — it melts straight into the dark page */
+  border-bottom: none;
 }
 
 body[data-page='artist'] .brand__mark {
@@ -454,13 +458,13 @@ body[data-page='artist'] .route-loader__bar {
 
 .nav-toggle__ico svg {
   /* a little bigger than the toggle icons, and in full --ink */
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 .nav-toggle__x img {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
 }
 
@@ -487,7 +491,7 @@ body[data-page='artist'] .nav-toggle__x img {
 
 .mobile-menu {
   position: fixed;
-  top: var(--header-h);
+  top: calc(var(--header-h) + env(safe-area-inset-top));
   left: 0;
   right: 0;
   bottom: 0;
@@ -618,6 +622,12 @@ body[data-page='artist'] .nav-toggle__x img {
 /* On phones the inverted (artist-page) logo flash reads too hot — dial the
    purple glow of the "lit" pulse back a bit. */
 @media (max-width: 760px) {
+  /* Shrink the header logo ~20% on phones so it sits lighter in the tighter bar. */
+  .brand__mark {
+    width: 64px;
+    height: 32px;
+  }
+
   body[data-page='artist'] .brand__mark.flashing.lit {
     filter: invert(1) drop-shadow(0 0 5px color-mix(in srgb, var(--flash-purple) 73%, transparent)) !important;
   }

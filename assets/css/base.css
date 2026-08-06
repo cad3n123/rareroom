@@ -12,9 +12,9 @@
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('../fonts/Inter-VariableFont_opsz,wght.ttf') format('truetype');
-  font-weight: 400;
+  font-family: 'Work Sans';
+  src: url('../fonts/WorkSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
   font-display: swap;
 }
 
@@ -27,9 +27,9 @@
 
 /* ------------------------------ Tokens ------------------------------------ */
 :root {
-  /* "mono" is a historical name — the site now uses Inter everywhere this token
-     is referenced (nav, morse labels, eyebrows, socials, buttons, etc.). */
-  --font-mono: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* "mono" is a historical name — the site now uses Work Sans everywhere this
+     token is referenced (nav, morse labels, eyebrows, socials, buttons, etc.). */
+  --font-mono: 'Work Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   /* The original Source Code Pro, kept for the footer + social rows. */
   --font-code: 'Source Code Pro', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --font-serif: 'Alike', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
@@ -109,6 +109,29 @@ html {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+/* The root canvas — what shows "outside" the page: behind the iOS notch/island
+   strip and in the rubber-band overscroll gutters. Paint it to match the nav
+   (rather than the browser's default white) so the bar bleeds to the very top
+   edge of the phone. Normal pages: --paper. The inverted (artist) page: --ink,
+   so the strip above the content matches the dark nav + footer. */
+html {
+  background-color: var(--paper);
+}
+
+:root:has(body[data-page='artist']) {
+  background-color: var(--ink);
+}
+
+/* Artist page: the content sits on a clean pure-white card between the dark nav
+   and dark footer — no paper tone or grain behind it. */
+body[data-page='artist'] {
+  background-color: #fff;
+}
+
+body[data-page='artist']::before {
+  display: none;
 }
 
 body {

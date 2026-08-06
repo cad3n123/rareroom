@@ -47,9 +47,9 @@
   letter-spacing: 0.1em;
   color: var(--ink-3);
 }
-/* the Privacy Policy link specifically is set in Inter */
+/* the Privacy Policy link specifically is set in Work Sans */
 .news-consent a {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
   color: var(--ink-2);
   text-decoration: underline;
   text-underline-offset: 2px;

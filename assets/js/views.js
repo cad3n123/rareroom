@@ -103,7 +103,9 @@ export function viewAbout() {
         <img class="wordmark" src="assets/img/brand/rareroom-title.png" alt="RAREROOM">
       </div>
       <span class="hero-rule" aria-hidden="true"></span>
-      <p class="about-copy typed">A multifaceted entity encompassing a recording studio, label and development firm, serving as a destination for artists and creatives in music and visual arts. Distributed by <a class="about-link" href="https://www.theorchard.com/" target="_blank" rel="noopener">The Orchard</a> and under the guidance of musician and producer <a class="about-link" href="https://www.pollishtheproject.com/" target="_blank" rel="noopener">Logan Gladden</a>, the label and studio offer the essential tools and creative freedom necessary to assist artists in navigating the evolving landscape of the entertainment industry.</p>
+      <p class="about-copy typed">RAREROOM exists to make and release music. We&rsquo;re a recording studio and artist-first independent label aimed to bring songs out of the sessions and straight to the people who need to hear them.</p>
+      <p class="about-copy typed">Started by musician and producer <a class="about-link" href="https://www.pollishtheproject.com/" target="_blank" rel="noopener">Logan Gladden</a> - and distributed worldwide through <a class="about-link" href="https://www.theorchard.com/" target="_blank" rel="noopener">The Orchard</a> - RAREROOM helps artists create, release, and grow their work, offering everything a traditional label can offer, but on fair terms.</p>
+      <p class="about-copy typed">We provide the space, support, and creative freedom for artists - as it should be.</p>
     </div>
   </section>`;
 }
