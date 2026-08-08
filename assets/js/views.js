@@ -103,9 +103,9 @@ export function viewAbout() {
         <img class="wordmark" src="assets/img/brand/rareroom-title.png" alt="RAREROOM">
       </div>
       <span class="hero-rule" aria-hidden="true"></span>
-      <p class="about-copy typed">RAREROOM exists to make and release music. We&rsquo;re a recording studio and artist-first independent label aimed to bring songs out of the sessions and straight to the people who need to hear them.</p>
-      <p class="about-copy typed">Started by musician and producer <a class="about-link" href="https://www.pollishtheproject.com/" target="_blank" rel="noopener">Logan Gladden</a> - and distributed worldwide through <a class="about-link" href="https://www.theorchard.com/" target="_blank" rel="noopener">The Orchard</a> - RAREROOM helps artists create, release, and grow their work, offering everything a traditional label can offer, but on fair terms.</p>
-      <p class="about-copy typed">We provide the space, support, and creative freedom for independent artists - as it should be.</p>
+      <p class="about-copy typed">RAREROOM exists to make and release music. It&rsquo;s a recording studio and artist-first independent label aiming to bring songs out of sessions to the people who need to hear them.</p>
+      <p class="about-copy typed">Started by musician and producer <a class="about-link" href="https://www.pollishtheproject.com/" target="_blank" rel="noopener">Logan Gladden</a> - and distributed worldwide through <a class="about-link" href="https://www.theorchard.com/" target="_blank" rel="noopener">The Orchard</a> - RAREROOM helps to create, release, and grow work, offering everything a traditional label can offer, but on fair terms.</p>
+      <p class="about-copy typed">It can provide a space, support, and creative freedom for independent artists - as it should be.</p>
     </div>
   </section>`;
 }
