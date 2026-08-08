@@ -75,7 +75,7 @@ export function buildHeader() {
   <header class="site-header">
     <div class="wrap">
       <button class="icon-btn nav-toggle" data-menu-toggle aria-label="Menu" aria-expanded="false">
-        <span class="nav-toggle__ico nav-toggle__bars">${IC.menu}</span>
+        <span class="nav-toggle__ico nav-toggle__arrow"><img src="assets/img/brand/down-arrow.png" alt=""></span>
         <span class="nav-toggle__ico nav-toggle__x"><img src="assets/img/brand/x.png" alt=""></span>
       </button>
       <a class="brand" href="/" aria-label="RAREROOM home">
@@ -104,11 +104,15 @@ export function buildHeader() {
   // stays put — the menu opens below it).
   const menu = $('#mobileMenu');
   const toggle = $('[data-menu-toggle]');
+  // Scroll is only locked on phones, where the menu covers the screen. On desktop
+  // it's a small panel hanging off the island, so freezing the page behind it
+  // just feels broken.
+  const phone = window.matchMedia('(max-width: 760px)');
   const setMenu = (open) => {
     menu.classList.toggle('open', open);
     toggle.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', String(open));
-    document.body.style.overflow = open ? 'hidden' : '';
+    document.body.style.overflow = open && phone.matches ? 'hidden' : '';
   };
   toggle?.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
 

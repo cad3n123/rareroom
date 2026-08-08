@@ -4,6 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Tints mobile Safari's own chrome — the strip behind the Dynamic Island /
+       status bar. In normal browsing that area belongs to the browser, not the
+       page, so env(safe-area-inset-top) is 0 there and no CSS can reach it; this
+       is the only hook. --ink, to match the inverted mobile nav. -->
+  <meta name="theme-color" content="#151110">
   <!-- Clean-URL routing (History API) serves the app from real paths like /about
        and /artist/slug. Anchoring the base to "/" keeps every relative asset URL
        resolving against the site root no matter how deep the current route is. -->

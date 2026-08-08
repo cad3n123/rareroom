@@ -32,6 +32,131 @@
   gap: 1rem;
 }
 
+/* ======================== Floating island nav ===============================
+   Every page EXCEPT the artist page (which keeps the full-width bar) wears the
+   nav as a floating island: the <header> band itself goes transparent and stops
+   catching clicks, and the inner .wrap becomes a bordered, blurred slab inset
+   from all four edges. The header stays `sticky` rather than `fixed` so it keeps
+   reserving its --header-h of layout space — every existing offset that reads
+   --header-h (hero min-heights, scroll-padding, the mobile menu) keeps working
+   untouched — while content still scrolls underneath the stuck bar, which is
+   what gives the backdrop blur something to blur.
+   ========================================================================== */
+:root {
+  /* how far the slab sits in from the screen edges */
+  --island-inset: clamp(0.6rem, 2.6vw, 1.5rem);
+  /* the slab's own height; the leftover --header-h is its float gap */
+  --island-h: 54px;
+  /* deliberately narrow — the island is a compact puck, not a re-skinned bar */
+  --island-w: 400px;
+  /* distance from the very top of the screen to the slab's bottom edge */
+  --island-bottom: calc(env(safe-area-inset-top, 0px) +
+      (var(--header-h) - var(--island-h)) / 2 + var(--island-h));
+}
+
+/* The island carries only [menu] [logo] [toggles] at EVERY width — the inline
+   link list is what forced the old full-width bar, so it moves into the panel.
+   (The artist page is excluded and keeps its inline links on desktop.) */
+body:not([data-page='artist']) .nav {
+  display: none;
+}
+
+body:not([data-page='artist']) .nav-toggle {
+  display: grid;
+  justify-self: start;
+}
+
+body:not([data-page='artist']) .site-header .wrap {
+  display: grid;
+  /* equal side columns keep the logo optically centred regardless of how much
+     sits left vs. right */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.5rem;
+}
+
+body:not([data-page='artist']) .brand {
+  justify-self: center;
+}
+
+body:not([data-page='artist']) .header-tools {
+  justify-self: end;
+}
+
+/* ---- Island contents, inverted at every width ---------------------------- */
+/* The slab is always dark, so the mark and the icons are always the light
+   treatment. (The phones-only block further down still covers the artist page's
+   full-width bar, which only inverts below 761px.) */
+body:not([data-page='artist']) .brand__mark {
+  /* smaller than the full-bar logo — it has to sit inside a 400px puck */
+  width: 58px;
+  height: 29px;
+  filter: invert(1);
+}
+
+body:not([data-page='artist']) .brand__mark.flashing {
+  filter: invert(1) !important;
+}
+
+body:not([data-page='artist']) .brand__mark.flashing.lit {
+  filter: invert(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.14)) !important;
+}
+
+body:not([data-page='artist']) .icon-btn,
+body:not([data-page='artist']) .nav-toggle {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+body:not([data-page='artist']) .icon-btn.is-on {
+  color: #fff;
+}
+
+body:not([data-page='artist']) .nav-toggle__arrow img,
+body:not([data-page='artist']) .nav-toggle__x img {
+  filter: invert(1);
+}
+
+@media (hover: hover) {
+  body:not([data-page='artist']) .icon-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  body:not([data-page='artist']) .brand:hover .brand__mark {
+    filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
+  }
+}
+
+body:not([data-page='artist']) .site-header {
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  /* the transparent band must not swallow clicks meant for the page beneath */
+  pointer-events: none;
+  padding-inline: var(--island-inset);
+  justify-content: center;
+}
+
+body:not([data-page='artist']) .site-header .wrap {
+  pointer-events: auto;
+  margin-inline: auto;
+  width: 100%;
+  max-width: var(--island-w);
+  height: var(--island-h);
+  /* the slab sets its own tighter gutters — --pad-x is page gutter, far too wide */
+  padding-inline: clamp(0.8rem, 2.2vw, 1.4rem);
+  /* the slab is inverted at EVERY width, not just on phones */
+  background: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 4px;
+  backdrop-filter: saturate(1.3) blur(24px);
+  -webkit-backdrop-filter: saturate(1.3) blur(24px);
+  /* stacked, very soft shadows read as a sheet lifted off the page rather than
+     one hard drop shadow */
+  box-shadow: 0 33px 13px rgba(0, 0, 0, 0.01), 0 19px 11px rgba(0, 0, 0, 0.03),
+    0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -291,7 +416,7 @@
   background: var(--paper);
   border: 1px solid var(--ink);
   border-radius: 2px;
-  padding: 0.36rem 0.62rem;
+  padding: 0.3rem 0.55rem;
   line-height: 0;
   cursor: pointer;
   transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
@@ -301,7 +426,9 @@
    filter needed); it flips to white text when the box fills dark on hover. */
 .nav__subscribe-img {
   display: block;
-  height: 0.66rem;
+  /* sized to the nav links' cap height — the wordmark is baked art, so its glyphs
+     have to be matched by eye rather than inheriting font-size */
+  height: 0.52rem;
   width: auto;
   filter: none;
   transition: filter 0.2s var(--ease);
@@ -328,6 +455,12 @@
   body[data-page='artist'] .nav__subscribe {
     background: #fff;
   }
+
+  /* the artists dropdown is part of that same white bar — the default paper tone
+     read as a grey card floating on it */
+  body[data-page='artist'] .nav__dropdown-panel {
+    background: #fff;
+  }
 }
 
 /* Route loading bar — sits exactly over the header's 1px divider line and
@@ -352,6 +485,14 @@
 
 .route-loader.active {
   opacity: 1;
+}
+
+/* With a floating island there is no full-width divider line to sweep along, so
+   the bar pins to the very top edge of the screen instead. */
+body:not([data-page='artist']) .route-loader {
+  top: 0;
+  transform: none;
+  height: 2px;
 }
 
 .route-loader__bar {
@@ -390,7 +531,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
 }
 
 .nav-toggle__ico svg {
@@ -399,25 +540,39 @@
   height: 20px;
 }
 
+/* The menu button is the same stamped arrow the home page uses as its scroll
+   cue, so the two read as one piece of art. */
+.nav-toggle__arrow img {
+  /* the art is a wide, flat chevron — it needs more width than the X to carry
+     comparable visual weight */
+  width: 27px;
+  height: auto;
+  object-fit: contain;
+}
+
 .nav-toggle__x img {
   width: 18px;
   height: 18px;
   object-fit: contain;
 }
 
+:root[data-theme='dark'] .nav-toggle__arrow img,
 :root[data-theme='dark'] .nav-toggle__x img {
-  /* white X in dark theme (the baked art is dark ink) */
+  /* white glyphs in dark theme (the baked art is dark ink) */
   filter: invert(1);
 }
 
+/* Closed → open: the arrow swings a half-turn and shrinks away while the X
+   counter-rotates into place. Both halves share one arc, so it reads as a single
+   rotation rather than two icons crossfading. */
 .nav-toggle__x {
   opacity: 0;
-  transform: scale(0.7) rotate(-45deg);
+  transform: rotate(-90deg) scale(0.55);
 }
 
-.nav-toggle.is-open .nav-toggle__bars {
+.nav-toggle.is-open .nav-toggle__arrow {
   opacity: 0;
-  transform: scale(0.7) rotate(45deg);
+  transform: rotate(180deg) scale(0.55);
 }
 
 .nav-toggle.is-open .nav-toggle__x {
@@ -437,7 +592,7 @@
   opacity: 0;
   transform: translateY(-8px);
   visibility: hidden;
-  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), visibility 0.35s;
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), visibility 0.6s;
   display: flex;
   flex-direction: column;
   padding: 1.4rem var(--pad-x) 2rem;
@@ -448,6 +603,55 @@
   opacity: 1;
   transform: none;
   visibility: visible;
+}
+
+/* Island pages: the menu is a matching slab hanging just under the island —
+   same width, border and radius — instead of a full-screen sheet. It drops in
+   from behind the island rather than sliding over the whole page. */
+body:not([data-page='artist']) .mobile-menu {
+  top: calc(var(--island-bottom) + 8px);
+  /* hangs directly under the slab, sharing its centre line */
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translateX(-50%) translateY(-10px);
+  width: calc(100% - 2 * var(--island-inset));
+  max-width: var(--island-w);
+  max-height: calc(100dvh - var(--island-bottom) - 3rem);
+  padding: 0.9rem 1.1rem 1.2rem;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: saturate(1.3) blur(24px);
+  -webkit-backdrop-filter: saturate(1.3) blur(24px);
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  box-shadow: 0 33px 13px rgba(0, 0, 0, 0.01), 0 19px 11px rgba(0, 0, 0, 0.03),
+    0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+body:not([data-page='artist']) .mobile-menu.open {
+  transform: translateX(-50%);
+}
+
+/* the big full-screen type doesn't suit a compact panel */
+body:not([data-page='artist']) .mobile-menu__link {
+  font-size: 1.02rem;
+}
+
+/* Match the subscribe chip to the panel's link text. The wordmark is baked art,
+   so it can't inherit font-size — 0.71rem is the links' cap height at the 1.02rem
+   set above. Scoped to the island: the artist page's full-screen menu runs much
+   larger type and needs the original size. */
+body:not([data-page='artist']) .mobile-menu__subscribe {
+  margin-top: 0.9rem;
+  padding: 0.34rem 0.6rem;
+}
+
+body:not([data-page='artist']) .mobile-menu__subscribe .nav__subscribe-img {
+  height: 0.71rem;
+}
+
+body:not([data-page='artist']) .mobile-menu__socials {
+  padding-top: 1.2rem;
 }
 
 .mobile-menu__nav {
@@ -562,9 +766,10 @@
     height: 32px;
   }
 
-  /* ---- Phones: the nav is ALWAYS inverted, on every page ------------------
-     Only the chrome that actually exists at this width needs restating — the
-     nav links, morse underlines and dropdown are display:none here. */
+  /* ---- Phones: the artist page's full-width bar inverts here ---------------
+     Island pages don't need this block — their slab and its contents are already
+     inverted at every width (see the island section above, which out-specifies
+     these bare selectors anyway). */
   .site-header {
     background: var(--ink);
   }
@@ -600,6 +805,7 @@
     color: rgba(255, 255, 255, 0.72);
   }
 
+  .nav-toggle__arrow img,
   .nav-toggle__x img {
     filter: invert(1);
   }

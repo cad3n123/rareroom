@@ -182,6 +182,11 @@ function fitNavMorse(root) {
     const strip = link.querySelector('.nav__morse');
     const m = strip && strip.querySelector('.morse');
     if (!m) return;
+    // Bail BEFORE touching styles when the nav isn't rendered (it's display:none
+    // on the island pages). Resetting first and then bailing on a zero
+    // measurement used to strand the morse at full natural size, which is what
+    // you'd then see after navigating to a page that does show the nav.
+    if (!link.getBoundingClientRect().width) return;
     m.style.transform = 'none';
     strip.style.width = 'auto';
     const natural = m.getBoundingClientRect().width;
@@ -250,6 +255,10 @@ export function navigate() {
 
   // Post-render wiring
   fillMorse(app);
+  // The nav is only laid out on some routes (the artist page shows inline links;
+  // island pages hide them), so its morse underlines have to be re-measured
+  // whenever the route changes, not just once at startup.
+  fitAllNavMorse();
   if (pageKey === 'contact') {
     const host = $('#contact-socials');
     host.innerHTML = SITE.socials
