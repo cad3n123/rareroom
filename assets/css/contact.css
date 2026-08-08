@@ -47,9 +47,9 @@
   letter-spacing: 0.1em;
   color: var(--ink-3);
 }
-/* the Privacy Policy link specifically is set in Work Sans */
+/* the Privacy Policy link specifically is set in Courier New */
 .news-consent a {
-  font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
+  font-family: 'Courier New', Courier, ui-monospace, monospace;
   color: var(--ink-2);
   text-decoration: underline;
   text-underline-offset: 2px;

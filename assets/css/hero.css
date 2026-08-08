@@ -427,12 +427,12 @@ body[data-page='contact'] .page-index {
 
 /* Privacy policy page */
 
-/* Every bit of text on the privacy page is set in Work Sans (title, headings,
+/* Every bit of text on the privacy page is set in Courier New (title, headings,
    body), overriding the serif headings — scoped to #app so the header/footer are
    left as-is. */
 body[data-page='privacy'] #app,
 body[data-page='privacy'] #app * {
-  font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
+  font-family: 'Courier New', Courier, ui-monospace, monospace;
 }
 
 .policy {
