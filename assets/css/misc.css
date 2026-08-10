@@ -111,7 +111,7 @@
 /* Only the artist page falls back to inline desktop links, so only there is the
    panel redundant at wide widths. Island pages use it at every size. */
 @media (min-width: 761px) {
-  body[data-page='artist'] .mobile-menu {
+  body[data-nav='bar'] .mobile-menu {
     display: none;
   }
 }

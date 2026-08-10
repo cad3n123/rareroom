@@ -116,6 +116,18 @@ export function buildHeader() {
   };
   toggle?.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
 
+  // The whole island is a toggle: clicking any dead space on the slab opens or
+  // closes the panel, so you don't have to hit the small chevron. Anything that
+  // is already a control (the chevron itself, the logo link, the flash/sound
+  // buttons) keeps its own behaviour — the closest() guard lets those clicks
+  // through untouched. The artist page is excluded: its bar is the full-width
+  // one carrying inline nav links, not a slab with a panel under it.
+  host.querySelector('.site-header .wrap')?.addEventListener('click', (e) => {
+    if (document.body.dataset.page === 'artist') return;
+    if (e.target.closest('a, button')) return;
+    setMenu(!menu.classList.contains('open'));
+  });
+
   // Artists accordion: tap to expand, without closing the whole menu.
   $$('#mobileMenu [data-mobile-drop]').forEach((btn) =>
     btn.addEventListener('click', () => {

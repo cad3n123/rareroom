@@ -33,10 +33,14 @@
 }
 
 /* ======================== Floating island nav ===============================
-   Every page EXCEPT the artist page (which keeps the full-width bar) wears the
-   nav as a floating island: the <header> band itself goes transparent and stops
-   catching clicks, and the inner .wrap becomes a bordered, blurred slab inset
-   from all four edges. The header stays `sticky` rather than `fixed` so it keeps
+   Almost everything wears the nav as a floating island: the <header> band goes
+   transparent and stops catching clicks, and the inner .wrap becomes a blurred,
+   borderless slab inset from all four edges. The exception is the artist page at
+   desktop widths, which keeps the full-width bar for its inline links — on
+   phones even that page takes the island, so the header never changes shape as
+   you move around on a phone. Which one a page gets is carried on the body as
+   data-nav (set in router.js), NOT as a :not() + media-query pair here.
+   The header stays `sticky` rather than `fixed` so it keeps
    reserving its --header-h of layout space — every existing offset that reads
    --header-h (hero min-heights, scroll-padding, the mobile menu) keeps working
    untouched — while content still scrolls underneath the stuck bar, which is
@@ -49,24 +53,38 @@
   --island-h: 54px;
   /* deliberately narrow — the island is a compact puck, not a re-skinned bar */
   --island-w: 400px;
+  /* Drop from the top of the screen (below the safe area) to the slab's top
+     edge. Centring the slab in the --header-h band would put it at half the
+     leftover space; the 1.5 floats it lower than that, sitting the puck a
+     little further down the page. */
+  --island-top: calc((var(--header-h) - var(--island-h)) / 2 * 1.5);
   /* distance from the very top of the screen to the slab's bottom edge */
-  --island-bottom: calc(env(safe-area-inset-top, 0px) +
-      (var(--header-h) - var(--island-h)) / 2 + var(--island-h));
+  --island-bottom: calc(env(safe-area-inset-top, 0px) + var(--island-top) +
+      var(--island-h));
+}
+
+/* Phones drop the extra float: the slab sits plainly centred in the band, with
+   no 1.5. Vertical room is scarcer here, and the lower position that reads as
+   deliberate on desktop just eats into the page. Everything measuring from
+   --island-top (the header's padding, --island-bottom, the panel) follows. */
+@media (max-width: 760px) {
+  :root {
+    --island-top: calc((var(--header-h) - var(--island-h)) / 2);
+  }
 }
 
 /* The island carries only [menu] [logo] [toggles] at EVERY width — the inline
-   link list is what forced the old full-width bar, so it moves into the panel.
-   (The artist page is excluded and keeps its inline links on desktop.) */
-body:not([data-page='artist']) .nav {
+   link list is what forced the old full-width bar, so it moves into the panel. */
+body[data-nav='island'] .nav {
   display: none;
 }
 
-body:not([data-page='artist']) .nav-toggle {
+body[data-nav='island'] .nav-toggle {
   display: grid;
   justify-self: start;
 }
 
-body:not([data-page='artist']) .site-header .wrap {
+body[data-nav='island'] .site-header .wrap {
   display: grid;
   /* equal side columns keep the logo optically centred regardless of how much
      sits left vs. right */
@@ -74,11 +92,11 @@ body:not([data-page='artist']) .site-header .wrap {
   gap: 0.5rem;
 }
 
-body:not([data-page='artist']) .brand {
+body[data-nav='island'] .brand {
   justify-self: center;
 }
 
-body:not([data-page='artist']) .header-tools {
+body[data-nav='island'] .header-tools {
   justify-self: end;
 }
 
@@ -86,48 +104,48 @@ body:not([data-page='artist']) .header-tools {
 /* The slab is always dark, so the mark and the icons are always the light
    treatment. (The phones-only block further down still covers the artist page's
    full-width bar, which only inverts below 761px.) */
-body:not([data-page='artist']) .brand__mark {
+body[data-nav='island'] .brand__mark {
   /* smaller than the full-bar logo — it has to sit inside a 400px puck */
   width: 58px;
   height: 29px;
   filter: invert(1);
 }
 
-body:not([data-page='artist']) .brand__mark.flashing {
+body[data-nav='island'] .brand__mark.flashing {
   filter: invert(1) !important;
 }
 
-body:not([data-page='artist']) .brand__mark.flashing.lit {
+body[data-nav='island'] .brand__mark.flashing.lit {
   filter: invert(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))
     drop-shadow(0 0 8px rgba(255, 255, 255, 0.14)) !important;
 }
 
-body:not([data-page='artist']) .icon-btn,
-body:not([data-page='artist']) .nav-toggle {
+body[data-nav='island'] .icon-btn,
+body[data-nav='island'] .nav-toggle {
   color: rgba(255, 255, 255, 0.72);
 }
 
-body:not([data-page='artist']) .icon-btn.is-on {
+body[data-nav='island'] .icon-btn.is-on {
   color: #fff;
 }
 
-body:not([data-page='artist']) .nav-toggle__arrow img,
-body:not([data-page='artist']) .nav-toggle__x img {
+body[data-nav='island'] .nav-toggle__arrow img,
+body[data-nav='island'] .nav-toggle__x img {
   filter: invert(1);
 }
 
 @media (hover: hover) {
-  body:not([data-page='artist']) .icon-btn:hover {
+  body[data-nav='island'] .icon-btn:hover {
     color: #fff;
     background: rgba(255, 255, 255, 0.1);
   }
 
-  body:not([data-page='artist']) .brand:hover .brand__mark {
+  body[data-nav='island'] .brand:hover .brand__mark {
     filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
   }
 }
 
-body:not([data-page='artist']) .site-header {
+body[data-nav='island'] .site-header {
   background: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -135,9 +153,15 @@ body:not([data-page='artist']) .site-header {
   pointer-events: none;
   padding-inline: var(--island-inset);
   justify-content: center;
+  /* The band still reserves the full --header-h, but the slab is pinned to
+     --island-top inside it rather than vertically centred — that token is what
+     --island-bottom (and so the panel) measures from, so the two stay locked
+     together wherever the island sits. */
+  align-items: flex-start;
+  padding-top: calc(env(safe-area-inset-top, 0px) + var(--island-top));
 }
 
-body:not([data-page='artist']) .site-header .wrap {
+body[data-nav='island'] .site-header .wrap {
   pointer-events: auto;
   margin-inline: auto;
   width: 100%;
@@ -145,16 +169,64 @@ body:not([data-page='artist']) .site-header .wrap {
   height: var(--island-h);
   /* the slab sets its own tighter gutters — --pad-x is page gutter, far too wide */
   padding-inline: clamp(0.8rem, 2.2vw, 1.4rem);
-  /* the slab is inverted at EVERY width, not just on phones */
+  /* Flat, solid ink — no blur, no translucency. The glass on this slab is all
+     in the strip along its bottom edge (below); the black body behind the logo
+     and icons stays opaque so the chrome reads crisply against it. */
+  position: relative;
   background: var(--ink);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  /* Closed, the slab wears no border at all. The 1px is still THERE, just
+     transparent, so that opening the panel only changes a colour and never the
+     box — swapping the border in and out would shrink the content area and
+     shunt the logo and icons by a pixel on every toggle. Transparent reads as
+     no border here because the background paints under it (border-box clip), so
+     the ink runs to the slab's outer edge either way.
+     The bottom edge is genuinely absent rather than transparent: the frosted
+     strip is positioned against the padding box, and a transparent bottom
+     border would leave a hairline of ink beneath it. */
+  border: 1px solid transparent;
+  border-bottom: none;
   border-radius: 4px;
-  backdrop-filter: saturate(1.3) blur(24px);
-  -webkit-backdrop-filter: saturate(1.3) blur(24px);
   /* stacked, very soft shadows read as a sheet lifted off the page rather than
      one hard drop shadow */
   box-shadow: 0 33px 13px rgba(0, 0, 0, 0.01), 0 19px 11px rgba(0, 0, 0, 0.03),
     0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* The tease: a frosted white strip along the island's bottom edge, reading as
+   the top sliver of the dropdown showing from behind the slab. Its background
+   and backdrop-filter are deliberately IDENTICAL to the panel's (see the
+   .mobile-menu rule below) — any difference in tint or blur radius and the
+   strip stops looking like the same sheet of glass peeking out and starts
+   looking like a second, unrelated one. Change one, change both. Absolutely
+   positioned so it sits outside the grid laying out the island's contents. */
+body[data-nav='island'] .site-header .wrap::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: saturate(1.25) blur(12px);
+  -webkit-backdrop-filter: saturate(1.25) blur(12px);
+  border-radius: 0 0 4px 4px;
+  pointer-events: none;
+}
+
+/* Open, the strip is no longer a tease — the real panel is right below it, so
+   it squares off and becomes the join. */
+body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap::after {
+  border-radius: 0;
+}
+
+/* While the panel hangs off the island the two are one slab: the seam between
+   them loses its rounding, and the ink outline appears — matching the panel's
+   own border, so the two side lines run as one unbroken edge from the top of
+   the island to the bottom of the panel. Closed, there's nothing to continue an
+   outline into, so it stays invisible. */
+body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
+  border-radius: 4px 4px 0 0;
+  border-color: var(--ink);
 }
 
 .brand {
@@ -448,17 +520,17 @@ body:not([data-page='artist']) .site-header .wrap {
    Phones are excluded: below 761px the nav is inverted on every page (see the
    max-width block at the bottom), and this rule would otherwise out-specify it. */
 @media (min-width: 761px) {
-  body[data-page='artist'] .site-header {
+  body[data-nav='bar'] .site-header {
     background: #fff;
   }
 
-  body[data-page='artist'] .nav__subscribe {
+  body[data-nav='bar'] .nav__subscribe {
     background: #fff;
   }
 
   /* the artists dropdown is part of that same white bar — the default paper tone
      read as a grey card floating on it */
-  body[data-page='artist'] .nav__dropdown-panel {
+  body[data-nav='bar'] .nav__dropdown-panel {
     background: #fff;
   }
 }
@@ -489,7 +561,7 @@ body:not([data-page='artist']) .site-header .wrap {
 
 /* With a floating island there is no full-width divider line to sweep along, so
    the bar pins to the very top edge of the screen instead. */
-body:not([data-page='artist']) .route-loader {
+body[data-nav='island'] .route-loader {
   top: 0;
   transform: none;
   height: 2px;
@@ -605,11 +677,15 @@ body:not([data-page='artist']) .route-loader {
   visibility: visible;
 }
 
-/* Island pages: the menu is a matching slab hanging just under the island —
-   same width, border and radius — instead of a full-screen sheet. It drops in
-   from behind the island rather than sliding over the whole page. */
-body:not([data-page='artist']) .mobile-menu {
-  top: calc(var(--island-bottom) + 8px);
+/* Island pages: the menu is not a separate card floating below the island — it
+   hangs off it. It starts 1px UP into the slab so the two borders overlap into
+   a single seam, and drops its own top border and top rounding, so the pair
+   reads as one object rather than a card floating under a puck. The panel
+   itself stays light — ink on paper, the way the menu has always read — against
+   the dark island above it. It still drops in from behind the island (z-index
+   40 vs. the header's 50) rather than sliding over the whole page. */
+body[data-nav='island'] .mobile-menu {
+  top: calc(var(--island-bottom) - 1px);
   /* hangs directly under the slab, sharing its centre line */
   left: 50%;
   right: auto;
@@ -620,20 +696,21 @@ body:not([data-page='artist']) .mobile-menu {
   max-height: calc(100dvh - var(--island-bottom) - 3rem);
   padding: 0.9rem 1.1rem 1.2rem;
   background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: saturate(1.3) blur(24px);
-  -webkit-backdrop-filter: saturate(1.3) blur(24px);
+  backdrop-filter: saturate(1.25) blur(12px);
+  -webkit-backdrop-filter: saturate(1.25) blur(12px);
   border: 1px solid var(--ink);
-  border-radius: 4px;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
   box-shadow: 0 33px 13px rgba(0, 0, 0, 0.01), 0 19px 11px rgba(0, 0, 0, 0.03),
     0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-body:not([data-page='artist']) .mobile-menu.open {
+body[data-nav='island'] .mobile-menu.open {
   transform: translateX(-50%);
 }
 
 /* the big full-screen type doesn't suit a compact panel */
-body:not([data-page='artist']) .mobile-menu__link {
+body[data-nav='island'] .mobile-menu__link {
   font-size: 1.02rem;
 }
 
@@ -641,16 +718,16 @@ body:not([data-page='artist']) .mobile-menu__link {
    so it can't inherit font-size — 0.71rem is the links' cap height at the 1.02rem
    set above. Scoped to the island: the artist page's full-screen menu runs much
    larger type and needs the original size. */
-body:not([data-page='artist']) .mobile-menu__subscribe {
+body[data-nav='island'] .mobile-menu__subscribe {
   margin-top: 0.9rem;
   padding: 0.34rem 0.6rem;
 }
 
-body:not([data-page='artist']) .mobile-menu__subscribe .nav__subscribe-img {
+body[data-nav='island'] .mobile-menu__subscribe .nav__subscribe-img {
   height: 0.71rem;
 }
 
-body:not([data-page='artist']) .mobile-menu__socials {
+body[data-nav='island'] .mobile-menu__socials {
   padding-top: 1.2rem;
 }
 
@@ -759,72 +836,13 @@ body:not([data-page='artist']) .mobile-menu__socials {
   font-size: 0.8rem;
 }
 
+/* Phones take the island on EVERY page now, so the block that used to live here
+   — inverting the full-width bar and its contents below 761px — is gone: that
+   bar no longer exists at this width, and the island section above already
+   inverts the slab, the mark and the icons at every size. */
 @media (max-width: 760px) {
-  /* Shrink the header logo ~20% on phones so it sits lighter in the tighter bar. */
-  .brand__mark {
-    width: 64px;
-    height: 32px;
-  }
-
-  /* ---- Phones: the artist page's full-width bar inverts here ---------------
-     Island pages don't need this block — their slab and its contents are already
-     inverted at every width (see the island section above, which out-specifies
-     these bare selectors anyway). */
-  .site-header {
-    background: var(--ink);
-  }
-
-  .brand__mark {
-    filter: invert(1);
-  }
-
-  .brand__mark.flashing {
-    filter: invert(1) !important;
-  }
-
-  /* A restrained pulse: a tight core that hugs the stamp, plus a wide halo kept
-     very faint. The halo is what gives the blink its depth, so it stays — it was
-     only the strength (0.72 alpha) that read as "glowy", not its presence. */
-  .brand__mark.flashing.lit {
-    filter: invert(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))
-      drop-shadow(0 0 8px rgba(255, 255, 255, 0.14)) !important;
-  }
-
-  /* hamburger, close-X, flash + sound toggles */
-  .icon-btn {
-    color: rgba(255, 255, 255, 0.72);
-  }
-
-  /* an active toggle reads bright white on the dark bar, not the purple accent
-     (which all but disappears against --ink) */
-  .icon-btn.is-on {
-    color: #fff;
-  }
-
-  .nav-toggle {
-    color: rgba(255, 255, 255, 0.72);
-  }
-
-  .nav-toggle__arrow img,
-  .nav-toggle__x img {
-    filter: invert(1);
-  }
-
   .route-loader {
     height: 2px;
     transform: translateY(-2px);
-  }
-}
-
-/* Hover-only chrome for the inverted phone nav. Gated on (hover: hover) so a tap
-   can't leave the state stuck on touch. */
-@media (hover: hover) and (max-width: 760px) {
-  .icon-btn:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .brand:hover .brand__mark {
-    filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
   }
 }

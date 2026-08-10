@@ -77,11 +77,21 @@ const scrollCue = () =>
 /* Full-bleed typewriter-text backdrop (from the old site) that sits behind the
    about/contact lockup and scrolls up with the page. Rendered as a direct child
    of #app (a sibling of the section) so it can break out of the .wrap width. */
-const pageBg = () =>
-  `<div class="page-bg" aria-hidden="true"><img src="assets/img/brand/home_transparent.png" alt=""></div>`;
+const BG_SRC = 'assets/img/brand/home_transparent.png';
+/* `split` renders the backdrop twice. Both copies are the same file — the two
+   "halves" are made with object-position in CSS rather than by cropping two
+   assets, so there's one image to swap if the artwork ever changes and no
+   second download. On phones they become side-by-side columns showing two
+   different slices; at desktop widths the second copy is hidden and it behaves
+   as the single full-bleed image. */
+const pageBg = (split = false) =>
+  `<div class="page-bg${split ? ' page-bg--split' : ''}" aria-hidden="true"><img src="${BG_SRC}" alt="">${
+    split ? `<img src="${BG_SRC}" alt="">` : ''
+  }</div>`;
 
 export function viewHome() {
   return `
+  ${pageBg(true)}
   <section class="hero wrap">
     <div class="hero__inner">
       ${heroLogo()}
@@ -214,25 +224,25 @@ export function viewPrivacy() {
    the same slow, slight scale-up on desktop by tying the image's scale to how far
    the page has scrolled. Self-cleans once the backdrop leaves the DOM. */
 export function bindBgGrow(app) {
-  const img = app.querySelector('.page-bg img');
-  if (!img) return;
+  // Plural: the home backdrop is two side-by-side copies on phones, and both
+  // columns have to grow together.
+  const imgs = [...app.querySelectorAll('.page-bg img')];
+  if (!imgs.length) return;
   let raf = 0;
   const apply = () => {
     raf = 0;
-    if (!img.isConnected) {
+    if (!imgs[0].isConnected) {
       window.removeEventListener('scroll', onScroll);
       return;
     }
-    // On phones the dvh URL-bar effect already does this — don't stack a transform
-    // on top; this is the desktop stand-in only.
-    if (window.innerWidth <= 760) {
-      img.style.transform = '';
-      return;
-    }
     const y = window.scrollY || 0;
-    // twice as pronounced as before: grows at double the rate, to +44%
-    const s = 1 + Math.min(0.44, y / 1600);
-    img.style.transform = `scale(${s})`;
+    // Phones lean harder into it — reaching +90% twice as fast as desktop's
+    // +44%. They used to be left to the dvh URL-bar creep alone, which is far
+    // too slight to read as a zoom (and doesn't happen at all in browsers that
+    // don't resize the viewport on scroll).
+    const phone = window.innerWidth <= 760;
+    const s = 1 + Math.min(phone ? 0.9 : 0.44, y / (phone ? 800 : 1600));
+    imgs.forEach((img) => (img.style.transform = `scale(${s})`));
   };
   const onScroll = () => {
     if (!raf) raf = requestAnimationFrame(apply);
@@ -297,12 +307,22 @@ export function maybeIntro(pageKey) {
     </section>`;
   document.body.append(c);
   document.body.style.overflow = 'hidden';
-  const done = () => {
-    c.classList.add('gone');
-    document.body.style.overflow = '';
-    setTimeout(() => c.remove(), 800);
-  };
-  setTimeout(done, 1500);
-  c.addEventListener('click', done);
-  return true;
+  // Resolves when the curtain is not just fading but gone, so callers can hold
+  // their own entrances until the intro is genuinely over. Truthy either way, so
+  // `if (curtain)` still reads as "did the intro run?".
+  return new Promise((resolve) => {
+    let ending = false;
+    const done = () => {
+      if (ending) return;
+      ending = true;
+      c.classList.add('gone');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        c.remove();
+        resolve();
+      }, 800);
+    };
+    setTimeout(done, 1500);
+    c.addEventListener('click', done);
+  });
 }

@@ -45,6 +45,9 @@
   --accent-2: var(--loader-purple);
   --accent-ink: #ffffff;
   --flash-purple: #7a2f66;
+  /* Opacity of the paper grain. A whisper — the page is flat white now, and the
+     original 0.5 over white reads as a dirty sheet rather than texture. */
+  --paper-texture: 0.07;
   --photo-filter: grayscale(1) contrast(1.02);
   --shadow: 0 1px 0 rgba(36, 29, 28, 0.04);
 
@@ -70,6 +73,7 @@
   --accent: var(--loader-purple);
   --accent-2: var(--loader-purple);
   --accent-ink: #12100e;
+  --paper-texture: 0.03;
   --photo-filter: grayscale(1) contrast(1.05) brightness(0.95);
 }
 
@@ -102,15 +106,16 @@ html {
 }
 
 /* ------------------------- Background layering -----------------------------
-   Two stacked layers, so the strip behind the iOS island can be coloured
+   Three stacked layers, so the strip behind the iOS island can be coloured
    independently of the page itself:
 
      <html>        the CANVAS — all that shows behind the island and in the
                    rubber-band overscroll gutters. Matches the NAV.
      body::after   the PAGE colour, a fixed sheet starting below the safe area.
+     body::before  the paper GRAIN, multiplied over that sheet.
 
-   <body> itself stays transparent — an opaque body would paint over that
-   pseudo-element (it sits at a negative z-index, which paints above the html
+   <body> itself stays transparent — an opaque body would paint over both
+   pseudo-elements (they sit at negative z-index, which paints above the html
    background but below body's own background box).
    -------------------------------------------------------------------------- */
 html {
@@ -120,7 +125,7 @@ html {
 /* Canvas follows the nav. On desktop the artist page's bar is true white, so the
    overscroll gutters match it. */
 @media (min-width: 761px) {
-  :root:has(body[data-page='artist']) {
+  :root:has(body[data-nav='bar']) {
     background-color: #fff;
   }
 }
@@ -203,6 +208,70 @@ code,
 .site-footer,
 .social-row {
   --font-mono: var(--font-code);
+}
+
+/* Courier New ships only a regular and a bold face — nothing in between — so
+   font-weight can't give the "slightly bold" set the type wants: 500/600 snap
+   straight to the full 700 face, which is far too heavy for letterspaced caps.
+   A hairline stroke on the regular face thickens the strokes a fraction
+   instead. Listed explicitly because there's no way to select "elements whose
+   font-family resolved to --font-mono"; the footer/social rows are excluded
+   since their token is redefined to Source Code Pro above. */
+:is(.mono,
+  .eyebrow,
+  .btn,
+  .link-u,
+  .brand__name,
+  .nav__link,
+  .nav__dropdown-panel a,
+  .mobile-menu__link,
+  .mobile-drop__item,
+  .news-consent,
+  .news-consent a,
+  .news-msg,
+  .input,
+  .artist-card__role,
+  .cover--stamp .cover__cat,
+  .cover__play a,
+  .release__cat,
+  .release__sub,
+  .product__tag,
+  .product__price,
+  .product__variant,
+  .placeholder-note,
+  .pill,
+  .typed,
+  .value .num,
+  .back-link,
+  .gallery-note,
+  .lightbox__count,
+  .hero__title,
+  .hero__tag,
+  .hero__scroll,
+  body[data-page='privacy'] #app,
+  body[data-page='privacy'] #app *) {
+  -webkit-text-stroke: 0.4px currentColor;
+}
+
+/* Paper grain — the texture from the original site, whisper-quiet. Sits at -2,
+   directly above the page-colour sheet at -3, and is inset from the top by the
+   safe area for the same reason: the island strip belongs to the canvas. */
+body::before {
+  content: '';
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -2;
+  background: url('../img/brand/paper.jpg') center / cover no-repeat;
+  opacity: var(--paper-texture);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+:root[data-theme='dark'] body::before {
+  mix-blend-mode: screen;
 }
 
 img {

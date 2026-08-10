@@ -133,6 +133,62 @@ body[data-page='contact'] .page-bg img {
   mask-image: linear-gradient(to top right, #000 48%, transparent 52%);
 }
 
+/* Home takes the backdrop exactly as about/contact wear it — same `cover` fill,
+   same diagonal wipe in, same scroll-driven growth — and differs only in
+   skipping the diagonal mask, since the home lockup is centred and has no
+   off-diagonal half to keep clear. On desktop `cover` crops very little (the
+   image and a landscape window are close in shape) while filling every edge.
+
+   .page-bg is positioned against #app, which starts BELOW the header, so the
+   default `top: 0` leaves the header's band of the screen bare. About and
+   contact hide that behind their lockup; on home, with the logo centred and
+   nothing else in the upper screen, it reads as the backdrop failing to reach
+   the top edge. Pulling it up by the header's height runs it corner to corner.
+
+   It stops at the safe area rather than going under it: the strip behind the
+   iPhone's island belongs to the canvas (--ink), and the backdrop reaching into
+   it would paint the artwork across the pill. #app starts at --header-h PLUS
+   the inset, so pulling up by --header-h alone lands exactly on that edge. */
+body[data-page='home'] .page-bg {
+  top: calc(-1 * var(--header-h));
+  height: calc(100dvh - env(safe-area-inset-top, 0px));
+}
+
+/* A phone is far too narrow to show both ends of a 16:9 image at once: filling
+   the screen leaves a single slice about a quarter of the artwork wide, taken
+   from the middle. The split shows TWO such slices instead, as side-by-side
+   full-height columns — one from the left of the image, one from the right,
+   each pulled in toward the centre so the pair brackets the middle rather than
+   grabbing the extreme edges. Same total area on screen, drawn from both halves
+   instead of one band. The two --bg-slice values are the tuning knobs: 0% is
+   the image's left edge, 100% its right. */
+@media (max-width: 760px) {
+  body[data-page='home'] .page-bg--split {
+    --bg-slice-l: 32%;
+    --bg-slice-r: 68%;
+    display: flex;
+  }
+
+  body[data-page='home'] .page-bg--split img {
+    width: 50%;
+    object-position: var(--bg-slice-l) center;
+  }
+
+  body[data-page='home'] .page-bg--split img + img {
+    object-position: var(--bg-slice-r) center;
+  }
+}
+
+/* Desktop needs no split — a landscape window is close enough to the image's
+   own shape that one copy already shows nearly the whole frame — so the second
+   copy simply drops out and the first behaves as the normal full-bleed image. */
+@media (min-width: 761px) {
+  body[data-page='home'] .page-bg--split img + img {
+    display: none;
+  }
+}
+
+
 /* =============================================================================
    ABOUT + CONTACT — asymmetric, left-anchored editorial layout (inspired by the
    Mom+Pop about page): the lockup + body drop into the lower-left behind a big
@@ -290,6 +346,14 @@ body[data-page='contact'] .page-index {
   .editorial.about-hero-min {
     place-items: center start;
     padding-bottom: clamp(2.5rem, 8vh, 5rem);
+  }
+
+  /* Sit the about lockup a little lower on phones — it reads as riding too high
+     under the island otherwise. The column is vertically centred, so the extra
+     top padding shifts it down by half of what's added. Contact keeps its own
+     top-anchored placement (below) and is left alone. */
+  body[data-page='about'] .editorial.about-hero-min {
+    padding-top: calc(clamp(2rem, 7vh, 4.5rem) + 2.5rem);
   }
 
   /* The about/contact lockup shrank too much on phones — bump the mark, morse and

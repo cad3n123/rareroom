@@ -123,7 +123,14 @@ function ensureLoader() {
    over the header's divider line until the new view's images have loaded (and a
    minimum time has passed), then reveal — so a page switch feels sleek and never
    flashes half-loaded content. */
-function runRouteLoad(app, onDone) {
+/* The backdrop's diagonal wipe. Normally fired the moment the route loader
+   finishes, but on the first-visit home page the loader runs UNDERNEATH the
+   intro curtain — so the wipe would play out unseen and the backdrop would
+   simply be there when the curtain lifted. There it's deferred instead (see
+   revealBg below). */
+const revealPageBg = (app) => app.querySelector('.page-bg')?.classList.add('is-revealed');
+
+function runRouteLoad(app, onDone, revealBg = true) {
   const loader = ensureLoader();
   const bar = loader.firstElementChild;
   app.classList.add('is-loading');
@@ -159,9 +166,9 @@ function runRouteLoad(app, onDone) {
   Promise.race([Promise.all([imgsReady, minTime]), maxTime]).then(() => {
     sweep.finish();
     loader.classList.remove('active');
-    // Kick off the about/contact backdrop's diagonal reveal now that the page
-    // content is visible.
-    app.querySelector('.page-bg')?.classList.add('is-revealed');
+    // Kick off the backdrop's diagonal reveal now that the page content is
+    // visible — unless a curtain is covering it and will do so on its way out.
+    if (revealBg) revealPageBg(app);
     // Let the opacity:0 frame paint first, then drop is-loading so #app fades in
     // quickly (a snap-to-visible otherwise).
     requestAnimationFrame(() => {
@@ -170,6 +177,28 @@ function runRouteLoad(app, onDone) {
     });
   });
 }
+
+/* ------------------------------ Nav mode ---------------------------------- */
+/* Which nav the page wears, as a body attribute the stylesheet keys off:
+   'island' for the floating puck, 'bar' for the full-width strip. The artist
+   page is the only one that takes the bar, and only at desktop widths — on
+   phones it wears the island like everything else, so the header never changes
+   shape as you move between pages on a phone. Kept in JS rather than as a
+   `body:not([data-page='artist'])` + media-query pair in CSS because the switch
+   is (page AND width), which would otherwise mean restating every island rule
+   inside a phone media query. */
+const ISLAND_ONLY = window.matchMedia('(max-width: 760px)');
+export function applyNavMode() {
+  const bar = document.body.dataset.page === 'artist' && !ISLAND_ONLY.matches;
+  document.body.dataset.nav = bar ? 'bar' : 'island';
+}
+/* Both signals, because they don't always both arrive: the media-query change
+   is the precise one, and the resize catches the cases where it doesn't fire
+   (some embedded/remote-controlled viewports never dispatch it). applyNavMode
+   just re-derives and re-sets the attribute, so running it twice costs nothing
+   and setting it to the value it already has is a no-op for the cascade. */
+ISLAND_ONLY.addEventListener('change', applyNavMode);
+window.addEventListener('resize', applyNavMode, { passive: true });
 
 /* --------------------------- Nav morse fitting ---------------------------- */
 /* Fit each nav item's morse strip to the exact width of its word (so the
@@ -240,6 +269,7 @@ export function navigate() {
   if (useLoader) app.classList.add('is-loading'); // stay blank until the loader finishes
   applyMeta(pageKey, artist); // per-route <title> + description + canonical + OG/Twitter
   document.body.dataset.page = pageKey;
+  applyNavMode();
 
   // Leaving a page clears any lingering newsletter state in the footer (the inline
   // subscribe result + the typed email) so it never carries across a page switch.
@@ -281,7 +311,7 @@ export function navigate() {
   const isMobile = window.matchMedia('(max-width: 760px)').matches;
   const animateSocials = !(pageKey === 'artist' && isMobile);
   if (animateSocials) primeRow(socialsRow);
-  if (pageKey === 'about' || pageKey === 'contact') bindBgGrow(app);
+  if (pageKey === 'home' || pageKey === 'about' || pageKey === 'contact') bindBgGrow(app);
   if (pageKey === 'releases') RELEASES.forEach((r) => $('#releases-grid').append(releaseCard(r)));
   if (pageKey === 'shop') PRODUCTS.forEach((p) => $('#shop-grid').append(productCard(p)));
 
@@ -307,7 +337,11 @@ export function navigate() {
   };
 
   if (curtain) {
-    if (useLoader) runRouteLoad(app); // runs under the curtain
+    if (useLoader) runRouteLoad(app, null, false); // runs under the curtain
+    // The backdrop wipe is the first thing you see AFTER the intro, not
+    // something that happened behind it: hold it until the curtain has finished
+    // and been torn down, then play it in full.
+    curtain.then(() => revealPageBg(app));
     setTimeout(onArrive, 1700); // hold until the curtain has lifted
   } else if (useLoader) {
     runRouteLoad(app, onArrive); // fire the moment the loader finishes
