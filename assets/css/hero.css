@@ -606,6 +606,32 @@ body[data-page='privacy'] #app * {
   margin-bottom: 0.8rem;
 }
 
+/* Categories that were originally run together inside one paragraph, separated
+   only by colons — which read as a colon nested inside a colon. Same wording,
+   pulled out into the list it was always describing. */
+.policy-list {
+  margin: 0 0 0.8rem;
+  padding-left: 1.4rem;
+  color: var(--ink-2);
+}
+
+.policy-list li {
+  margin-bottom: 0.6rem;
+}
+
+.policy-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* The category name reads as a label on colour alone — full ink against the
+   lighter body copy — and stays at the same weight as everything around it.
+   Kept as <strong> for the semantics; Courier's only heavier face is the full
+   700, which lands far too hard next to the rest of the page's type. */
+.policy-list strong {
+  color: var(--ink);
+  font-weight: 400;
+}
+
 /* The contact address closing the policy is a .link-u, which normally sweeps an
    underline in on hover. Here it's the only link on a wall of Courier body copy
    and the rule reads as a stray mark under the address — so the address keeps
