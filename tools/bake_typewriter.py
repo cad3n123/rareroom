@@ -51,6 +51,14 @@ IMAGES = [
     "assets/img/brand/forward-arrow.png",     # studio carousel arrows
     "assets/img/brand/back-arrow.png",
     "assets/img/brand/x.png",                 # close X (studio lightbox + mobile menu)
+    # Social-platform wordmarks, also from the old site — the social rows are set
+    # as this stamped art rather than as type.
+    "assets/img/social/instagram.png",
+    "assets/img/social/youtube.png",
+    "assets/img/social/tiktok.png",
+    "assets/img/social/facebook.png",
+    "assets/img/social/x.png",
+    "assets/img/social/site.png",
 ]
 
 

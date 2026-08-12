@@ -2,7 +2,7 @@
    View templates (return HTML strings) + the card builders and a couple of
    shared UI helpers (reveal-on-scroll, the intro curtain).
    ============================================================================= */
-import { SITE, ARTISTS } from './config.js';
+import { SITE, ARTISTS, socialImg } from './config.js';
 import { $$, el } from './dom.js';
 import { IC } from './icons.js';
 import { morseEl } from './morse.js';
@@ -48,23 +48,43 @@ export function productCard(p) {
   return card;
 }
 
+/* --------------------------- Social rows ----------------------------------- */
+/* One link in a social row. The label is set as the original site's stamped
+   wordmark where there is art for it (see SOCIAL_IMG) and falls back to the text
+   otherwise, so a platform added to config still renders. The alt text carries
+   the label either way, so the row reads the same to a screen reader as it
+   always did. */
+export function socialLinkHTML(label, url) {
+  const img = socialImg(label);
+  const inner = img
+    ? `<img class="social-img" src="${img}" alt="${label}">`
+    : label;
+  return `<a href="${url}" target="_blank" rel="noopener">${inner}</a>`;
+}
+
+/* The whole row, built identically everywhere it appears — the footer, the nav
+   panel and the contact page were each carrying their own copy of this. */
+export function socialRowHTML(items) {
+  return items
+    .map((s, i) => `${i ? '<span class="sep">//</span>' : ''}${socialLinkHTML(s.label, s.url)}`)
+    .join('');
+}
+
 export function artistSocialsHTML(a) {
   const order = ['site', 'youtube', 'instagram', 'facebook', 'x', 'tiktok'];
+  // "Site", not "Website" — the stamped art reads SITE (as it did on the old
+  // site), and the label is what the alt text says.
   const labels = {
-    site: 'Website',
+    site: 'Site',
     youtube: 'YouTube',
     instagram: 'Instagram',
     facebook: 'Facebook',
     x: 'X',
     tiktok: 'TikTok',
   };
-  return order
-    .filter((k) => a.links && a.links[k])
-    .map(
-      (k, i) =>
-        `${i ? '<span class="sep">//</span>' : ''}<a href="${a.links[k]}" target="_blank" rel="noopener">${labels[k]}</a>`
-    )
-    .join('');
+  return socialRowHTML(
+    order.filter((k) => a.links && a.links[k]).map((k) => ({ label: labels[k], url: a.links[k] }))
+  );
 }
 
 /* --------------------------- View templates ------------------------------- */

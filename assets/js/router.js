@@ -11,6 +11,7 @@ import {
 import {
   viewHome, viewAbout, viewContact, viewArtist, viewReleases, viewShop, viewPrivacy,
   releaseCard, productCard, reveal, revealRow, primeRow, maybeIntro, bindBgGrow,
+  socialRowHTML,
 } from './views.js';
 import { setActiveNav } from './header.js';
 
@@ -296,13 +297,7 @@ export function navigate() {
   // whenever the route changes, not just once at startup.
   fitAllNavMorse();
   if (pageKey === 'contact') {
-    const host = $('#contact-socials');
-    host.innerHTML = SITE.socials
-      .map(
-        (s, i) =>
-          `${i ? '<span class="sep">//</span>' : ''}<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`
-      )
-      .join('');
+    $('#contact-socials').innerHTML = socialRowHTML(SITE.socials);
   }
   // Hide the social rows now; the staggered pop-in is deferred until AFTER the
   // loader lifts (below) so the animation is always seen, not spent under the

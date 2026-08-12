@@ -23,6 +23,18 @@ PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 
 
 class SPAHandler(SimpleHTTPRequestHandler):
+    def end_headers(self):
+        # Never let a dev browser cache anything. The default handler sends
+        # Last-Modified and no Cache-Control, which invites HEURISTIC caching:
+        # the browser guesses a freshness lifetime from the file's age and then
+        # reuses the file without revalidating. ES modules are the painful case —
+        # edit config.js, add an export, reload, and the page dies on
+        # "doesn't provide an export named ..." because the browser is still
+        # holding the previous config.js while every other module is current.
+        # A plain reload does not clear it; this does.
+        self.send_header('Cache-Control', 'no-store, must-revalidate')
+        super().end_headers()
+
     def send_head(self):
         # If the requested path maps to a real file, serve it as usual.
         path = self.translate_path(self.path)

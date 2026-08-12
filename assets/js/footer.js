@@ -7,16 +7,12 @@ import { SITE } from './config.js';
 import { $ } from './dom.js';
 import { navMorseHTML } from './morse.js';
 import { navLinks } from './header.js';
+import { socialRowHTML } from './views.js';
 
 export function buildFooter() {
   const host = $('#site-footer');
   if (!host) return;
-  const socials = SITE.socials
-    .map(
-      (s, i) =>
-        `${i ? '<span class="sep">//</span>' : ''}<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`
-    )
-    .join('');
+  const socials = socialRowHTML(SITE.socials);
   const footNav = navLinks()
     // Keep a single "Artists" control (opens the top-nav dropdown on desktop / the
     // hamburger menu with Artists expanded on mobile — wired in site.js); keep the

@@ -52,6 +52,25 @@ export const SITE = {
 };
 
 /* -----------------------------------------------------------------------------
+   SOCIAL WORDMARKS
+   Every social row on the site is set as the original site's stamped typewriter
+   art rather than as type. Keyed by the label lowercased, so SITE.socials (which
+   carries display labels) and an artist's `links` (which carries keys) both
+   resolve through this one table. A platform with no art here simply falls back
+   to its text label, so adding one to SITE.socials never breaks a row.
+   --------------------------------------------------------------------------- */
+export const SOCIAL_IMG = {
+  site: 'assets/img/social/site.png',
+  youtube: 'assets/img/social/youtube.png',
+  instagram: 'assets/img/social/instagram.png',
+  facebook: 'assets/img/social/facebook.png',
+  x: 'assets/img/social/x.png',
+  tiktok: 'assets/img/social/tiktok.png',
+};
+
+export const socialImg = (label) => SOCIAL_IMG[String(label).toLowerCase()] || null;
+
+/* -----------------------------------------------------------------------------
    NAVIGATION  (order matters). `feature` keys are hidden when their flag is off.
    --------------------------------------------------------------------------- */
 export const NAV = [

@@ -643,9 +643,26 @@
   transition: color 0.2s var(--ease);
 }
 
+/* Each platform is the old site's stamped wordmark. Height is in `em` so it
+   tracks whatever font-size the row is set at — the artist page shrinks its
+   social row on narrow columns, and the art has to shrink with it. 1.14em lands
+   on the 0.75rem the original site used, at the 0.66rem these rows run at. */
+.social-img {
+  height: 1.14em;
+  width: auto;
+  display: block;
+  transition: opacity 0.2s var(--ease);
+}
+
 @media (hover: hover) {
   .social-row a:hover {
     color: var(--accent);
+  }
+
+  /* The art can't take a colour, so it borrows the lift-and-fade the contact
+     address and the artist name already use for their stamped art. */
+  .social-row a:hover .social-img {
+    opacity: 0.62;
   }
 }
 

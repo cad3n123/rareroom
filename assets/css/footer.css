@@ -172,9 +172,22 @@
   color: rgba(255, 255, 255, 0.82);
 }
 
+/* The stamped wordmarks are baked in --ink, so on the black footer body they
+   have to flip to white — the same invert the footer logo and the decorative
+   morse strip already take. Held a touch under full white to sit with the rest
+   of the footer's type, which runs at 0.82 alpha. */
+.site-footer .social-img {
+  filter: invert(1);
+  opacity: 0.82;
+}
+
 @media (hover: hover) {
   .site-footer .social-row a:hover {
     color: var(--loader-purple);
+  }
+
+  .site-footer .social-row a:hover .social-img {
+    opacity: 1;
   }
 }
 

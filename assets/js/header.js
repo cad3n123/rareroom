@@ -6,6 +6,7 @@ import { NAV, SITE, ARTISTS, featureOn } from './config.js';
 import { $, $$ } from './dom.js';
 import { IC } from './icons.js';
 import { navMorseHTML, muteChannel, unmuteChannel } from './morse.js';
+import { socialRowHTML } from './views.js';
 
 export function navLinks() {
   return NAV.filter((n) => featureOn(n.feature));
@@ -64,12 +65,7 @@ export function buildHeader() {
     })
     .join('');
   // Socials pinned to the bottom of the open menu.
-  const mobileSocials = SITE.socials
-    .map(
-      (s, i) =>
-        `${i ? '<span class="sep">//</span>' : ''}<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`
-    )
-    .join('');
+  const mobileSocials = socialRowHTML(SITE.socials);
 
   host.innerHTML = `
   <header class="site-header">
