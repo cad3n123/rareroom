@@ -60,9 +60,12 @@
 }
 
 /* re-assert the chip's hover fill — the rule above would otherwise beat the
-   header's .nav__subscribe:hover on source order. */
-.footer-cta .news-submit:hover {
-  background: var(--ink);
+   header's .nav__subscribe:hover on source order. Same hover gate as there: on
+   touch the fill latches after a tap and the chip stays inverted. */
+@media (hover: hover) {
+  .footer-cta .news-submit:hover {
+    background: var(--ink);
+  }
 }
 
 /* The subscribe button keeps the default black styling (→ purple on hover). */
@@ -169,8 +172,10 @@
   color: rgba(255, 255, 255, 0.82);
 }
 
-.site-footer .social-row a:hover {
-  color: var(--loader-purple);
+@media (hover: hover) {
+  .site-footer .social-row a:hover {
+    color: var(--loader-purple);
+  }
 }
 
 .site-footer .social-row .sep {
@@ -181,8 +186,10 @@
   color: #fff;
 }
 
-.site-footer .link-u:hover {
-  color: var(--loader-purple);
+@media (hover: hover) {
+  .site-footer .link-u:hover {
+    color: var(--loader-purple);
+  }
 }
 
 /* The Orchard credit: a plain link (no underline sweep), just a hover colour. */
@@ -191,8 +198,10 @@
   transition: color 0.2s var(--ease);
 }
 
-.site-footer .footer-orchard:hover {
-  color: var(--loader-purple);
+@media (hover: hover) {
+  .site-footer .footer-orchard:hover {
+    color: var(--loader-purple);
+  }
 }
 
 .site-footer .footer-morse .line {

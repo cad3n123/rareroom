@@ -25,6 +25,11 @@ import {
 } from './morse.js';
 import { navigate, fitAllNavMorse } from './router.js';
 
+/* How long the footer's "Artists" control waits before unrolling the roster
+   inside the nav panel — long enough for the panel's own expand to be well
+   underway, so the two motions read one after the other. */
+const ARTISTS_DROP_DELAY = 500;
+
 async function boot() {
   // First visit: make sure both morse channels start OFF (only sets the default
   // when there's no stored preference — returning visitors keep their choice).
@@ -72,19 +77,33 @@ async function boot() {
       openLightbox(0);
       return;
     }
-    // The footer "Artists" control mirrors the header: on desktop it pops the
-    // top-nav dropdown open (focus-within), on mobile it opens the hamburger menu
-    // and expands the Artists accordion.
+    // The footer "Artists" control mirrors whatever nav the page is wearing.
+    // Keyed on the nav MODE, not the viewport width: everywhere but the artist
+    // page at desktop widths the header is the floating island, whose inline
+    // link list (and so its hover dropdown) doesn't exist — the artists live in
+    // the island's panel. So the island branch opens that panel and expands the
+    // Artists accordion inside it; only the artist page's full-width bar still
+    // has a top-nav dropdown to pin open.
     const footerArtists = e.target.closest('[data-footer-artists]');
     if (footerArtists) {
       e.preventDefault();
-      const isMobile = window.matchMedia('(max-width: 760px)').matches;
-      if (isMobile) {
+      if (document.body.dataset.nav === 'island') {
         const menu = document.querySelector('#mobileMenu');
         const menuToggle = document.querySelector('[data-menu-toggle]');
         if (menu && !menu.classList.contains('open')) menuToggle?.click();
+        // The artists list is held back so the two motions read in sequence —
+        // the nav expands, THEN the roster unrolls inside it — instead of both
+        // running at once and landing as one confusing jump. If the accordion is
+        // already open it closes first and re-opens after the same beat, so the
+        // control always reads as "here are the artists" rather than doing
+        // nothing (or silently collapsing the list you asked for).
         const drop = document.querySelector('#mobileMenu [data-mobile-drop]');
-        if (drop && !drop.closest('.mobile-drop')?.classList.contains('open')) drop.click();
+        if (drop) {
+          if (drop.closest('.mobile-drop')?.classList.contains('open')) drop.click();
+          setTimeout(() => {
+            if (!drop.closest('.mobile-drop')?.classList.contains('open')) drop.click();
+          }, ARTISTS_DROP_DELAY);
+        }
       } else {
         // Force the top-nav dropdown open (the sticky header keeps it in view), then
         // let the next outside click / pointer-leave dismiss it.

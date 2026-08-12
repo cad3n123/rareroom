@@ -63,6 +63,21 @@
   animation: bg-diag-reveal 1.4s forwards;
 }
 
+/* Once the wipe has played out (router.js adds this on animationend) the
+   animation is retired and the finished state is held by a plain `clip-path:
+   none` instead. A forwards-filled animation keeps the element parked in a
+   composited layer, and Safari rasterises that layer ONCE — so as the
+   scroll-zoom grows the huge backdrop PNG, Safari upscales the stale raster
+   rather than redrawing it and the backdrop goes soft. Dropping the animation
+   lets it repaint at the size it is actually drawn at.
+   !important because this has to beat every per-page `animation-name` override
+   below (about vs. contact, desktop vs. phone) at once — the whole point is
+   "whatever animation you were given, you're done with it now". */
+.page-bg.is-revealed.is-settled {
+  animation: none !important;
+  clip-path: none;
+}
+
 @keyframes bg-diag-reveal {
   from {
     clip-path: polygon(0% 100%, 0% 100%, 0% 100%);
@@ -103,6 +118,13 @@ body[data-page='contact'] .page-bg.is-revealed {
   }
 }
 
+/* Two multipliers drive the backdrop's size: --bg-zoom is the page's fixed
+   overfill and --bg-grow is the scroll-driven creep (set by bindBgGrow). */
+.page-bg {
+  --bg-zoom: 1;
+  --bg-grow: 1;
+}
+
 .page-bg img {
   width: 100%;
   height: 100%;
@@ -134,24 +156,44 @@ body[data-page='contact'] .page-bg img {
 }
 
 /* Home takes the backdrop exactly as about/contact wear it — same `cover` fill,
-   same diagonal wipe in, same scroll-driven growth — and differs only in
-   skipping the diagonal mask, since the home lockup is centred and has no
-   off-diagonal half to keep clear. On desktop `cover` crops very little (the
-   image and a landscape window are close in shape) while filling every edge.
+   same top edge (the default `top: 0`, which is #app's top, i.e. BELOW the
+   header's band), same diagonal wipe in, same scroll-driven growth — and
+   differs only in skipping the diagonal mask, since the home lockup is centred
+   and has no off-diagonal half to keep clear.
 
-   .page-bg is positioned against #app, which starts BELOW the header, so the
-   default `top: 0` leaves the header's band of the screen bare. About and
-   contact hide that behind their lockup; on home, with the logo centred and
-   nothing else in the upper screen, it reads as the backdrop failing to reach
-   the top edge. Pulling it up by the header's height runs it corner to corner.
+   Desktop pushes in a little closer than about/contact do (--bg-zoom below).
+   `cover` on a landscape window crops the 16:9 artwork barely at all, which
+   reads as the whole sheet pasted flat; overfilling the frame and letting the
+   edges crop sits the viewer inside the type instead. */
 
-   It stops at the safe area rather than going under it: the strip behind the
-   iPhone's island belongs to the canvas (--ink), and the backdrop reaching into
-   it would paint the artwork across the pill. #app starts at --header-h PLUS
-   the inset, so pulling up by --header-h alone lands exactly on that edge. */
-body[data-page='home'] .page-bg {
-  top: calc(-1 * var(--header-h));
-  height: calc(100dvh - env(safe-area-inset-top, 0px));
+/* At desktop widths ALL the zoom — the fixed overfill and the scroll creep
+   alike — is applied to the image's own BOX rather than with a transform. A
+   transformed image is a composited layer, and Safari rasterises that layer once
+   and then upscales it, so the backdrop went progressively soft as the scroll
+   zoom pushed it past the size it was rasterised at (Chrome and Firefox
+   re-rasterise and looked fine, which is why this only ever showed on Safari).
+   Changing width/height is a layout change, so every engine has to repaint the
+   image at the size it is actually drawn.
+
+   Phones are excluded on purpose: there the backdrop is two half-width columns
+   that each have to grow about their own centre, which only a transform can do
+   without the pair fighting over the layout. */
+@media (min-width: 761px) {
+  .page-bg img {
+    --bg-scale: calc(var(--bg-zoom) * var(--bg-grow));
+    position: relative;
+    /* the reset's `img { max-width: 100% }` would otherwise clamp the overfill
+       straight back to the frame's width */
+    max-width: none;
+    width: calc(100% * var(--bg-scale));
+    height: calc(100% * var(--bg-scale));
+    left: calc((1 - var(--bg-scale)) * 50%);
+    top: calc((1 - var(--bg-scale)) * 50%);
+  }
+
+  body[data-page='home'] .page-bg {
+    --bg-zoom: 1.14;
+  }
 }
 
 /* A phone is far too narrow to show both ends of a 16:9 image at once: filling
@@ -164,8 +206,13 @@ body[data-page='home'] .page-bg {
    the image's left edge, 100% its right. */
 @media (max-width: 760px) {
   body[data-page='home'] .page-bg--split {
-    --bg-slice-l: 32%;
-    --bg-slice-r: 68%;
+    /* Both columns' artwork sits further RIGHT than the original 32% / 68%.
+       object-position is inverse: the number is which part of the SOURCE lands
+       under the frame, so LOWERING it walks the window left through the image
+       and the visible type slides right. Lower both together to shift the pair;
+       widen the gap between them to pull the two slices further apart. */
+    --bg-slice-l: 26%;
+    --bg-slice-r: 55%;
     display: flex;
   }
 
@@ -200,11 +247,11 @@ body[data-page='home'] .page-bg {
   /* anchor the column to the lower-left corner */
   text-align: left;
   padding: clamp(2rem, 7vh, 4.5rem) var(--pad-x) clamp(3rem, 12vh, 7rem);
-  /* The single "scoot" the whole cluster shares: BOTH the content's indent and
-     the vertical title's inset read from this, so the title and content always
-     move inward together (and, when the viewport can't afford the scoot, they
-     shrink it together instead of drifting apart). */
-  --edit-scoot: clamp(2rem, 7.5vw, 5.5rem);
+  /* The single "scoot" the whole cluster shares — the content's indent, the
+     vertical title's inset and the floating nav's side anchor all read from
+     --edit-scoot, so they always move together (and, when the viewport can't
+     afford the scoot, they shrink together instead of drifting apart). It is
+     declared on :root in base.css, since the header needs it too. */
 }
 
 .editorial .hero__inner {
@@ -439,11 +486,19 @@ body[data-page='contact'] .page-index {
   transform: scale(0.95);
 }
 
+/* The home lockup's resting size. The intro curtain renders a replica out of
+   these same classes, so the curtain's logo is always exactly the size the real
+   one lands at and the hand-off stays seamless — resize here and both move
+   together. (about/contact override the pair below; they are unaffected.) */
 .hero__stamp {
-  width: clamp(160px, 27vw, 280px);
-  filter: var(--photo-filter);
+  width: clamp(136px, 22.95vw, 238px);
+  /* No resting filter. --photo-filter is grayscale + a hair of contrast, which
+     does nothing visible to art that is already black ink on transparent, but it
+     does force the image into its own filter render surface. The hover glow and
+     the morse flash still set a filter; those are transient. */
   transition: filter 0.3s var(--ease);
 }
+
 
 /* Hover matches the morse "flash" glow — same subtle, shape-following shadow */
 .hero__logo:hover .hero__stamp {
@@ -453,16 +508,16 @@ body[data-page='contact'] .page-index {
 /* Stamped morse images aligned under the two logo boxes: RARE under the left r, ROOM under the right */
 .hero__morse {
   position: relative;
-  width: clamp(160px, 27vw, 280px);
-  height: 0.9rem;
-  margin-top: 0.2rem;
+  width: clamp(136px, 22.95vw, 238px);
+  height: 0.765rem;
+  margin-top: 0.17rem;
 }
 
 .hero__morse-half {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(58px, 9.6vw, 98px);
+  width: clamp(49px, 8.16vw, 83px);
   height: auto;
 }
 
@@ -472,6 +527,33 @@ body[data-page='contact'] .page-index {
 
 .hero__morse-half:last-child {
   left: 75%;
+}
+
+/* Above phone widths the lockup is pinned to FLAT pixel sizes rather than the
+   fluid 22.95vw above. stamp-hero.png is cut to 476px — exactly twice the 238px
+   here — so at that width it maps one image pixel to one device pixel on a 2x
+   display and is resampled not at all. Any other width is a fractional
+   downscale, which is what was still leaving the logo a touch soft in Chrome:
+   the vw term only reached its 238px cap on windows wider than ~1037px, so a
+   smaller window landed somewhere in between. Phones keep the clamp — the
+   viewport there is far too narrow to carry 238px.
+
+   Placed after the morse rules deliberately: these selectors are no more
+   specific than the ones above, so source order is what carries them. Resize
+   this and stamp-hero.png has to be recut at 2x the new width; the morse strip
+   has to move with it (its halves sit at 25% / 75% of the strip, so if the strip
+   stops matching the logo the two morse words drift out from under the two logo
+   boxes). about/contact are unaffected — .editorial out-specifies all of it. */
+@media (min-width: 761px) {
+
+  .hero__stamp,
+  .hero__morse {
+    width: 238px;
+  }
+
+  .hero__morse-half {
+    width: 83px;
+  }
 }
 
 /* RAREROOM wordmark image (about + contact heroes) — small, tight spacing.
@@ -522,6 +604,14 @@ body[data-page='privacy'] #app * {
 .policy p {
   color: var(--ink-2);
   margin-bottom: 0.8rem;
+}
+
+/* The contact address closing the policy is a .link-u, which normally sweeps an
+   underline in on hover. Here it's the only link on a wall of Courier body copy
+   and the rule reads as a stray mark under the address — so the address keeps
+   the colour change and drops the underline. */
+body[data-page='privacy'] .link-u::after {
+  display: none;
 }
 
 .hero__title {

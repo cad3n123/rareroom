@@ -7,8 +7,15 @@
   <!-- Tints mobile Safari's own chrome — the strip behind the Dynamic Island /
        status bar. In normal browsing that area belongs to the browser, not the
        page, so env(safe-area-inset-top) is 0 there and no CSS can reach it; this
-       is the only hook. --ink, to match the inverted mobile nav. -->
+       is the only hook. --ink, to match the inverted mobile nav.
+       Declared three times on purpose: the bare tag is the baseline, and the two
+       media-qualified copies pin the SAME colour for both system appearances.
+       Safari picks the most specific matching tag, and when only an unqualified
+       one exists it is free to fall back to its own light/dark chrome instead —
+       which is what leaves the island strip white on a phone in Dark Mode. -->
   <meta name="theme-color" content="#151110">
+  <meta name="theme-color" content="#151110" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151110" media="(prefers-color-scheme: dark)">
   <!-- Clean-URL routing (History API) serves the app from real paths like /about
        and /artist/slug. Anchoring the base to "/" keeps every relative asset URL
        resolving against the site root no matter how deep the current route is. -->

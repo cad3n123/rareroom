@@ -49,18 +49,37 @@
 :root {
   /* how far the slab sits in from the screen edges */
   --island-inset: clamp(0.6rem, 2.6vw, 1.5rem);
-  /* the slab's own height; the leftover --header-h is its float gap */
+  /* the height of the slab's CONTROLS row (menu / logo / toggles) */
   --island-h: 54px;
+  /* the solid ink strip above it carrying the tagline */
+  --island-tag-h: 20px;
+  /* the whole slab — every offset below measures against this, not --island-h */
+  --island-full-h: calc(var(--island-h) + var(--island-tag-h));
   /* deliberately narrow — the island is a compact puck, not a re-skinned bar */
-  --island-w: 400px;
+  --island-w: 360px;
+  /* the slab's inner gutter, as a token so the full-bleed tagline can cancel it */
+  --island-pad: clamp(0.8rem, 2.2vw, 1.4rem);
+  /* The stamped rule under each row of the dropdown. A flat length, NOT a vw
+     clamp: the panel is very nearly the same width at every size (it is capped
+     at --island-w on desktop and is the viewport less its insets on a phone), so
+     a viewport-relative rule bottomed out at its minimum on phones and drew a
+     stub half the length of the desktop one. --nav-sub-indent is how far the
+     nested artist rows — text AND rule — are pushed in. */
+  --nav-rule-w: 90px;
+  --nav-sub-indent: 0.7rem;
+  /* The glass the nav is made of. The slab and the dropdown share these two
+     tokens outright — the dropdown is literally the same box growing downward,
+     so any difference in tint or blur would give the seam away. */
+  --island-glass-bg: color-mix(in srgb, var(--paper) 56%, transparent);
+  --island-glass-blur: saturate(1.6) blur(22px);
   /* Drop from the top of the screen (below the safe area) to the slab's top
      edge. Centring the slab in the --header-h band would put it at half the
      leftover space; the 1.5 floats it lower than that, sitting the puck a
      little further down the page. */
-  --island-top: calc((var(--header-h) - var(--island-h)) / 2 * 1.5);
+  --island-top: calc((var(--header-h) - var(--island-full-h)) / 2 * 1.5);
   /* distance from the very top of the screen to the slab's bottom edge */
   --island-bottom: calc(env(safe-area-inset-top, 0px) + var(--island-top) +
-      var(--island-h));
+      var(--island-full-h));
 }
 
 /* Phones drop the extra float: the slab sits plainly centred in the band, with
@@ -69,7 +88,7 @@
    --island-top (the header's padding, --island-bottom, the panel) follows. */
 @media (max-width: 760px) {
   :root {
-    --island-top: calc((var(--header-h) - var(--island-h)) / 2);
+    --island-top: calc((var(--header-h) - var(--island-full-h)) / 2);
   }
 }
 
@@ -89,7 +108,9 @@ body[data-nav='island'] .site-header .wrap {
   /* equal side columns keep the logo optically centred regardless of how much
      sits left vs. right */
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: 0.5rem;
+  /* the tagline strip, then the controls row */
+  grid-template-rows: var(--island-tag-h) 1fr;
+  gap: 0 0.5rem;
 }
 
 body[data-nav='island'] .brand {
@@ -100,49 +121,44 @@ body[data-nav='island'] .header-tools {
   justify-self: end;
 }
 
-/* ---- Island contents, inverted at every width ---------------------------- */
-/* The slab is always dark, so the mark and the icons are always the light
-   treatment. (The phones-only block further down still covers the artist page's
-   full-width bar, which only inverts below 761px.) */
+/* ---- Island contents ------------------------------------------------------
+   The slab is frosted white, so its contents wear the ordinary dark-ink
+   treatment — the mark stays the baked dark stamp and the toggles keep their
+   default colours. Only the SIZE differs from the full-width bar. */
 body[data-nav='island'] .brand__mark {
   /* smaller than the full-bar logo — it has to sit inside a 400px puck */
   width: 58px;
   height: 29px;
-  filter: invert(1);
 }
 
-body[data-nav='island'] .brand__mark.flashing {
-  filter: invert(1) !important;
-}
-
-body[data-nav='island'] .brand__mark.flashing.lit {
-  filter: invert(1) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5))
-    drop-shadow(0 0 8px rgba(255, 255, 255, 0.14)) !important;
-}
-
-body[data-nav='island'] .icon-btn,
-body[data-nav='island'] .nav-toggle {
-  color: rgba(255, 255, 255, 0.72);
-}
-
-body[data-nav='island'] .icon-btn.is-on {
+/* The tagline: a solid ink strip capping the slab, full bleed to its inner edges
+   (hence the negative margins cancelling the slab's gutter) and squared off
+   against the 1px frame — 3px, the slab's 4px radius less its border. It spans
+   both side columns and the centre, sitting on its own grid row above the
+   controls. On the artist page's full-width bar there is no slab to cap, so it
+   drops out entirely. */
+.island-tag {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-self: stretch;
+  margin-inline: calc(-1 * var(--island-pad));
+  display: grid;
+  place-items: center;
+  background: var(--ink);
   color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.26em;
+  text-transform: lowercase;
+  line-height: 1;
+  /* the tracking hangs a gap off the last letter — pull the block back by half of
+     it so the phrase reads optically centred rather than measured-centred */
+  text-indent: 0.26em;
+  border-radius: 3px 3px 0 0;
 }
 
-body[data-nav='island'] .nav-toggle__arrow img,
-body[data-nav='island'] .nav-toggle__x img {
-  filter: invert(1);
-}
-
-@media (hover: hover) {
-  body[data-nav='island'] .icon-btn:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  body[data-nav='island'] .brand:hover .brand__mark {
-    filter: invert(1) drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
-  }
+body[data-nav='bar'] .island-tag {
+  display: none;
 }
 
 body[data-nav='island'] .site-header {
@@ -166,25 +182,20 @@ body[data-nav='island'] .site-header .wrap {
   margin-inline: auto;
   width: 100%;
   max-width: var(--island-w);
-  height: var(--island-h);
+  height: var(--island-full-h);
   /* the slab sets its own tighter gutters — --pad-x is page gutter, far too wide */
-  padding-inline: clamp(0.8rem, 2.2vw, 1.4rem);
-  /* Flat, solid ink — no blur, no translucency. The glass on this slab is all
-     in the strip along its bottom edge (below); the black body behind the logo
-     and icons stays opaque so the chrome reads crisply against it. */
+  padding-inline: var(--island-pad);
+  /* One sheet of frosted white glass in a hairline ink frame — the SAME glass
+     the dropdown is made of, so when the panel expands out of the bottom edge
+     there is no tint or blur change to give away that they're two elements. */
   position: relative;
-  background: var(--ink);
-  /* Closed, the slab wears no border at all. The 1px is still THERE, just
-     transparent, so that opening the panel only changes a colour and never the
-     box — swapping the border in and out would shrink the content area and
-     shunt the logo and icons by a pixel on every toggle. Transparent reads as
-     no border here because the background paints under it (border-box clip), so
-     the ink runs to the slab's outer edge either way.
-     The bottom edge is genuinely absent rather than transparent: the frosted
-     strip is positioned against the padding box, and a transparent bottom
-     border would leave a hairline of ink beneath it. */
-  border: 1px solid transparent;
-  border-bottom: none;
+  /* Own stacking context, and holds the slab above the dropdown panel, which is
+     a later sibling inside the same header. */
+  z-index: 1;
+  background: var(--island-glass-bg);
+  backdrop-filter: var(--island-glass-blur);
+  -webkit-backdrop-filter: var(--island-glass-blur);
+  border: 1px solid var(--ink);
   border-radius: 4px;
   /* stacked, very soft shadows read as a sheet lifted off the page rather than
      one hard drop shadow */
@@ -192,41 +203,45 @@ body[data-nav='island'] .site-header .wrap {
     0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-/* The tease: a frosted white strip along the island's bottom edge, reading as
-   the top sliver of the dropdown showing from behind the slab. Its background
-   and backdrop-filter are deliberately IDENTICAL to the panel's (see the
-   .mobile-menu rule below) — any difference in tint or blur radius and the
-   strip stops looking like the same sheet of glass peeking out and starts
-   looking like a second, unrelated one. Change one, change both. Absolutely
-   positioned so it sits outside the grid laying out the island's contents. */
-body[data-nav='island'] .site-header .wrap::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 7px;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: saturate(1.25) blur(12px);
-  -webkit-backdrop-filter: saturate(1.25) blur(12px);
-  border-radius: 0 0 4px 4px;
-  pointer-events: none;
-}
-
-/* Open, the strip is no longer a tease — the real panel is right below it, so
-   it squares off and becomes the join. */
-body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap::after {
-  border-radius: 0;
-}
-
-/* While the panel hangs off the island the two are one slab: the seam between
-   them loses its rounding, and the ink outline appears — matching the panel's
-   own border, so the two side lines run as one unbroken edge from the top of
-   the island to the bottom of the panel. Closed, there's nothing to continue an
-   outline into, so it stays invisible. */
+/* Open, the slab is the top half of one taller box: it squares off its bottom
+   corners, and its own bottom border becomes the rule dividing the nav proper
+   from the panel that grew out of it. */
 body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
   border-radius: 4px 4px 0 0;
-  border-color: var(--ink);
+}
+
+/* ---- Which side of the screen the island sits on --------------------------
+   About and contact set their page title vertically in one margin (left on
+   about, right on contact). The nav moves over to that same side and centres
+   itself in the gap between the screen edge and the title's line, so the two
+   read as one column of chrome rather than a centred puck over an off-centre
+   page.
+
+   The gap is much narrower than the slab, so in practice the max() floor is
+   what wins and the slab ends up sitting --island-inset in from the edge (the
+   header band's own padding). The expression is what guarantees that: it can
+   never pull the slab past the edge however the scoot moves.
+
+   Desktop only. Phones have no vertical page title to anchor against (it is
+   display:none there), so there is nothing for the nav to line up with — it just
+   sits centred on every page, the way the home page wears it. On the narrowest
+   phones the slab fills the band and the distinction is invisible anyway, but on
+   a wide phone or a small tablet the floor resolves to 0 and the slab would
+   visibly shunt to one edge.
+
+   The panel below is centred the same way (auto inline margins against
+   left/right insets, not a 50% + translate), so overriding the margin here
+   moves the slab and the dropdown together. */
+@media (min-width: 761px) {
+  body[data-page='about'][data-nav='island'] .site-header .wrap,
+  body[data-page='about'][data-nav='island'] .mobile-menu {
+    margin-inline: max(0px, calc(var(--edit-scoot) / 2 - var(--island-w) / 2)) auto;
+  }
+
+  body[data-page='contact'][data-nav='island'] .site-header .wrap,
+  body[data-page='contact'][data-nav='island'] .mobile-menu {
+    margin-inline: auto max(0px, calc(var(--edit-scoot) / 2 - var(--island-w) / 2));
+  }
 }
 
 .brand {
@@ -406,8 +421,10 @@ body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
   transition: color 0.2s var(--ease);
 }
 
-.nav__dropdown-panel a:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  .nav__dropdown-panel a:hover {
+    color: var(--accent);
+  }
 }
 
 .header-tools {
@@ -506,12 +523,16 @@ body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
   transition: filter 0.2s var(--ease);
 }
 
-.nav__subscribe:hover {
-  background: var(--ink);
-}
+/* Gated on real hover: on touch the fill latches after a tap and the chip is
+   left stuck inverted until you press somewhere else. */
+@media (hover: hover) {
+  .nav__subscribe:hover {
+    background: var(--ink);
+  }
 
-.nav__subscribe:hover .nav__subscribe-img {
-  filter: invert(1);
+  .nav__subscribe:hover .nav__subscribe-img {
+    filter: invert(1);
+  }
 }
 
 /* Artist page on DESKTOP: the nav does not invert. Its content sits on flat
@@ -533,22 +554,37 @@ body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
   body[data-nav='bar'] .nav__dropdown-panel {
     background: #fff;
   }
+
+  /* The bar's links sit at the same weight as the rest of the site's mono type
+     rather than the semibold the old inline nav used. */
+  body[data-nav='bar'] .site-header .nav__link,
+  body[data-nav='bar'] .site-header .nav__dropdown-panel a {
+    font-weight: 400;
+  }
 }
 
-/* Route loading bar — sits exactly over the header's 1px divider line and
-   sweeps a darker-purple bar left→right (with a slight stutter) while the page
-   loads, then fades back to the normal nav line. Content under the nav stays
-   blank until ready. */
+/* The chip fills dark on hover everywhere else; the white-bar override above was
+   beating .nav__subscribe:hover on both specificity and source order, so only
+   the wordmark inverted and it read as white-on-white. */
+@media (min-width: 761px) and (hover: hover) {
+  body[data-nav='bar'] .nav__subscribe:hover {
+    background: var(--ink);
+  }
+}
+
+/* Route loading bar — pinned to the very top edge of the screen on every page
+   (the artist page's full-width bar included, which used to hang it off the
+   bottom of the nav) and sweeps a darker-purple bar left→right, with a slight
+   stutter, while the page loads. Content under the nav stays blank until ready. */
 .route-loader {
-  /* absolutely positioned inside the sticky .site-header, sitting exactly on its
-     bottom divider line — so it tracks the header 1:1 during rubber-band
-     overscroll instead of drifting out of alignment. */
+  /* absolutely positioned inside the sticky .site-header, so it tracks the
+     header 1:1 during rubber-band overscroll instead of drifting out of
+     alignment. */
   position: absolute;
-  top: 100%;
+  top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  transform: translateY(-1px);
+  height: 2px;
   z-index: 51;
   opacity: 0;
   pointer-events: none;
@@ -557,14 +593,6 @@ body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
 
 .route-loader.active {
   opacity: 1;
-}
-
-/* With a floating island there is no full-width divider line to sweep along, so
-   the bar pins to the very top edge of the screen instead. */
-body[data-nav='island'] .route-loader {
-  top: 0;
-  transform: none;
-  height: 2px;
 }
 
 .route-loader__bar {
@@ -652,52 +680,87 @@ body[data-nav='island'] .route-loader {
   transform: none;
 }
 
+/* The panel lives INSIDE the sticky <header> and is positioned against it, not
+   against the viewport. That is what keeps it welded to the island during
+   Chrome/macOS rubber-band overscroll: a `fixed` panel stays nailed to the
+   screen while the sticky header springs away from it, so the dropdown visibly
+   detached from the puck it hangs off. Absolute + a sticky containing block
+   means the pair moves as one. Offsets are unchanged — the header's padding box
+   starts at the top-left of the viewport while it's stuck, so the same numbers
+   land in the same place. */
+/* The panel does not slide in as a separate card — it is the nav box CONTINUING
+   downward. The box's height is what animates (a 0fr → 1fr grid track), so its
+   bottom edge and bottom border travel down the page and the contents are
+   uncovered from the top as the box passes over them, rather than the whole
+   list fading in at once.
+
+   Three levels are needed for that: the BOX carries the glass, the border and
+   the animating track; __clip is the collapsible grid item (it must be able to
+   go to zero height, so it can carry no padding of its own — under border-box
+   sizing padding would hold it open); __body carries the padding and does the
+   scrolling if the screen is too short. */
 .mobile-menu {
-  position: fixed;
+  position: absolute;
   top: calc(var(--header-h) + env(safe-area-inset-top));
   left: 0;
   right: 0;
-  bottom: 0;
-  z-index: 40;
-  /* below the sticky header (50) so the nav bar stays on top */
+  /* under the island slab (z-index 1) but still inside the header's stacking
+     context, so it stays above the page either way */
+  z-index: 0;
   background: var(--paper);
-  opacity: 0;
-  transform: translateY(-8px);
+  /* Collapsed the box is only its own borders — a stray hairline under the nav —
+     so it is hidden outright when closed. visibility holds its from-value for
+     the whole transition, so the box is still painted while it collapses. */
   visibility: hidden;
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), visibility 0.6s;
-  display: flex;
-  flex-direction: column;
-  padding: 1.4rem var(--pad-x) 2rem;
-  overflow-y: auto;
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.85s var(--ease), visibility 0.85s;
 }
 
 .mobile-menu.open {
-  opacity: 1;
-  transform: none;
+  grid-template-rows: 1fr;
   visibility: visible;
 }
 
+.mobile-menu__clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.mobile-menu__body {
+  display: flex;
+  flex-direction: column;
+  padding: 1.4rem var(--pad-x) 2rem;
+}
+
 /* Island pages: the menu is not a separate card floating below the island — it
-   hangs off it. It starts 1px UP into the slab so the two borders overlap into
-   a single seam, and drops its own top border and top rounding, so the pair
-   reads as one object rather than a card floating under a puck. The panel
-   itself stays light — ink on paper, the way the menu has always read — against
-   the dark island above it. It still drops in from behind the island (z-index
-   40 vs. the header's 50) rather than sliding over the whole page. */
+   hangs off it. It starts exactly at the slab's bottom edge and drops its top
+   rounding, so the island's frosted rim runs straight down into the panel and
+   the pair reads as one sheet of glass rather than a card floating under a
+   puck. It still drops in from BEHIND the island (a lower z-index inside the
+   header) rather than sliding over the whole page. */
 body[data-nav='island'] .mobile-menu {
-  top: calc(var(--island-bottom) - 1px);
-  /* hangs directly under the slab, sharing its centre line */
-  left: 50%;
-  right: auto;
+  /* the island header band is pointer-events:none so the transparent strip can't
+     swallow clicks meant for the page; the panel has to opt back in, same as the
+     slab does */
+  pointer-events: auto;
+  /* Starts exactly on the slab's bottom border, and carries no top border of its
+     own — the slab's is the divider between the two halves. */
+  top: var(--island-bottom);
+  /* Centred by auto inline margins against the band's own insets rather than
+     50% + a translate, so the per-page margin overrides above move the panel and
+     the slab by the same expression. */
+  left: var(--island-inset);
+  right: var(--island-inset);
   bottom: auto;
-  transform: translateX(-50%) translateY(-10px);
-  width: calc(100% - 2 * var(--island-inset));
+  margin-inline: auto;
+  width: auto;
   max-width: var(--island-w);
-  max-height: calc(100dvh - var(--island-bottom) - 3rem);
-  padding: 0.9rem 1.1rem 1.2rem;
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: saturate(1.25) blur(12px);
-  -webkit-backdrop-filter: saturate(1.25) blur(12px);
+  /* the exact same glass as the slab — same tokens, so no seam */
+  background: var(--island-glass-bg);
+  backdrop-filter: var(--island-glass-blur);
+  -webkit-backdrop-filter: var(--island-glass-blur);
   border: 1px solid var(--ink);
   border-top: none;
   border-radius: 0 0 4px 4px;
@@ -705,30 +768,79 @@ body[data-nav='island'] .mobile-menu {
     0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-body[data-nav='island'] .mobile-menu.open {
-  transform: translateX(-50%);
+body[data-nav='island'] .mobile-menu__body {
+  padding: 0.9rem 1.1rem 1.2rem;
+  /* on a short screen the list scrolls inside the box rather than running off it */
+  max-height: calc(100dvh - var(--island-bottom) - 3rem);
+  overflow-y: auto;
 }
 
-/* the big full-screen type doesn't suit a compact panel */
+/* the big full-screen type doesn't suit a compact panel — the panel's items run
+   at half the size the full-screen menu uses, with the row padding pulled in to
+   match so the list stays tight rather than airy */
 body[data-nav='island'] .mobile-menu__link {
-  font-size: 1.02rem;
+  font-size: 0.98rem;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0;
 }
 
-/* Match the subscribe chip to the panel's link text. The wordmark is baked art,
-   so it can't inherit font-size — 0.71rem is the links' cap height at the 1.02rem
-   set above. Scoped to the island: the artist page's full-screen menu runs much
-   larger type and needs the original size. */
+/* the accordion chevron is sized against the label, so it tracks it */
+body[data-nav='island'] .mobile-drop__toggle svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Artist names read two-thirds of the top-level items. */
+body[data-nav='island'] .mobile-drop__item {
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0 0.4rem var(--nav-sub-indent);
+}
+
+@media (hover: hover) {
+  body[data-nav='island'] .mobile-drop__item:hover {
+    padding-left: calc(var(--nav-sub-indent) + 0.3rem);
+  }
+}
+
+/* The subscribe chip is the footer's chip exactly — same padding, same wordmark
+   height — rather than a third size sitting between the nav's and the footer's.
+   Scoped to the island: the artist page's full-screen menu runs much larger type
+   and needs the original size. */
 body[data-nav='island'] .mobile-menu__subscribe {
   margin-top: 0.9rem;
-  padding: 0.34rem 0.6rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 2px;
 }
 
 body[data-nav='island'] .mobile-menu__subscribe .nav__subscribe-img {
-  height: 0.71rem;
+  height: 0.52rem;
 }
 
 body[data-nav='island'] .mobile-menu__socials {
   padding-top: 1.2rem;
+}
+
+/* Row dividers in the panel are the same stamped rule the about page uses for
+   its masthead divider, not a flat CSS hairline — so the panel is drawn in the
+   same ink as the rest of the site. Always at the art's own aspect ratio, so a
+   shorter rule is a proportionally thinner one rather than a squashed scratch.
+
+   The artist rows are indented, and their rule is indented and shortened by the
+   same amount — so every rule in the panel, top-level and nested alike, stops
+   dead on the same right-hand edge and the list reads as one column. */
+body[data-nav='island'] .mobile-menu__link,
+body[data-nav='island'] .mobile-drop__item {
+  border-bottom: none;
+  background-image: url('../img/brand/horizontal-line.png');
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: var(--nav-rule-w) auto;
+}
+
+body[data-nav='island'] .mobile-drop__item {
+  background-position: var(--nav-sub-indent) bottom;
+  background-size: calc(var(--nav-rule-w) - var(--nav-sub-indent)) auto;
 }
 
 .mobile-menu__nav {
@@ -755,9 +867,13 @@ body[data-nav='island'] .mobile-menu__socials {
   transition: color 0.2s var(--ease), padding-left 0.25s var(--ease);
 }
 
-.mobile-menu__link:hover {
-  color: var(--accent);
-  padding-left: 0.5rem;
+/* Hover only where there's a real pointer — on touch the state latches after a
+   tap and the item is left stuck purple and indented. */
+@media (hover: hover) {
+  .mobile-menu__link:hover {
+    color: var(--accent);
+    padding-left: 0.5rem;
+  }
 }
 
 /* Artists accordion — same idea as the desktop dropdown, tap to expand. */
@@ -781,7 +897,7 @@ body[data-nav='island'] .mobile-menu__socials {
 .mobile-drop__panel {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.32s var(--ease);
+  transition: grid-template-rows 0.55s var(--ease);
 }
 
 .mobile-drop.open .mobile-drop__panel {
@@ -807,9 +923,11 @@ body[data-nav='island'] .mobile-menu__socials {
   transition: color 0.2s var(--ease), padding-left 0.25s var(--ease);
 }
 
-.mobile-drop__item:hover {
-  color: var(--accent);
-  padding-left: 1.4rem;
+@media (hover: hover) {
+  .mobile-drop__item:hover {
+    color: var(--accent);
+    padding-left: 1.4rem;
+  }
 }
 
 /* The subscribe chip in the mobile menu — same black-box treatment as the nav,
@@ -838,11 +956,6 @@ body[data-nav='island'] .mobile-menu__socials {
 
 /* Phones take the island on EVERY page now, so the block that used to live here
    — inverting the full-width bar and its contents below 761px — is gone: that
-   bar no longer exists at this width, and the island section above already
-   inverts the slab, the mark and the icons at every size. */
-@media (max-width: 760px) {
-  .route-loader {
-    height: 2px;
-    transform: translateY(-2px);
-  }
-}
+   bar no longer exists at this width, and the island is light-on-glass at every
+   size, so nothing inverts any more. The phones-only route-loader override went
+   with it too: the bar is pinned to the top of the screen at every width now. */

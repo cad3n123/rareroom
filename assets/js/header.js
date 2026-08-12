@@ -74,6 +74,7 @@ export function buildHeader() {
   host.innerHTML = `
   <header class="site-header">
     <div class="wrap">
+      <span class="island-tag">a room that is rare</span>
       <button class="icon-btn nav-toggle" data-menu-toggle aria-label="Menu" aria-expanded="false">
         <span class="nav-toggle__ico nav-toggle__arrow"><img src="assets/img/brand/down-arrow.png" alt=""></span>
         <span class="nav-toggle__ico nav-toggle__x"><img src="assets/img/brand/x.png" alt=""></span>
@@ -91,14 +92,18 @@ export function buildHeader() {
         </button>
       </div>
     </div>
-  </header>
-  <div class="mobile-menu" id="mobileMenu">
-    <nav class="mobile-menu__nav" aria-label="Mobile">
-      ${mobileLinks}
-      <button type="button" class="nav__subscribe mobile-menu__subscribe" data-signup aria-label="Subscribe"><img class="nav__subscribe-img" src="assets/img/brand/subscribe.png" alt="Subscribe"></button>
-    </nav>
-    <div class="mobile-menu__socials social-row">${mobileSocials}</div>
-  </div>`;
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu__clip">
+        <div class="mobile-menu__body">
+          <nav class="mobile-menu__nav" aria-label="Mobile">
+            ${mobileLinks}
+            <button type="button" class="nav__subscribe mobile-menu__subscribe" data-signup aria-label="Subscribe"><img class="nav__subscribe-img" src="assets/img/brand/subscribe.png" alt="Subscribe"></button>
+          </nav>
+          <div class="mobile-menu__socials social-row">${mobileSocials}</div>
+        </div>
+      </div>
+    </div>
+  </header>`;
 
   // The hamburger toggles the menu and crossfades into an X (the header itself
   // stays put — the menu opens below it).
@@ -120,10 +125,16 @@ export function buildHeader() {
   // closes the panel, so you don't have to hit the small chevron. Anything that
   // is already a control (the chevron itself, the logo link, the flash/sound
   // buttons) keeps its own behaviour — the closest() guard lets those clicks
-  // through untouched. The artist page is excluded: its bar is the full-width
-  // one carrying inline nav links, not a slab with a panel under it.
+  // through untouched.
+  //
+  // Keyed on the nav MODE, not the page. Only the full-width bar is excluded,
+  // because it carries inline nav links and has no panel hanging off it — and
+  // the artist page is the only page that wears it, and only at desktop widths.
+  // On a phone that page takes the island like every other, so it gets the
+  // tap-anywhere behaviour too; checking data-page here used to exclude it at
+  // every width and left its island the one slab you couldn't tap open.
   host.querySelector('.site-header .wrap')?.addEventListener('click', (e) => {
-    if (document.body.dataset.page === 'artist') return;
+    if (document.body.dataset.nav === 'bar') return;
     if (e.target.closest('a, button')) return;
     setMenu(!menu.classList.contains('open'));
   });

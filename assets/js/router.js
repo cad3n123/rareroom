@@ -128,7 +128,16 @@ function ensureLoader() {
    intro curtain — so the wipe would play out unseen and the backdrop would
    simply be there when the curtain lifted. There it's deferred instead (see
    revealBg below). */
-const revealPageBg = (app) => app.querySelector('.page-bg')?.classList.add('is-revealed');
+const revealPageBg = (app) => {
+  const bg = app.querySelector('.page-bg');
+  if (!bg) return;
+  bg.classList.add('is-revealed');
+  // Retire the wipe once it has played out (see .is-settled in hero.css): a
+  // forwards-filled animation keeps the backdrop parked in a composited layer,
+  // which Safari rasterises once and then upscales as the scroll-zoom grows it,
+  // leaving the artwork visibly soft.
+  bg.addEventListener('animationend', () => bg.classList.add('is-settled'), { once: true });
+};
 
 function runRouteLoad(app, onDone, revealBg = true) {
   const loader = ensureLoader();
@@ -261,12 +270,9 @@ export function navigate() {
     html = viewHome();
   }
 
-  // The artist page skips the loader entirely — it just renders and loads in.
-  const useLoader = pageKey !== 'artist';
-
   state.currentPageKey = pageKey;
   app.innerHTML = html;
-  if (useLoader) app.classList.add('is-loading'); // stay blank until the loader finishes
+  app.classList.add('is-loading'); // stay blank until the loader finishes
   applyMeta(pageKey, artist); // per-route <title> + description + canonical + OG/Twitter
   document.body.dataset.page = pageKey;
   applyNavMode();
@@ -337,15 +343,13 @@ export function navigate() {
   };
 
   if (curtain) {
-    if (useLoader) runRouteLoad(app, null, false); // runs under the curtain
+    runRouteLoad(app, null, false); // runs under the curtain
     // The backdrop wipe is the first thing you see AFTER the intro, not
     // something that happened behind it: hold it until the curtain has finished
     // and been torn down, then play it in full.
     curtain.then(() => revealPageBg(app));
     setTimeout(onArrive, 1700); // hold until the curtain has lifted
-  } else if (useLoader) {
-    runRouteLoad(app, onArrive); // fire the moment the loader finishes
   } else {
-    setTimeout(onArrive, 300); // artist page (no loader)
+    runRouteLoad(app, onArrive); // fire the moment the loader finishes
   }
 }

@@ -68,8 +68,16 @@ export function artistSocialsHTML(a) {
 }
 
 /* --------------------------- View templates ------------------------------- */
+/* The hero uses its OWN copy of the stamp, cut to 476px — exactly twice the
+   238px the lockup ever reaches (see .hero__stamp's clamp), so on a 2x display
+   it maps one image pixel to one device pixel and is resampled not at all.
+   Handing the full 1967px master to a 238px box means a ~4x downscale, which
+   drops Chrome onto a mipmap level and comes out visibly soft — that's why the
+   logo sharpened up when the window was zoomed to 110% and the factor changed.
+   The nav and footer keep the master; they're small enough not to show it.
+   If the lockup is ever resized past 238px, regenerate this at 2x the new max. */
 const heroLogo = () =>
-  `<a class="hero__logo" href="/" aria-label="RAREROOM — home"><img class="hero__stamp js-flash" src="assets/img/brand/stamp.png" alt="RAREROOM"></a>`;
+  `<a class="hero__logo" href="/" aria-label="RAREROOM — home"><img class="hero__stamp js-flash" src="assets/img/brand/stamp-hero.png" alt="RAREROOM" width="476" height="242"></a>`;
 const heroMorse = () =>
   `<div class="hero__morse"><img class="hero__morse-half" src="assets/img/brand/rare-morse.png" alt=""><img class="hero__morse-half" src="assets/img/brand/room-morse.png" alt=""></div>`;
 const scrollCue = () =>
@@ -224,14 +232,16 @@ export function viewPrivacy() {
    the same slow, slight scale-up on desktop by tying the image's scale to how far
    the page has scrolled. Self-cleans once the backdrop leaves the DOM. */
 export function bindBgGrow(app) {
+  const bg = app.querySelector('.page-bg');
+  if (!bg) return;
   // Plural: the home backdrop is two side-by-side copies on phones, and both
   // columns have to grow together.
-  const imgs = [...app.querySelectorAll('.page-bg img')];
+  const imgs = [...bg.querySelectorAll('img')];
   if (!imgs.length) return;
   let raf = 0;
   const apply = () => {
     raf = 0;
-    if (!imgs[0].isConnected) {
+    if (!bg.isConnected) {
       window.removeEventListener('scroll', onScroll);
       return;
     }
@@ -242,7 +252,20 @@ export function bindBgGrow(app) {
     // don't resize the viewport on scroll).
     const phone = window.innerWidth <= 760;
     const s = 1 + Math.min(phone ? 0.9 : 0.44, y / (phone ? 800 : 1600));
-    imgs.forEach((img) => (img.style.transform = `scale(${s})`));
+    if (phone) {
+      // Two half-width columns, each growing about its own centre — a transform
+      // is the only thing that does that without the pair fighting over the
+      // layout. At rest clear it rather than writing scale(1): an identity
+      // transform still promotes the backdrop into a composited layer.
+      bg.style.removeProperty('--bg-grow');
+      imgs.forEach((img) => (img.style.transform = s === 1 ? '' : `scale(${s})`));
+      return;
+    }
+    // Desktop: hand the factor to CSS, which grows the image's BOX (see
+    // hero.css) so it is re-rasterised at the size it is drawn — a transform
+    // here left Safari upscaling one stale raster and the backdrop went soft.
+    imgs.forEach((img) => (img.style.transform = ''));
+    bg.style.setProperty('--bg-grow', String(s));
   };
   const onScroll = () => {
     if (!raf) raf = requestAnimationFrame(apply);
@@ -301,7 +324,7 @@ export function maybeIntro(pageKey) {
   c.innerHTML = `
     <section class="hero">
       <div class="hero__inner">
-        <span class="hero__logo"><img class="hero__stamp" src="assets/img/brand/stamp.png" alt="RAREROOM"></span>
+        <span class="hero__logo"><img class="hero__stamp" src="assets/img/brand/stamp-hero.png" alt="RAREROOM" width="476" height="242"></span>
         ${heroMorse()}
       </div>
     </section>`;

@@ -18,8 +18,10 @@
   font-size: clamp(1.3rem, 2.6vw, 1.9rem);
   color: var(--ink);
 }
-.contact-block a.big:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  .contact-block a.big:hover {
+    color: var(--accent);
+  }
 }
 
 /* Newsletter form */
@@ -55,8 +57,10 @@
   text-underline-offset: 2px;
   transition: color 0.2s var(--ease);
 }
-.news-consent a:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  .news-consent a:hover {
+    color: var(--accent);
+  }
 }
 
 /* Inline subscribe result — absolutely positioned just below the whole form (so

@@ -80,7 +80,9 @@
 
 @media (max-width: 760px) {
   :root {
-    --header-h: 74px;
+    /* the desktop band less the 20px it has always been shorter by, both now
+       carrying the island's tagline strip */
+    --header-h: 94px;
   }
   .nav {
     display: none;

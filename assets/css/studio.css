@@ -75,9 +75,11 @@
   opacity: 0.8;
   transition: opacity 0.2s, color 0.2s;
 }
-.lightbox__btn:hover {
-  opacity: 1;
-  color: var(--accent-2);
+@media (hover: hover) {
+  .lightbox__btn:hover {
+    opacity: 1;
+    color: var(--accent-2);
+  }
 }
 .lightbox__close {
   top: 1rem;
