@@ -21,8 +21,12 @@
 /* ------------------------------ Tokens ------------------------------------ */
 :root {
   /* Courier New everywhere this token is referenced (nav, morse labels,
-     eyebrows, socials, buttons, etc.). */
-  --font-mono: 'Courier New', Courier, ui-monospace, monospace;
+     eyebrows, socials, buttons, etc.). NOTE that --font-mono is REDEFINED to
+     Source Code Pro on the footer + social subtrees further down, so a rule that
+     must stay Courier no matter where it sits has to reach for --font-courier
+     instead. The footer's email input is the case that matters. */
+  --font-courier: 'Courier New', Courier, ui-monospace, monospace;
+  --font-mono: var(--font-courier);
   /* The original Source Code Pro, kept for the footer + social rows. */
   --font-code: 'Source Code Pro', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --font-serif: 'Alike', 'Iowan Old Style', Georgia, 'Times New Roman', serif;

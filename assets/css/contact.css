@@ -51,7 +51,7 @@
 }
 /* the Privacy Policy link specifically is set in Courier New */
 .news-consent a {
-  font-family: 'Courier New', Courier, ui-monospace, monospace;
+  font-family: var(--font-courier);
   color: var(--ink-2);
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -85,22 +85,33 @@
 .news-msg.is-err {
   color: #b3261e;
 }
+/* The input lives in the footer, where --font-mono is swapped to Source Code
+   Pro — hence --font-courier, so it stays in the site-wide Courier the nav panel
+   and everything else is set in. 0.66rem is the footer's own small-type size
+   (the footer nav, the socials and the consent line all run at it), and it is a
+   flat rem, so this reads identically on mobile and desktop. */
 .input {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-family: var(--font-courier);
+  font-size: 0.66rem;
   color: var(--ink);
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: 0.85em 1em;
+  /* padding in em so the box follows the type down rather than leaving the
+     smaller text floating in an oversized field */
+  padding: 0.95em 1.1em;
   transition: border-color 0.2s var(--ease);
   width: 100%;
 }
 .input::placeholder {
   color: var(--ink-3);
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.12em;
-  font-size: 0.72rem;
+  /* inherits the field's 0.66rem — it used to be set a notch smaller */
+  font-size: inherit;
+  /* the same hairline that gives Courier its "slightly bold" set site-wide;
+     ::placeholder does not inherit it from the input */
+  -webkit-text-stroke: 0.18px currentColor;
 }
 .input:focus {
   outline: none;
