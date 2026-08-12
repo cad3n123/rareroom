@@ -72,6 +72,19 @@
      so any difference in tint or blur would give the seam away. */
   --island-glass-bg: color-mix(in srgb, var(--paper) 56%, transparent);
   --island-glass-blur: saturate(1.6) blur(22px);
+  /* Squared off. The rounded puck read as UI chrome dropped onto the page; hard
+     corners read as something stamped or pasted onto paper, which is the idiom
+     the rest of the site is in. One knob — put 4px back here and the whole nav,
+     dropdown included, rounds again. --island-radius-inner keeps anything drawn
+     inside the 1px frame (the tagline cap) a hair tighter so its corners sit
+     concentric with the frame's rather than crossing them. */
+  --island-radius: 0px;
+  --island-radius-inner: max(0px, calc(var(--island-radius) - 1px));
+  /* Stacked, very soft shadows — the slab reads as a sheet lifted off the page
+     rather than taking one hard drop shadow. Kept as a token so the slab and the
+     dropdown that grows out of it can never drift apart. */
+  --island-shadow: 0 33px 13px rgba(0, 0, 0, 0.01), 0 19px 11px rgba(0, 0, 0, 0.03),
+    0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
   /* Drop from the top of the screen (below the safe area) to the slab's top
      edge. Centring the slab in the --header-h band would put it at half the
      leftover space; the 1.5 floats it lower than that, sitting the puck a
@@ -154,7 +167,7 @@ body[data-nav='island'] .brand__mark {
   /* the tracking hangs a gap off the last letter — pull the block back by half of
      it so the phrase reads optically centred rather than measured-centred */
   text-indent: 0.26em;
-  border-radius: 3px 3px 0 0;
+  border-radius: var(--island-radius-inner) var(--island-radius-inner) 0 0;
 }
 
 body[data-nav='bar'] .island-tag {
@@ -196,18 +209,32 @@ body[data-nav='island'] .site-header .wrap {
   backdrop-filter: var(--island-glass-blur);
   -webkit-backdrop-filter: var(--island-glass-blur);
   border: 1px solid var(--ink);
-  border-radius: 4px;
-  /* stacked, very soft shadows read as a sheet lifted off the page rather than
-     one hard drop shadow */
-  box-shadow: 0 33px 13px rgba(0, 0, 0, 0.01), 0 19px 11px rgba(0, 0, 0, 0.03),
-    0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: var(--island-radius);
+  box-shadow: var(--island-shadow);
+}
+
+/* Masthead rule: a faint hairline set just under the ink tagline cap, so the
+   cap reads as a ruled masthead over the controls rather than as a block of
+   colour butted against them. Positioned against the slab's padding box, which
+   starts inside the frame — so it runs the full inner width, the same bleed the
+   cap gets from its negative margins. */
+body[data-nav='island'] .site-header .wrap::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--island-tag-h) + 2px);
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.24;
+  pointer-events: none;
 }
 
 /* Open, the slab is the top half of one taller box: it squares off its bottom
    corners, and its own bottom border becomes the rule dividing the nav proper
    from the panel that grew out of it. */
 body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
-  border-radius: 4px 4px 0 0;
+  border-radius: var(--island-radius) var(--island-radius) 0 0;
 }
 
 /* ---- Which side of the screen the island sits on --------------------------
@@ -763,9 +790,8 @@ body[data-nav='island'] .mobile-menu {
   -webkit-backdrop-filter: var(--island-glass-blur);
   border: 1px solid var(--ink);
   border-top: none;
-  border-radius: 0 0 4px 4px;
-  box-shadow: 0 33px 13px rgba(0, 0, 0, 0.01), 0 19px 11px rgba(0, 0, 0, 0.03),
-    0 8px 8px rgba(0, 0, 0, 0.04), 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 0 0 var(--island-radius) var(--island-radius);
+  box-shadow: var(--island-shadow);
 }
 
 body[data-nav='island'] .mobile-menu__body {
