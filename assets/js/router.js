@@ -65,46 +65,59 @@ function setCanonical(url) {
 function applyMeta(pageKey, artist) {
   const brand = SITE.name;
   const url = SITE_URL + (location.pathname === '/' ? '/' : location.pathname);
-  let title;
+  // `term` is the page-specific half of the title; `tabTerm` is that half as the
+  // TAB shows it, and is only set where the two differ. Home leaves both unset —
+  // its tab is the bare brand.
+  let term;
+  let tabTerm;
   let desc;
   switch (pageKey) {
     case 'about':
-      title = `About - ${brand}`;
+      term = 'About';
       desc = `${brand} is a recording studio, record label, and development firm led by producer Logan Gladden — a home for artists and creatives in music and visual arts.`;
       break;
     case 'contact':
-      title = `Contact - ${brand}`;
+      term = 'Contact';
       desc = `Get in touch with ${brand} — demo submissions, booking, press, and general enquiries.`;
       break;
     case 'artist':
-      title = `${artist.name} - ${brand}`;
+      // A name is a proper noun, so it is never shouted — the artist tab reads
+      // "Pollish - RAREROOM" while the others read "ABOUT - RAREROOM".
+      term = artist.name;
+      tabTerm = artist.name;
       desc =
         (artist.bio && artist.bio[0]) ||
         `${artist.name}${artist.role ? ` — ${artist.role}` : ''} on ${brand}.`;
       break;
     case 'privacy':
-      title = `Privacy Policy - ${brand}`;
+      term = 'Privacy Policy';
       desc = `How ${brand} collects, uses, and protects your personal information.`;
       break;
     case 'releases':
-      title = `Releases - ${brand}`;
+      term = 'Releases';
       desc = `Records made and released by ${brand} — stream or buy on your platform of choice.`;
       break;
     case 'shop':
-      title = `Shop - ${brand}`;
+      term = 'Shop';
       desc = `Vinyl, apparel, and goods from ${brand}. Limited runs, pressed and printed with care.`;
       break;
     default:
-      title = `${brand} - Recording Studio & Record Label`;
       desc = SITE.intro;
   }
-  document.title = title;
+  // Two forms of the same title. The TAB sets the page term in caps and drops
+  // the descriptor on home. The SHARE title keeps the sentence-case, descriptive
+  // form — a link preview or a card reading "ABOUT - RAREROOM" looks like it is
+  // shouting, and og:/twitter: are not what the browser tab renders.
+  document.title = term ? `${tabTerm || term.toUpperCase()} - ${brand}` : brand;
+  const shareTitle = term
+    ? `${term} - ${brand}`
+    : `${brand} - Recording Studio & Record Label`;
   metaName('description', desc);
   setCanonical(url);
-  metaProp('og:title', title);
+  metaProp('og:title', shareTitle);
   metaProp('og:description', desc);
   metaProp('og:url', url);
-  metaName('twitter:title', title);
+  metaName('twitter:title', shareTitle);
   metaName('twitter:description', desc);
 }
 

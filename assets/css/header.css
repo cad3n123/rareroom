@@ -67,6 +67,9 @@
      nested artist rows — text AND rule — are pushed in. */
   --nav-rule-w: 90px;
   --nav-sub-indent: 0.7rem;
+  /* How far a dropdown row slides right under the cursor. Shared by the
+     top-level items and the nested artist names so the two can't drift apart. */
+  --nav-hover-shift: 0.3rem;
   /* The glass the nav is made of. The slab and the dropdown share these two
      tokens outright — the dropdown is literally the same box growing downward,
      so any difference in tint or blur would give the seam away. */
@@ -823,9 +826,20 @@ body[data-nav='island'] .mobile-drop__item {
   padding: 0.4rem 0 0.4rem var(--nav-sub-indent);
 }
 
+/* Both levels of the dropdown slide right by the same amount under the cursor.
+   These have to be restated island-scoped rather than left to the generic
+   :hover rules further down, because the island sizing rules above set the
+   `padding` SHORTHAND at a higher specificity — which quietly beat the generic
+   hover's `padding-left` and left the top-level items doing the colour change
+   without the slide, while the artist names (which already had a scoped rule)
+   did both. */
 @media (hover: hover) {
+  body[data-nav='island'] .mobile-menu__link:hover {
+    padding-left: var(--nav-hover-shift);
+  }
+
   body[data-nav='island'] .mobile-drop__item:hover {
-    padding-left: calc(var(--nav-sub-indent) + 0.3rem);
+    padding-left: calc(var(--nav-sub-indent) + var(--nav-hover-shift));
   }
 }
 
