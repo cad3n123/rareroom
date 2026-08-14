@@ -77,15 +77,16 @@ async function boot() {
       openLightbox(0);
       return;
     }
-    // The footer "Artists" control mirrors whatever nav the page is wearing.
+    // Every "Artists" control that isn't in the nav itself — the footer link and
+    // the artist page's vertical title — mirrors whatever nav the page is wearing.
     // Keyed on the nav MODE, not the viewport width: everywhere but the artist
     // page at desktop widths the header is the floating island, whose inline
     // link list (and so its hover dropdown) doesn't exist — the artists live in
     // the island's panel. So the island branch opens that panel and expands the
     // Artists accordion inside it; only the artist page's full-width bar still
     // has a top-nav dropdown to pin open.
-    const footerArtists = e.target.closest('[data-footer-artists]');
-    if (footerArtists) {
+    const artistsMenu = e.target.closest('[data-artists-menu]');
+    if (artistsMenu) {
       e.preventDefault();
       if (document.body.dataset.nav === 'island') {
         const menu = document.querySelector('#mobileMenu');
@@ -123,6 +124,15 @@ async function boot() {
         }
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+      return;
+    }
+    // The About page's vertical title reloads the page rather than soft-navigating
+    // — it's already the route you're on, so the SPA router would render nothing.
+    const pageReload = e.target.closest('[data-page-reload]');
+    if (pageReload) {
+      e.preventDefault();
+      const route = `/${pageReload.dataset.pageReload}`;
+      location.pathname === route ? location.reload() : location.assign(route);
       return;
     }
     // The big hero logo always replays the home flash — even when you're already

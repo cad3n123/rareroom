@@ -129,11 +129,23 @@ export function viewHome() {
   </section>`;
 }
 
+/* The vertical page title running down the margin. It's a control on every page
+   that wears one — what a click does is the page's business, so each caller
+   passes either an href or the data-* hook the delegated handler in site.js
+   keys on. The art itself stays out of the accessibility tree; the label on the
+   control is what gets announced. */
+function pageIndexHTML(label, src, { href = '', attrs = '' } = {}) {
+  const inner = `<img src="${src}" alt="">`;
+  return href
+    ? `<a class="page-index" href="${href}" aria-label="${label}" ${attrs}>${inner}</a>`
+    : `<button type="button" class="page-index" aria-label="${label}" ${attrs}>${inner}</button>`;
+}
+
 export function viewAbout() {
   return `
   ${pageBg()}
   <section class="hero wrap editorial about-hero-min">
-    <img class="page-index" src="assets/img/brand/about-nav.png" alt="About" aria-hidden="true">
+    ${pageIndexHTML('Reload About', 'assets/img/brand/about-nav.png', { attrs: 'data-page-reload="about"' })}
     <div class="hero__inner">
       <div class="editorial__mast">
         ${heroLogo()}
@@ -152,7 +164,9 @@ export function viewContact() {
   return `
   ${pageBg()}
   <section class="hero wrap editorial about-hero-min">
-    <img class="page-index" src="assets/img/brand/contact-nav.png" alt="Contact" aria-hidden="true">
+    ${pageIndexHTML(`Email ${SITE.email.ops}`, 'assets/img/brand/contact-nav.png', {
+      href: `mailto:${SITE.email.ops}`,
+    })}
     <div class="hero__inner">
       <div class="editorial__mast">
         ${heroLogo()}
@@ -166,6 +180,9 @@ export function viewContact() {
         <img class="contact-email__bracket" src="assets/img/brand/right-bracket.png" alt="]">
       </a>
       <div class="social-row contact-socials" id="contact-socials"></div>
+      <a class="contact-ops-email" href="mailto:${SITE.email.ops}" aria-label="Email ${SITE.email.ops}">
+        <img class="social-img" src="assets/img/social/email.png" alt="Email ${SITE.email.ops}">
+      </a>
     </div>
   </section>`;
 }
@@ -186,7 +203,7 @@ export function viewArtist(a) {
     : photoInner;
   return `
   <section class="artist-detail">
-    <img class="page-index" src="assets/img/brand/artists-nav.png" alt="Artists" aria-hidden="true">
+    ${pageIndexHTML('Artists', 'assets/img/brand/artists-nav.png', { attrs: 'data-artists-menu' })}
     <div class="artist-detail__inner">
       <figure class="artist-detail__photo">
         ${photo}
@@ -316,17 +333,22 @@ export function reveal() {
   items.forEach((i) => io.observe(i));
 }
 
+/* `trailing` are elements outside the row that take the next beats of the same
+   run — the contact page's EMAIL button sits below the socials rather than in
+   them, but reads as the last item in the sequence. */
+const rowItems = (row, trailing) => [...row.children, ...trailing].filter(Boolean);
+
 /* Hide a social row immediately (opacity:0) so it can't flash visible before the
    staggered reveal runs — call at render time, ahead of the loader. */
-export function primeRow(row) {
+export function primeRow(row, trailing = []) {
   if (!row) return;
-  [...row.children].forEach((it) => it.classList.add('reveal-item'));
+  rowItems(row, trailing).forEach((it) => it.classList.add('reveal-item'));
 }
 
 /* Socials fade in one-by-one, left → right (as the old site did). */
-export function revealRow(row) {
+export function revealRow(row, trailing = []) {
   if (!row) return;
-  const items = [...row.children];
+  const items = rowItems(row, trailing);
   items.forEach((it) => it.classList.add('reveal-item'));
   requestAnimationFrame(() =>
     items.forEach((it, i) => setTimeout(() => it.classList.add('in'), 120 + i * 90))

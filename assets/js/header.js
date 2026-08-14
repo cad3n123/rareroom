@@ -11,6 +11,30 @@ import { socialRowHTML } from './views.js';
 export function navLinks() {
   return NAV.filter((n) => featureOn(n.feature));
 }
+
+const setDrop = (drop, open) => {
+  drop.classList.toggle('open', open);
+  drop.querySelector('[data-mobile-drop]')?.setAttribute('aria-expanded', String(open));
+};
+
+/* Shut the Artists roster in BOTH navs, called by the router on every route
+   change — each one has its own way of being stuck open over a page it has
+   nothing to do with:
+     · the island panel's accordion is deliberately sticky once opened (only the
+       Artists control closes it),
+     · the artist page's inline dropdown can be left pinned by the footer /
+       vertical-title Artists controls, which hold it open past the pointer.
+   `is-dismissed` is deliberately NOT cleared: it's what keeps the panel shut
+   after you pick an artist, and dropping it here would pop the dropdown straight
+   back open under a cursor that never moved. It clears itself on mouseleave. */
+export function closeNavDrops() {
+  $$('#mobileMenu .mobile-drop').forEach((d) => setDrop(d, false));
+  $$('#site-header .nav__item--dropdown').forEach((item) => {
+    item.classList.remove('is-pinned');
+    // focus-within holds it open too, so let go of anything focused inside it
+    if (item.contains(document.activeElement)) document.activeElement.blur();
+  });
+}
 function dropdownItems(kind) {
   if (kind === 'artists')
     return ARTISTS
@@ -72,7 +96,7 @@ export function buildHeader() {
     <div class="wrap">
       <span class="island-tag">a room that is rare</span>
       <button class="icon-btn nav-toggle" data-menu-toggle aria-label="Menu" aria-expanded="false">
-        <span class="nav-toggle__ico nav-toggle__arrow"><img src="assets/img/brand/down-arrow.png" alt=""></span>
+        <span class="nav-toggle__ico nav-toggle__bars"><img src="assets/img/icons/hamburger.png" alt=""></span>
         <span class="nav-toggle__ico nav-toggle__x"><img src="assets/img/brand/x.png" alt=""></span>
       </button>
       <a class="brand" href="/" aria-label="RAREROOM home">
@@ -80,11 +104,14 @@ export function buildHeader() {
       </a>
       <nav class="nav" aria-label="Primary">${links}${subscribeBtn}</nav>
       <div class="header-tools">
+        <!-- Both toggles are drawn from the hand-inked icon art, masked to
+             currentColor so they still take their ink/accent colour from the
+             button's state (see .icon-btn--flash / --sound in header.css). -->
         <button class="icon-btn icon-btn--flash" data-flash aria-pressed="false" title="Toggle morse flashing" aria-label="Toggle morse flashing">
-          <span class="i-off">${IC.flashOff}</span><span class="i-on">${IC.flashOn}</span>
+          <span class="i-off"></span><span class="i-on"></span>
         </button>
         <button class="icon-btn icon-btn--sound" data-sound aria-pressed="false" title="Toggle morse sound" aria-label="Toggle morse sound">
-          <span class="i-off">${IC.soundOff}</span><span class="i-on">${IC.soundOn}</span>
+          <span class="i-off"></span><span class="i-on"></span>
         </button>
       </div>
     </div>
@@ -117,6 +144,10 @@ export function buildHeader() {
   };
   toggle?.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
 
+  /* Desktop with a real pointer is where the nav follows the cursor instead of
+     being clicked open — touch and phone widths keep the tap behaviour. */
+  const hoverNav = window.matchMedia('(hover: hover) and (min-width: 761px)');
+
   // The whole island is a toggle: clicking any dead space on the slab opens or
   // closes the panel, so you don't have to hit the small chevron. Anything that
   // is already a control (the chevron itself, the logo link, the flash/sound
@@ -129,8 +160,14 @@ export function buildHeader() {
   // On a phone that page takes the island like every other, so it gets the
   // tap-anywhere behaviour too; checking data-page here used to exclude it at
   // every width and left its island the one slab you couldn't tap open.
-  host.querySelector('.site-header .wrap')?.addEventListener('click', (e) => {
+  const slab = host.querySelector('.site-header .wrap');
+  slab?.addEventListener('click', (e) => {
     if (document.body.dataset.nav === 'bar') return;
+    // On a hovering desktop the panel already follows the pointer (see below), so
+    // a click on the slab would only fight it — the panel would shut under a
+    // cursor that is still inside it, and nothing would reopen it until the
+    // pointer left and came back.
+    if (hoverNav.matches) return;
     if (e.target.closest('a, button')) return;
     setMenu(!menu.classList.contains('open'));
   });
@@ -139,8 +176,42 @@ export function buildHeader() {
   $$('#mobileMenu [data-mobile-drop]').forEach((btn) =>
     btn.addEventListener('click', () => {
       const drop = btn.closest('.mobile-drop');
-      const open = drop.classList.toggle('open');
-      btn.setAttribute('aria-expanded', String(open));
+      setDrop(drop, !drop.classList.contains('open'));
+    })
+  );
+
+  /* ---- Desktop: the panel and the Artists list follow the pointer -----------
+     Closing is deliberately delayed a beat, and the elements that count as "still
+     inside" share ONE timer: the slab and the panel hanging off it are separate
+     boxes, so travelling from one into the other fires a leave before the enter,
+     and a per-element timer would let that flicker slam the panel shut mid-move. */
+  const LEAVE_GRACE = 90; // ms
+  const hoverClose = (els, close) => {
+    let timer = null;
+    els.forEach((el) => {
+      el.addEventListener('mouseenter', () => clearTimeout(timer));
+      el.addEventListener('mouseleave', () => {
+        if (!hoverNav.matches) return;
+        clearTimeout(timer);
+        timer = setTimeout(close, LEAVE_GRACE);
+      });
+    });
+  };
+
+  if (slab) {
+    slab.addEventListener('mouseenter', () => {
+      if (hoverNav.matches && document.body.dataset.nav !== 'bar') setMenu(true);
+    });
+    hoverClose([slab, menu], () => setMenu(false));
+  }
+
+  // Hover opens the roster, but nothing closes it again except the Artists
+  // control itself — the list stays put once you've asked for it, including
+  // across the panel closing and reopening, rather than collapsing the moment
+  // the pointer wanders off the names you were reading.
+  $$('#mobileMenu .mobile-drop').forEach((drop) =>
+    drop.addEventListener('mouseenter', () => {
+      if (hoverNav.matches) setDrop(drop, true);
     })
   );
   // Any real navigation (link or non-accordion button) closes the menu.
@@ -192,7 +263,9 @@ export function buildHeader() {
 }
 
 export function setActiveNav(pageKey) {
-  $$('#site-header .nav [data-route]').forEach((a) =>
+  // The footer nav carries the same data-route marks as the header's, so both
+  // light up the current page together.
+  $$('#site-header .nav [data-route], #site-footer [data-route]').forEach((a) =>
     a.dataset.route === pageKey
       ? a.setAttribute('aria-current', 'page')
       : a.removeAttribute('aria-current')

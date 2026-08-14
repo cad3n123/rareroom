@@ -59,7 +59,56 @@ IMAGES = [
     "assets/img/social/facebook.png",
     "assets/img/social/x.png",
     "assets/img/social/site.png",
+    "assets/img/social/email.png",
+    # Header UI glyphs — the light/sound toggles and the menu hamburger. These are
+    # masked to currentColor in CSS, so all the bake has to give us is a clean
+    # alpha channel (the ink colour is thrown away by the mask).
+    "assets/img/icons/light_on.png",
+    "assets/img/icons/light_off.png",
+    "assets/img/icons/sound_on.png",
+    "assets/img/icons/sound_off.png",
+    "assets/img/icons/hamburger.png",
 ]
+
+# Sources that are too small to threshold cleanly: hard-thresholding a ~190px
+# scan turns its anti-aliased edges into visible stair-steps, and the icons are
+# then drawn as masks that can scale up. Resampling the pristine original UP
+# before the threshold keeps the edge smooth — the interpolated grey ramp is
+# what the threshold cuts through, so the resulting outline lands on a much
+# finer grid.
+UPSCALE = {
+    # The EMAIL wordmark comes in at the same 46px height as the other social art,
+    # which is only ~4x the size it's drawn at — enough to soften on a retina
+    # screen. It's the one of that set that gets the treatment because it's also
+    # the newest scan; the rest are left alone rather than re-cut.
+    "assets/img/social/email.png": 4,
+    "assets/img/icons/light_on.png": 4,
+    "assets/img/icons/light_off.png": 4,
+    "assets/img/icons/sound_on.png": 4,
+    "assets/img/icons/sound_off.png": 4,
+    "assets/img/icons/hamburger.png": 6,
+}
+
+# Tighten the icon art in on itself: the scans carry a lot of dead margin, and
+# because the icons are drawn `contain`ed inside a fixed-size box, that margin is
+# what decides how small the glyph reads. (fraction, anchor) keeps `fraction` of
+# each side and places the window by anchor — 'centre' or 'bottom' (horizontally
+# centred, flush with the bottom edge, which is where the bulb sits).
+CROP = {
+    "assets/img/icons/light_on.png": (0.85, "bottom"),
+    "assets/img/icons/light_off.png": (0.85, "bottom"),
+    "assets/img/icons/sound_on.png": (0.85, "centre"),
+    "assets/img/icons/sound_off.png": (0.85, "centre"),
+    "assets/img/icons/hamburger.png": (0.90, "centre"),
+}
+
+
+def crop_box(size, fraction, anchor):
+    w, h = size
+    cw, ch = round(w * fraction), round(h * fraction)
+    left = (w - cw) // 2
+    top = h - ch if anchor == "bottom" else (h - ch) // 2
+    return (left, top, left + cw, top + ch)
 
 
 def backup_path(rel):
@@ -78,6 +127,11 @@ def ensure_backup(rel):
 def bake(rel, slope, intercept, ink):
     src = ensure_backup(rel)               # always start from the pristine copy
     im = Image.open(src).convert("RGBA")
+    factor = UPSCALE.get(rel)
+    if factor:
+        im = im.resize((im.width * factor, im.height * factor), Image.LANCZOS)
+    if rel in CROP:
+        im = im.crop(crop_box(im.size, *CROP[rel]))
     arr = np.asarray(im).astype(np.float32) / 255.0
     r, g, b, a = arr[..., 0], arr[..., 1], arr[..., 2], arr[..., 3]
 
