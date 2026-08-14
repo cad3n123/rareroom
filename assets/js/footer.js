@@ -18,20 +18,17 @@ export function buildFooter() {
     // hamburger menu with Artists expanded on mobile — wired in site.js); keep the
     // plain routes as links.
     .flatMap((n) => {
-      // data-route marks which item to light up as the current page — the same
-      // brighter ink + morse underline the header nav gets (see setActiveNav).
       if (n.dropdown === 'artists')
         return [
-          `<button type="button" class="nav__link nav__link--parent" data-artists-menu data-route="artist">${n.label}${navMorseHTML(n.label)}</button>`,
+          `<button type="button" class="nav__link nav__link--parent" data-footer-artists>${n.label}${navMorseHTML(n.label)}</button>`,
         ];
       if (n.route)
-        return [`<a class="nav__link" href="/${n.route}" data-route="${n.route}">${n.label}${navMorseHTML(n.label)}</a>`];
+        return [`<a class="nav__link" href="/${n.route}">${n.label}${navMorseHTML(n.label)}</a>`];
       return [];
     })
     .concat([
-      // Studio is an overlay, not a route, so it never reads as "current".
       `<button type="button" class="nav__link nav__link--parent" data-action="studio">Studio${navMorseHTML('Studio')}</button>`,
-      `<a class="nav__link" href="/privacy" data-route="privacy">Privacy${navMorseHTML('Privacy')}</a>`,
+      `<a class="nav__link" href="/privacy">Privacy${navMorseHTML('Privacy')}</a>`,
     ])
     .join('');
 

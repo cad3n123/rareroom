@@ -489,57 +489,32 @@ body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
   line-height: 0;
 }
 
-/* The morse toggles are the hand-inked bulb/speaker art rather than UI glyphs.
-   They're painted as MASKS, not <img>: the art becomes the shape and the colour
-   comes from `currentColor`, so the buttons keep exactly the ink → hover-ink →
-   accent colouring below (and follow the theme) instead of needing a filter to
-   flip them in dark mode. */
-.icon-btn--flash>span,
-.icon-btn--sound>span {
-  /* Both variants are always laid out, stacked in the button's single grid cell,
-     and the inactive one is hidden with `opacity` rather than `display: none`.
-     That is what gets the second glyph on screen instantly: a display:none
-     element is never painted, so its mask image isn't fetched until the first
-     click, and the toggle sat blank for a beat while it downloaded. An
-     opacity:0 element still paints, so both masks load with the page. */
-  grid-area: 1 / 1;
-  width: 21px;
-  height: 21px;
-  background: currentColor;
-  -webkit-mask: center / contain no-repeat;
-  mask: center / contain no-repeat;
+.icon-btn svg {
+  display: block;
+  width: 18px;
+  height: 18px;
 }
 
-.icon-btn--flash .i-off {
-  -webkit-mask-image: url(../img/icons/light_off.png);
-  mask-image: url(../img/icons/light_off.png);
-}
-
-.icon-btn--flash .i-on {
-  -webkit-mask-image: url(../img/icons/light_on.png);
-  mask-image: url(../img/icons/light_on.png);
-}
-
-.icon-btn--sound .i-off {
-  -webkit-mask-image: url(../img/icons/sound_off.png);
-  mask-image: url(../img/icons/sound_off.png);
-}
-
-.icon-btn--sound .i-on {
-  -webkit-mask-image: url(../img/icons/sound_on.png);
-  mask-image: url(../img/icons/sound_on.png);
+/* The morse toggles read like quick pen sketches rather than polished UI glyphs
+   — a slightly heavier, rounded stroke roughened by the #sketch displacement
+   filter so the lines wobble like they were hand-drawn. */
+.icon-btn--flash svg,
+.icon-btn--sound svg {
+  filter: url(#sketch);
+  stroke-width: 1.9;
+  overflow: visible;
 }
 
 .icon-btn .i-on {
-  opacity: 0;
+  display: none;
 }
 
 .icon-btn.is-on .i-on {
-  opacity: 1;
+  display: block;
 }
 
 .icon-btn.is-on .i-off {
-  opacity: 0;
+  display: none;
 }
 
 .icon-btn.is-on {
@@ -574,18 +549,6 @@ body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
      have to be matched by eye rather than inheriting font-size */
   height: 0.52rem;
   width: auto;
-  /* Two separate things narrow this art under a tight container while `height`
-     above holds it at full height — which squashes the glyphs and leaves the chip
-     reading as too tall for its label: the global `img { max-width: 100% }`
-     reset, and flex shrinking (the chip is inline-flex, so the wordmark is a flex
-     item). The nav panel is a narrow column and hits them; the footer's form row
-     is roomy and doesn't, which is why the same chip looked wrong in one place
-     and right in the other. Both are switched off here, with `contain` as the
-     backstop so anything that does squeeze it scales the art rather than
-     stretching it. */
-  max-width: none;
-  flex: none;
-  object-fit: contain;
   filter: none;
   transition: filter 0.2s var(--ease);
 }
@@ -701,29 +664,35 @@ body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
   transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
 }
 
-/* The menu button is the hand-inked hamburger, in the same stamped set as the
-   X it crossfades into. */
-.nav-toggle__bars img {
-  /* the bars are wide and thin — they need more width than the X to carry
+.nav-toggle__ico svg {
+  /* a little bigger than the toggle icons, and in full --ink */
+  width: 20px;
+  height: 20px;
+}
+
+/* The menu button is the same stamped arrow the home page uses as its scroll
+   cue, so the two read as one piece of art. */
+.nav-toggle__arrow img {
+  /* the art is a wide, flat chevron — it needs more width than the X to carry
      comparable visual weight */
-  width: 23px;
+  width: 27px;
   height: auto;
   object-fit: contain;
 }
 
 .nav-toggle__x img {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
 }
 
-:root[data-theme='dark'] .nav-toggle__bars img,
+:root[data-theme='dark'] .nav-toggle__arrow img,
 :root[data-theme='dark'] .nav-toggle__x img {
   /* white glyphs in dark theme (the baked art is dark ink) */
   filter: invert(1);
 }
 
-/* Closed → open: the bars swing a half-turn and shrink away while the X
+/* Closed → open: the arrow swings a half-turn and shrinks away while the X
    counter-rotates into place. Both halves share one arc, so it reads as a single
    rotation rather than two icons crossfading. */
 .nav-toggle__x {
@@ -731,7 +700,7 @@ body[data-nav='island']:has(.mobile-menu.open) .site-header .wrap {
   transform: rotate(-90deg) scale(0.55);
 }
 
-.nav-toggle.is-open .nav-toggle__bars {
+.nav-toggle.is-open .nav-toggle__arrow {
   opacity: 0;
   transform: rotate(180deg) scale(0.55);
 }
@@ -897,10 +866,11 @@ body[data-nav='island'] .mobile-menu__socials {
    same ink as the rest of the site. Always at the art's own aspect ratio, so a
    shorter rule is a proportionally thinner one rather than a squashed scratch.
 
-   Only the top-level rows are ruled. The expanded artist names are one group
-   hanging off Artists, not peers of it — ruling them too chopped that group into
-   a stack of equal-weight rows and lost the nesting. */
-body[data-nav='island'] .mobile-menu__link {
+   The artist rows are indented, and their rule is indented and shortened by the
+   same amount — so every rule in the panel, top-level and nested alike, stops
+   dead on the same right-hand edge and the list reads as one column. */
+body[data-nav='island'] .mobile-menu__link,
+body[data-nav='island'] .mobile-drop__item {
   border-bottom: none;
   background-image: url('../img/brand/horizontal-line.png');
   background-repeat: no-repeat;
@@ -909,8 +879,8 @@ body[data-nav='island'] .mobile-menu__link {
 }
 
 body[data-nav='island'] .mobile-drop__item {
-  border-bottom: none;
-  background-image: none;
+  background-position: var(--nav-sub-indent) bottom;
+  background-size: calc(var(--nav-rule-w) - var(--nav-sub-indent)) auto;
 }
 
 .mobile-menu__nav {

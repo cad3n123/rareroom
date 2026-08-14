@@ -382,29 +382,6 @@
   margin-top: 0.7rem;
 }
 
-/* The ops address, set as the stamped EMAIL wordmark under the socials. It reads
-   as one of them: the art is a .social-img, and this carries the same 0.66rem the
-   row's links run at, so the shared 1.14em resolves identically. Spacing is the
-   row's own 0.7rem, so the blocks step down the page evenly.
-
-   The hover is the socials' too, and it lands on the IMAGE rather than the link.
-   That matters beyond the look: the staggered reveal animates the LINK's own
-   opacity, so a hover that also drove the link's opacity fought it — the button
-   faded up early if the pointer was already parked there, and then sat dead
-   afterwards because .reveal-item.in won the cascade. Driving the two from
-   different elements means neither can override the other. */
-.contact-ops-email {
-  display: inline-flex;
-  margin-top: 0.7rem;
-  font-size: 0.66rem;
-}
-
-@media (hover: hover) {
-  .contact-ops-email:hover .social-img {
-    opacity: 0.62;
-  }
-}
-
 /* Socials that fade in one-by-one, left → right */
 .reveal-item {
   opacity: 0;
