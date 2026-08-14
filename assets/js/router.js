@@ -13,7 +13,7 @@ import {
   releaseCard, productCard, reveal, revealRow, primeRow, maybeIntro, bindBgGrow,
   socialRowHTML,
 } from './views.js';
-import { setActiveNav } from './header.js';
+import { setActiveNav, closeNavDrops } from './header.js';
 
 function parseRoute() {
   // Clean URLs: /about, /artist/slug, / (home). Fall back to the old #/hash form
@@ -324,13 +324,17 @@ export function navigate() {
   // straight away); the contact page keeps the animation everywhere.
   const isMobile = window.matchMedia('(max-width: 760px)').matches;
   const animateSocials = !(pageKey === 'artist' && isMobile);
-  if (animateSocials) primeRow(socialsRow);
+  // The contact page's EMAIL button sits below the socials but belongs to the same
+  // run — it takes the beat after the last platform, as if it were next in the row.
+  const socialsTrail = pageKey === 'contact' ? [$('.contact-ops-email', app)] : [];
+  if (animateSocials) primeRow(socialsRow, socialsTrail);
   if (pageKey === 'home' || pageKey === 'about' || pageKey === 'contact') bindBgGrow(app);
   if (pageKey === 'releases') RELEASES.forEach((r) => $('#releases-grid').append(releaseCard(r)));
   if (pageKey === 'shop') PRODUCTS.forEach((p) => $('#shop-grid').append(productCard(p)));
 
   reveal();
   setActiveNav(pageKey);
+  closeNavDrops();
   window.scrollTo(0, 0);
 
   const curtain = maybeIntro(pageKey);
@@ -346,7 +350,7 @@ export function navigate() {
   // Everything that should happen once the page is actually visible: the socials
   // pop-in, then the arrival morse.
   const onArrive = () => {
-    if (animateSocials) revealRow(socialsRow);
+    if (animateSocials) revealRow(socialsRow, socialsTrail);
     playArrival();
   };
 

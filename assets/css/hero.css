@@ -324,7 +324,13 @@ body[data-page='contact'] .page-bg img {
   transform-origin: center center;
   opacity: 0.9;
   z-index: 2;
-  pointer-events: none;
+
+  /* It's a control now (a button, or a mailto link on contact) — strip the native
+     chrome so it stays the same strip of art it was as a bare <img>. Deliberately
+     no hover treatment: the pointer is the only affordance, since anything that
+     moved or faded would fight the stamped-label look. */
+  border: 0;
+  cursor: pointer;
 
   background-color: white;
   filter: invert(1);
@@ -338,6 +344,14 @@ body[data-page='contact'] .page-bg img {
      shift/blur. Promoting it once keeps the raster stable. */
   will-change: transform;
   backface-visibility: hidden;
+}
+
+/* The art fills the control, so every existing .page-index rule (the --pi-h
+   letter height, the per-page insets and rotations) keeps sizing the strip. */
+.page-index img {
+  display: block;
+  height: 100%;
+  width: auto;
 }
 
 /* baked dark ink → light on dark paper */
