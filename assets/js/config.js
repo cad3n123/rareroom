@@ -78,6 +78,8 @@ export const NAV = [
   { label: 'About', route: 'about' },
   { label: 'Contact', route: 'contact' },
   { label: 'Studio', action: 'studio' }, // opens the studio carousel popup
+  // `href` items leave the site — rendered as plain links that open in a new tab.
+  { label: 'Licensing', href: 'https://rareroom.fillout.com/licensingrequestform' },
   { label: 'Releases', route: 'releases', feature: 'releases' },
   { label: 'Shop', route: 'shop', feature: 'shop' },
 ];
