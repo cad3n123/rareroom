@@ -2,6 +2,12 @@
    FOOTER — a full-width white subscribe band above the black footer body
    (brand, footer nav with white morse underlines, socials, decorative morse).
    ============================================================================= */
+/* The phones-only 5% shrink (bottom of this file). Kept as a token because the
+   socials' edge offset has to divide by it to land on a real screen distance. */
+:root {
+  --footer-zoom: 0.95;
+}
+
 .site-footer {
   background: var(--ink);
   color: var(--paper);
@@ -168,6 +174,21 @@
   color: #fff;
 }
 
+/* Socials sit at the right edge of the footer — on wide rows they're already the
+   last item in the space-between row, this holds the alignment once the row wraps
+   and the block goes full width. */
+.site-footer .social-row {
+  justify-content: flex-end;
+}
+
+/* A transparent wrapper at every width but phones, where it becomes the line
+   Privacy shares with the socials (see the responsive block at the foot of this
+   file) — display:contents keeps .social-row itself the flex item of
+   .footer-bottom, so the desktop row is laid out exactly as it was. */
+.footer-tail {
+  display: contents;
+}
+
 .site-footer .social-row a {
   color: rgba(255, 255, 255, 0.82);
 }
@@ -225,4 +246,57 @@
    background (matching the top nav's morse behaviour, just inverted colour). */
 .site-footer .nav__morse {
   color: #fff;
+}
+
+/* Phones: pull the whole footer in by 5% so it takes less of the screen — the
+   black body wholesale, and in the white band only the fine print. The email
+   input and the SUBSCRIBE chip are deliberately left at full size: they're the
+   tap targets, and the chip is the same stamped art as the nav's.
+   `zoom` (not `transform: scale`) so the shrink reflows — a transform would keep
+   the original box and leave a 5% gap down the side of the footer. */
+@media (max-width: 760px) {
+  .footer-main,
+  .footer-cta .news-consent {
+    zoom: var(--footer-zoom);
+  }
+
+  /* The floating nav's REAL gap from the screen edge. The slab is
+     `width: 100%; max-width: --island-w` inside a header inset by
+     --island-inset, so it only wears that inset while the viewport is narrow
+     enough to keep it under its cap — the moment it isn't, the slab stops
+     growing, centres, and the gap becomes the leftover half. --island-inset
+     alone is right at 375px and far too tight by 430px. */
+  .site-footer {
+    --nav-edge-gap: max(var(--island-inset), calc((100vw - var(--island-w)) / 2));
+  }
+
+  /* Privacy + the socials share the last line, spaced evenly rather than pinned
+     to its ends. The line runs from the footer's own gutter out to --nav-edge-gap
+     on the right, so the space it distributes is measured against the floating
+     nav above it; the right-hand reach is grown at the edge rather than nudged
+     across, since a negative margin-right would leave a definite flex-basis's
+     right edge put and only shrink the outer size. Dividing by --footer-zoom
+     undoes the shrink this subtree is under, so the reach is a true screen
+     distance rather than 95% of one. */
+  .footer-tail {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    /* row-gap only, for the wrapped case — a column gap would be added to the
+       middle space and the three gaps would stop reading as equal */
+    gap: 0.4rem 0;
+    flex-wrap: wrap;
+    flex-basis: calc(100% + var(--pad-x) - var(--nav-edge-gap) / var(--footer-zoom));
+    /* the reach IS the point — don't let flex shrink it back to the line */
+    flex-shrink: 0;
+  }
+
+  /* Privacy takes the footer nav's casing by hand — that lives on
+     .footer-nav .nav__link, which it is outside of once moved. Size and tracking
+     come from .nav__link itself, and so does the ink (including the brighter
+     current-page white on /privacy). */
+  .footer-tail .footer-privacy {
+    font-size: 0.66rem;
+    text-transform: uppercase;
+  }
 }

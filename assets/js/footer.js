@@ -31,7 +31,15 @@ export function buildFooter() {
     .concat([
       // Studio is an overlay, not a route, so it never reads as "current".
       `<button type="button" class="nav__link nav__link--parent" data-action="studio">Studio${navMorseHTML('Studio')}</button>`,
-      `<a class="nav__link" href="/privacy" data-route="privacy">Privacy${navMorseHTML('Privacy')}</a>`,
+      // …then the off-site links, which fall after Studio in NAV and so read in
+      // the same order here as they do in the header.
+      ...navLinks()
+        .filter((n) => n.href)
+        .map(
+          (n) =>
+            `<a class="nav__link" href="${n.href}" target="_blank" rel="noopener">${n.label}${navMorseHTML(n.label)}</a>`
+        ),
+      `<a class="nav__link footer-privacy" href="/privacy" data-route="privacy">Privacy${navMorseHTML('Privacy')}</a>`,
     ])
     .join('');
 
@@ -59,7 +67,12 @@ export function buildFooter() {
           <span class="mono">© ${new Date().getFullYear()} RAREROOM<br><a href="https://${SITE.domain}" target="_blank" rel="noopener">${SITE.domain}</a><br>distributed by <a class="footer-orchard" href="https://www.theorchard.com/" target="_blank" rel="noopener">The Orchard</a></span>
         </div>
         <nav class="footer-nav" aria-label="Footer">${footNav}</nav>
-        <div class="social-row">${socials}</div>
+        <!-- .footer-tail is display:contents until phones, where it becomes the
+             line Privacy shares with the socials (see placePrivacy). The socials
+             have to stay one group inside it: they're a flat row of links and
+             "//" separators, so spacing them out as siblings of Privacy would
+             push the separators away from the names they divide. -->
+        <div class="footer-tail"><div class="social-row">${socials}</div></div>
       </div>
       <div class="footer-morse">
         <span class="line"></span>
@@ -70,6 +83,33 @@ export function buildFooter() {
   </footer>`;
 
   wireNewsletter(host);
+  placePrivacy(host);
+}
+
+/* Privacy rides at the end of the footer nav on desktop, but on phones it moves
+   into .footer-tail, the line it shares with the socials — one row instead of a
+   nav line with a lone link trailing under it. The link is MOVED, not copied,
+   so there's never a second /privacy in the footer, and it's re-placed on resize
+   because the footer is built once at boot and outlives any rotation. */
+function placePrivacy(host) {
+  const link = host.querySelector('.footer-privacy');
+  const nav = host.querySelector('.footer-nav');
+  const tail = host.querySelector('.footer-tail');
+  if (!link || !nav || !tail) return;
+  const phone = window.matchMedia('(max-width: 760px)');
+  const place = () => {
+    const target = phone.matches ? tail : nav;
+    // no-op when it's already where it belongs — this runs on every resize tick,
+    // and re-inserting the node would drop focus and thrash layout for nothing
+    if (link.parentElement === target) return;
+    phone.matches ? target.prepend(link) : target.append(link);
+  };
+  place();
+  // `resize` as well as the media query's own event: the change event doesn't
+  // fire under a viewport that's being emulated rather than really resized, and
+  // the check above is cheap enough to run per tick.
+  phone.addEventListener('change', place);
+  window.addEventListener('resize', place, { passive: true });
 }
 
 /* Subscribe without leaving the site. The old flow POSTed to Mailchimp's hosted

@@ -62,6 +62,8 @@ export function buildHeader() {
       }
       if (n.action === 'studio')
         return `<button type="button" class="nav__link nav__link--parent" data-action="studio">${n.label}${navMorseHTML(n.label)}</button>`;
+      if (n.href)
+        return `<a class="nav__link" href="${n.href}" target="_blank" rel="noopener">${n.label}${navMorseHTML(n.label)}</a>`;
       return `<a class="nav__link" href="/${n.route}" data-route="${n.route}">${n.label}${navMorseHTML(n.label)}</a>`;
     })
     .join('');
@@ -85,6 +87,8 @@ export function buildHeader() {
         </div>`;
       if (n.action === 'studio')
         return `<button type="button" class="mobile-menu__link" data-action="studio">${n.label}</button>`;
+      if (n.href)
+        return `<a class="mobile-menu__link" href="${n.href}" target="_blank" rel="noopener">${n.label}</a>`;
       return `<a class="mobile-menu__link" href="/${n.route}">${n.label}</a>`;
     })
     .join('');
