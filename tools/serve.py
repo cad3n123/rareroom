@@ -9,7 +9,7 @@ when it exists (assets, images, etc.) and otherwise falls back to index.html so
 the front-end router can handle the route.
 
 Usage:
-    python3 tools/serve.py [port]     # defaults to 8000
+    python3 tools/serve.py [port]     # defaults to $PORT, else 8000
 """
 import os
 import sys
@@ -19,7 +19,7 @@ from socketserver import ThreadingTCPServer
 # Serve from the project root (this script lives in <root>/tools).
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else int(os.environ.get('PORT', 8000))
 
 
 class SPAHandler(SimpleHTTPRequestHandler):

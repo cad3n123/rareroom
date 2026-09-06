@@ -321,7 +321,10 @@
   --font-mono: var(--font-code);
   background: var(--ink);
   color: var(--paper);
-  padding: clamp(1.5rem, 4vw, 2.4rem) var(--pad-x) clamp(1.7rem, 4vw, 2.6rem);
+  /* Extra room up top so the title clears the close button in the corner rather
+     than starting level with it. The X is positioned off the panel's top edge,
+     not this padding, so it stays put in the corner. */
+  padding: clamp(2.6rem, 6vw, 3.4rem) var(--pad-x) clamp(1.7rem, 4vw, 2.6rem);
   /* Hidden state. Slides up from under its own edge; visibility keeps it out of
      the tab order until it arrives. */
   transform: translateY(100%);
@@ -346,10 +349,11 @@
   color: var(--paper);
   text-align: center;
   margin: 0 auto 1.1rem;
-  /* Keeps the centred line clear of the close button in the corner — on a narrow
-     phone the two are otherwise a few pixels apart, and the title wraps here
-     rather than running under the X. Symmetric, so it stays optically centred. */
-  padding-inline: 2.4rem;
+  /* Narrow enough that the line breaks before "updates" — two short centred
+     rows read better here than one edge-to-edge one on a phone — and it keeps
+     the text well clear of the close button in the corner. In em, so it tracks
+     the clamped font size. */
+  max-width: 17em;
 }
 
 .signup-pop .news-form {
