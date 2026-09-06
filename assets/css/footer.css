@@ -321,10 +321,7 @@
   --font-mono: var(--font-code);
   background: var(--ink);
   color: var(--paper);
-  /* Extra room up top so the title clears the close button in the corner rather
-     than starting level with it. The X is positioned off the panel's top edge,
-     not this padding, so it stays put in the corner. */
-  padding: clamp(2.6rem, 6vw, 3.4rem) var(--pad-x) clamp(1.7rem, 4vw, 2.6rem);
+  padding: clamp(1.5rem, 4vw, 2.4rem) var(--pad-x) clamp(1.7rem, 4vw, 2.6rem);
   /* Hidden state. Slides up from under its own edge; visibility keeps it out of
      the tab order until it arrives. */
   transform: translateY(100%);
@@ -343,21 +340,16 @@
   /* deliberately not uppercased — the line is written lowercase and reads as the
      quiet aside it is, against the stamped SUBSCRIBE chip doing the shouting */
   font-family: var(--font-mono);
-  font-size: clamp(0.94rem, 2.8vw, 1.14rem);
+  font-size: clamp(0.82rem, 2.4vw, 1rem);
   font-weight: 400;
   letter-spacing: 0.2em;
-  /* The default is nearly solid — with the line wrapping in two, the halves need
-     air between them to read as one sentence rather than two stacked labels. */
-  line-height: 1.5;
   color: var(--paper);
   text-align: center;
   margin: 0 auto 1.1rem;
-  padding-bottom: 0.6rem;
-  /* Narrow enough that the line breaks before "updates" — two short centred
-     rows read better here than one edge-to-edge one on a phone — and it keeps
-     the text well clear of the close button in the corner. In em, so it tracks
-     the clamped font size. */
-  max-width: 17em;
+  /* Keeps the centred line clear of the close button in the corner — on a narrow
+     phone the two are otherwise a few pixels apart, and the title wraps here
+     rather than running under the X. Symmetric, so it stays optically centred. */
+  padding-inline: 2.4rem;
 }
 
 .signup-pop .news-form {
@@ -448,6 +440,25 @@
   .signup-pop {
     max-height: 60dvh;
     padding-bottom: calc(1.7rem + env(safe-area-inset-bottom));
+    /* Extra room up top so the title clears the close button in the corner
+       rather than starting level with it. The X is positioned off the panel's
+       top edge, not this padding, so it stays put in the corner. */
+    padding-top: clamp(2.6rem, 6vw, 3.4rem);
+  }
+
+  .signup-pop__title {
+    font-size: clamp(0.94rem, 2.8vw, 1.14rem);
+    /* The inherited leading is nearly solid — with the line wrapping in two,
+       the halves need air between them to read as one sentence rather than two
+       stacked labels. */
+    line-height: 1.5;
+    padding-bottom: 0.6rem;
+    /* Narrow enough that the line breaks before "updates": two short centred
+       rows read better than one edge-to-edge one on a phone. Replaces the
+       padding guard above — it keeps the text clear of the X on its own. In em,
+       so it tracks the font size. */
+    padding-inline: 0;
+    max-width: 17em;
   }
 
   .signup-pop .news-consent {
