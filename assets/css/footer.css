@@ -343,12 +343,16 @@
   /* deliberately not uppercased — the line is written lowercase and reads as the
      quiet aside it is, against the stamped SUBSCRIBE chip doing the shouting */
   font-family: var(--font-mono);
-  font-size: clamp(0.82rem, 2.4vw, 1rem);
+  font-size: clamp(0.94rem, 2.8vw, 1.14rem);
   font-weight: 400;
   letter-spacing: 0.2em;
+  /* The default is nearly solid — with the line wrapping in two, the halves need
+     air between them to read as one sentence rather than two stacked labels. */
+  line-height: 1.5;
   color: var(--paper);
   text-align: center;
   margin: 0 auto 1.1rem;
+  padding-bottom: 0.6rem;
   /* Narrow enough that the line breaks before "updates" — two short centred
      rows read better here than one edge-to-edge one on a phone — and it keeps
      the text well clear of the close button in the corner. In em, so it tracks
