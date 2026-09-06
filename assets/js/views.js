@@ -3,7 +3,7 @@
    shared UI helpers (reveal-on-scroll, the intro curtain).
    ============================================================================= */
 import { SITE, ARTISTS, socialImg } from './config.js';
-import { $$, el } from './dom.js';
+import { $$, el, lockScroll } from './dom.js';
 import { IC } from './icons.js';
 import { morseEl } from './morse.js';
 
@@ -153,9 +153,9 @@ export function viewAbout() {
         <img class="wordmark" src="assets/img/brand/rareroom-title.png" alt="RAREROOM">
       </div>
       <span class="hero-rule" aria-hidden="true"></span>
-      <p class="about-copy typed">RAREROOM exists to make and release music. It&rsquo;s a recording studio and artist-first independent label aiming to bring songs out of sessions to the people who need to hear them.</p>
+      <p class="about-copy typed">RAREROOM exists to make and release music. It serves as an artist-first independent label and recording studio aiming to bring songs out of sessions to the people who need to hear them.</p>
       <p class="about-copy typed">Started by musician and producer <a class="about-link" href="https://www.pollishtheproject.com/" target="_blank" rel="noopener">Logan Gladden</a> - and distributed worldwide through <a class="about-link" href="https://www.theorchard.com/" target="_blank" rel="noopener">The Orchard</a> - RAREROOM helps to create, release, and grow work, offering everything a traditional label can offer, but on fair terms.</p>
-      <p class="about-copy typed">It can provide a space, support, and creative freedom for independent artists - as it should be.</p>
+      <p class="about-copy typed">RAREROOM provides independent artists with space, support, and creative freedom - as it should be.</p>
     </div>
   </section>`;
 }
@@ -375,7 +375,7 @@ export function maybeIntro(pageKey) {
       </div>
     </section>`;
   document.body.append(c);
-  document.body.style.overflow = 'hidden';
+  lockScroll(true);
   // Resolves when the curtain is not just fading but gone, so callers can hold
   // their own entrances until the intro is genuinely over. Truthy either way, so
   // `if (curtain)` still reads as "did the intro run?".
@@ -385,7 +385,7 @@ export function maybeIntro(pageKey) {
       if (ending) return;
       ending = true;
       c.classList.add('gone');
-      document.body.style.overflow = '';
+      lockScroll(false);
       setTimeout(() => {
         c.remove();
         resolve();

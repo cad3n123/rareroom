@@ -60,6 +60,14 @@
   width: auto;
   max-width: 100vw;
   object-fit: contain;
+  /* Held invisible until the file has decoded (lightbox.js adds .is-ready), so a
+     photo that isn't cached yet fades in at full size instead of snapping out of
+     a zero-width box. */
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+}
+.lightbox__img.is-ready {
+  opacity: 1;
 }
 .lightbox__btn {
   position: absolute;

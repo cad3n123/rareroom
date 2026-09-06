@@ -9,6 +9,25 @@ import { navMorseHTML } from './morse.js';
 import { navLinks } from './header.js';
 import { socialRowHTML } from './views.js';
 
+/* The subscribe form itself — email field, honeypot, chip, consent line and the
+   inline result slot. Shared markup: the footer's white band and the signup
+   popup (signup.js) both stamp this and both hand it to wireNewsletter, so the
+   two can never drift apart. */
+export function newsletterFormHTML() {
+  return `
+        <form class="news-form" novalidate>
+          <div class="field">
+            <input class="input" type="email" name="EMAIL" required autocomplete="email" placeholder="Email address" aria-label="Email address">
+          </div>
+          <div style="position:absolute;left:-9999px" aria-hidden="true">
+            <input type="text" name="${SITE.mailchimp.botField}" tabindex="-1" value="" autocomplete="off">
+          </div>
+          <button class="nav__subscribe news-submit" type="submit" aria-label="Subscribe"><img class="nav__subscribe-img" src="assets/img/brand/subscribe.png" alt="Subscribe"></button>
+          <p class="news-consent">By subscribing you agree to receive emails from RAREROOM. See our <a href="/privacy">Privacy Policy</a>.</p>
+          <p class="news-msg" role="status" aria-live="polite"></p>
+        </form>`;
+}
+
 export function buildFooter() {
   const host = $('#site-footer');
   if (!host) return;
@@ -46,19 +65,7 @@ export function buildFooter() {
   host.innerHTML = `
   <footer class="site-footer">
     <div class="footer-cta" id="signup">
-      <div class="wrap">
-        <form class="news-form" novalidate>
-          <div class="field">
-            <input class="input" type="email" name="EMAIL" required autocomplete="email" placeholder="Email address" aria-label="Email address">
-          </div>
-          <div style="position:absolute;left:-9999px" aria-hidden="true">
-            <input type="text" name="${SITE.mailchimp.botField}" tabindex="-1" value="" autocomplete="off">
-          </div>
-          <button class="nav__subscribe news-submit" type="submit" aria-label="Subscribe"><img class="nav__subscribe-img" src="assets/img/brand/subscribe.png" alt="Subscribe"></button>
-          <p class="news-consent">By subscribing you agree to receive emails from RAREROOM. See our <a href="/privacy">Privacy Policy</a>.</p>
-          <p class="news-msg" role="status" aria-live="polite"></p>
-        </form>
-      </div>
+      <div class="wrap">${newsletterFormHTML()}</div>
     </div>
     <div class="wrap footer-main">
       <div class="footer-bottom">
@@ -112,14 +119,33 @@ function placePrivacy(host) {
   window.addEventListener('resize', place, { passive: true });
 }
 
+/* The tag + group fields Mailchimp's embedded form would submit, as query string.
+
+   Both are shaped the way the endpoint expects rather than the way they read in
+   the dashboard: `tags` is one comma-separated list of tag IDs, while each group
+   option is its own `group[category][option]=1` field. Returns '' when neither is
+   configured, leaving the request exactly as it was. */
+function audienceParams() {
+  const { tags = [], groups = {} } = SITE.mailchimp;
+  let out = '';
+  if (tags.length) out += `&tags=${encodeURIComponent(tags.join(','))}`;
+  for (const [group, options] of Object.entries(groups)) {
+    // The brackets are part of the field NAME Mailchimp matches on, so they're
+    // encoded as a unit rather than left raw in the URL.
+    for (const option of options) out += `&${encodeURIComponent(`group[${group}][${option}]`)}=1`;
+  }
+  return out;
+}
+
 /* Subscribe without leaving the site. The old flow POSTed to Mailchimp's hosted
    page (target=_blank), which then dead-ends on a broken "Continue to website"
    signup that demands first/last name. Instead we hit Mailchimp's JSONP endpoint
    (/subscribe/post-json) and show our own inline result. */
-function wireNewsletter(host) {
+export function wireNewsletter(host, onSuccess) {
   const form = host.querySelector('.news-form');
   if (!form) return;
   const input = form.querySelector('input[name="EMAIL"]');
+  const honeypot = form.querySelector(`input[name="${SITE.mailchimp.botField}"]`);
   const msg = form.querySelector('.news-msg');
   const setMsg = (text, kind) => {
     msg.textContent = text;
@@ -134,6 +160,15 @@ function wireNewsletter(host) {
       setMsg('Please enter a valid email.', 'err');
       return;
     }
+    /* The honeypot is offscreen and aria-hidden, so a person never fills it and
+       anything in it came from a script filling every field it found. Show the
+       normal success line and send nothing: a bot told "blocked" gets a signal to
+       adapt, one told "thanks" has no reason to look again. */
+    if (honeypot && honeypot.value) {
+      setMsg('Thanks — you’re on the list.', 'ok');
+      form.reset();
+      return;
+    }
     setMsg('Signing up…', '');
 
     const cb = `mcCb${Math.random().toString(36).slice(2)}`;
@@ -141,6 +176,7 @@ function wireNewsletter(host) {
       SITE.mailchimp.action.replace('/post?', '/post-json?') +
       `&EMAIL=${encodeURIComponent(email)}` +
       `&${encodeURIComponent(SITE.mailchimp.botField)}=` + // honeypot, left empty
+      audienceParams() +
       `&c=${cb}`;
     const script = document.createElement('script');
     const cleanup = () => {
@@ -161,9 +197,11 @@ function wireNewsletter(host) {
       // result:'success' too, which made every resubmit read as a fresh "thanks".
       if (/already subscribed/i.test(raw)) {
         setMsg('You’re already subscribed.', 'ok');
+        onSuccess?.();
       } else if (res && res.result === 'success') {
         setMsg('Thanks — you’re on the list.', 'ok');
         form.reset();
+        onSuccess?.();
       } else {
         setMsg(raw || 'Please enter a valid email.', 'err');
       }

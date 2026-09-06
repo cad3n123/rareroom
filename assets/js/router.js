@@ -14,6 +14,7 @@ import {
   socialRowHTML,
 } from './views.js';
 import { setActiveNav, closeNavDrops } from './header.js';
+import { maybeSignupPopup, closeSignupPopup } from './signup.js';
 
 function parseRoute() {
   // Clean URLs: /about, /artist/slug, / (home). Fall back to the old #/hash form
@@ -74,7 +75,7 @@ function applyMeta(pageKey, artist) {
   switch (pageKey) {
     case 'about':
       term = 'About';
-      desc = `${brand} is a recording studio, record label, and development firm led by producer Logan Gladden — a home for artists and creatives in music and visual arts.`;
+      desc = `${brand} is an artist-first independent label and recording studio started by musician and producer Logan Gladden and distributed worldwide through The Orchard — space, support, and creative freedom for independent artists.`;
       break;
     case 'contact':
       term = 'Contact';
@@ -291,6 +292,10 @@ export function navigate() {
   document.body.dataset.page = pageKey;
   applyNavMode();
 
+  // …and the signup panel goes with it: it belongs to the page it rose over, not
+  // to the one being navigated to.
+  closeSignupPopup();
+
   // Leaving a page clears any lingering newsletter state in the footer (the inline
   // subscribe result + the typed email) so it never carries across a page switch.
   const news = $('#site-footer .news-form');
@@ -352,6 +357,10 @@ export function navigate() {
   const onArrive = () => {
     if (animateSocials) revealRow(socialsRow, socialsTrail);
     playArrival();
+    // Trails the arrival rather than riding it, so the panel rises into a page
+    // that has already settled instead of competing with the socials pop-in.
+    // maybeSignupPopup only ever opens once, so calling it per route is fine.
+    setTimeout(maybeSignupPopup, 1200);
   };
 
   if (curtain) {
