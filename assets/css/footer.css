@@ -300,3 +300,156 @@
     text-transform: uppercase;
   }
 }
+/* =============================================================================
+   SIGNUP POPUP — the same subscribe form as the band above, in a panel that
+   rises into the bottom half of the screen once the intro has played
+   (signup.js). Dressed as the footer body, not the white band: black slab,
+   paper ink, Source Code Pro.
+   ============================================================================= */
+.signup-pop {
+  position: fixed;
+  /* Bottom half of the screen: pinned to the bottom edge, and never allowed to
+     climb past the halfway line however tall its contents get. */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 50dvh;
+  overflow-y: auto;
+  z-index: 80;
+  /* the footer's own font swap — every var(--font-mono) inside (the consent line,
+     the input's siblings) resolves to Source Code Pro, as it does down there */
+  --font-mono: var(--font-code);
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(1.5rem, 4vw, 2.4rem) var(--pad-x) clamp(1.7rem, 4vw, 2.6rem);
+  /* Hidden state. Slides up from under its own edge; visibility keeps it out of
+     the tab order until it arrives. */
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.55s var(--ease), opacity 0.4s var(--ease), visibility 0.55s;
+}
+
+.signup-pop.open {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.signup-pop__title {
+  /* deliberately not uppercased — the line is written lowercase and reads as the
+     quiet aside it is, against the stamped SUBSCRIBE chip doing the shouting */
+  font-family: var(--font-mono);
+  font-size: clamp(0.82rem, 2.4vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--paper);
+  text-align: center;
+  margin: 0 auto 1.1rem;
+  /* Keeps the centred line clear of the close button in the corner — on a narrow
+     phone the two are otherwise a few pixels apart, and the title wraps here
+     rather than running under the X. Symmetric, so it stays optically centred. */
+  padding-inline: 2.4rem;
+}
+
+.signup-pop .news-form {
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+  margin-top: 0;
+  /* keep the stamped chip at its natural size rather than stretching it to the
+     input's height, exactly as the white band does */
+  align-items: center;
+  /* anchor for the absolutely-positioned inline result */
+  position: relative;
+}
+
+.signup-pop .news-submit {
+  align-self: center;
+}
+
+/* On black, the input's --panel fill and the chip's paper tone both read as a
+   pale slab. Drop them to the panel's own background and let the hairline border
+   carry the field instead. */
+.signup-pop .input,
+.signup-pop .news-submit {
+  background: transparent;
+  color: var(--paper);
+  border-color: rgba(236, 230, 219, 0.22);
+}
+
+.signup-pop .input::placeholder {
+  color: rgba(236, 230, 219, 0.5);
+}
+
+/* The stamped chip art is black ink on transparent — invert it to sit on the
+   black slab, the same treatment the footer brand stamp gets in dark mode. */
+.signup-pop .nav__subscribe-img {
+  filter: invert(1);
+}
+
+@media (hover: hover) {
+  .signup-pop .news-submit:hover {
+    background: var(--paper);
+  }
+
+  .signup-pop .news-submit:hover .nav__subscribe-img {
+    filter: none;
+  }
+}
+
+.signup-pop .news-consent,
+.signup-pop .news-msg {
+  color: rgba(236, 230, 219, 0.55);
+}
+
+.signup-pop .news-consent a {
+  color: var(--paper);
+}
+
+.signup-pop__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s var(--ease);
+}
+
+.signup-pop__close img {
+  width: 21px;
+  filter: invert(1);
+}
+
+@media (hover: hover) {
+  .signup-pop__close:hover {
+    opacity: 1;
+  }
+}
+
+/* Phones: the consent line and the result sit tight under a form that already
+   fills the panel, so give the whole thing a little more bottom room and pull
+   the fine print in, mirroring the white band's own phone treatment. */
+@media (max-width: 760px) {
+  .signup-pop {
+    max-height: 60dvh;
+    padding-bottom: calc(1.7rem + env(safe-area-inset-bottom));
+  }
+
+  .signup-pop .news-consent {
+    zoom: var(--footer-zoom);
+  }
+}
+
+/* The panel is motion — respect a request for none and let it just appear. */
+@media (prefers-reduced-motion: reduce) {
+  .signup-pop {
+    transform: none;
+  }
+}

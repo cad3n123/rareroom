@@ -25,10 +25,10 @@ export const featureOn = (key) => !key || FEATURES[key] !== false;
 export const SITE = {
   name: 'RAREROOM',
   domain: 'rareroomeast.com',
-  tagline: 'Recording studio · Record label · Development',
+  tagline: 'Independent label · Recording studio',
   // Short line used in the hero + meta description.
   intro:
-    'A recording studio, label, and development firm — a destination for artists and creatives in music and visual arts.',
+    'RAREROOM exists to make and release music — an artist-first independent label and recording studio, bringing songs out of sessions to the people who need to hear them.',
   email: {
     demos: 'demos@rareroomeast.com', // A&R / booking / submissions
     ops: 'ops@rareroomeast.com', // general / press / operations
@@ -48,6 +48,23 @@ export const SITE = {
     action:
       'https://rareroomeast.us9.list-manage.com/subscribe/post?u=dc1ef2b26411dc4872ade1a16&id=12eb6d76fb&f_id=00c451e1f0',
     botField: 'b_dc1ef2b26411dc4872ade1a16_12eb6d76fb',
+
+    /* Tag + group stamped on everyone who subscribes from this site.
+
+       Mailchimp wants its own numeric IDs, not the names in the dashboard — the
+       word "RAREROOM" means nothing to the endpoint. Both come out of Audience →
+       Signup forms → Embedded forms:
+         tags   ← <input type="hidden" name="tags" value="11840392">
+         groups ← the `interests_28117` blob in the page's script tag. Group 28117
+                  is "Newsletters"; its options are 1 RAREROOM, 2 Kelsi Kee,
+                  4 Pollish. (The group has no visible checkbox in the builder
+                  because the field is disabled there — it still accepts the value.)
+
+       The three sites share ONE audience, so these are what separate them: this
+       one tags 11840392 / group option 1, Kelsi Kee 11840393 / 2, Pollish
+       11840394 / 4. Leave either empty and nothing extra is sent. */
+    tags: ['11840392'],
+    groups: { 28117: ['1'] },
   },
 };
 
