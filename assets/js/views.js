@@ -71,12 +71,13 @@ export function socialRowHTML(items) {
 }
 
 export function artistSocialsHTML(a) {
-  const order = ['site', 'youtube', 'instagram', 'facebook', 'x', 'tiktok'];
+  const order = ['site', 'youtube', 'spotify', 'instagram', 'facebook', 'x', 'tiktok'];
   // "Site", not "Website" — the stamped art reads SITE (as it did on the old
   // site), and the label is what the alt text says.
   const labels = {
     site: 'Site',
     youtube: 'YouTube',
+    spotify: 'Spotify',
     instagram: 'Instagram',
     facebook: 'Facebook',
     x: 'X',

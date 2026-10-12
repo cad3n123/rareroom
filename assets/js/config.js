@@ -193,6 +193,7 @@ export async function hydrateFromRemote() {
       const links = {};
       if (remote.site) links.site = remote.site;
       if (remote.youtube) links.youtube = remote.youtube;
+      if (remote.spotify) links.spotify = remote.spotify;
       if (remote.instagram) links.instagram = remote.instagram;
       if (remote.facebook) links.facebook = remote.facebook;
       if (remote.twitter) links.x = remote.twitter;

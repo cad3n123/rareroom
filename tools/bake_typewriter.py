@@ -78,11 +78,17 @@ IMAGES = [
 # what the threshold cuts through, so the resulting outline lands on a much
 # finer grid.
 UPSCALE = {
-    # The EMAIL wordmark comes in at the same 46px height as the other social art,
-    # which is only ~4x the size it's drawn at — enough to soften on a retina
-    # screen. It's the one of that set that gets the treatment because it's also
-    # the newest scan; the rest are left alone rather than re-cut.
+    # The whole social set comes in at 46px tall, only ~4x the size it's drawn at
+    # — enough to soften on a retina screen. 4x puts them at 184px, which is also
+    # where the (natively much larger) SPOTIFY scan lands, so the row is built at
+    # one resolution throughout.
     "assets/img/social/email.png": 4,
+    "assets/img/social/youtube.png": 4,
+    "assets/img/social/instagram.png": 4,
+    "assets/img/social/facebook.png": 4,
+    "assets/img/social/tiktok.png": 4,
+    "assets/img/social/site.png": 4,
+    "assets/img/social/x.png": 4,
     "assets/img/icons/light_on.png": 4,
     "assets/img/icons/light_off.png": 4,
     "assets/img/icons/sound_on.png": 4,
@@ -101,6 +107,31 @@ CROP = {
     "assets/img/icons/sound_on.png": (0.85, "centre"),
     "assets/img/icons/sound_off.png": (0.85, "centre"),
     "assets/img/icons/hamburger.png": (0.90, "centre"),
+}
+
+
+# Steepen the ALPHA ramp about its 50% contour (same linear-clamp maths as the
+# grey threshold, applied to the matte instead).
+#
+# The social scans arrived already keyed to transparency, and keyed softly: 50-64%
+# of their pixels sit at a partial alpha, only 2-9% are fully opaque. Because the
+# bake computes `alpha = (1 - t) * a`, that soft matte survives everything the
+# grey threshold does — the ink under it is dark, so `t` is 0 and the result is
+# just the blurry matte, recoloured. Thresholding harder can't help: the edge
+# isn't in the grey channel at all. Steepening the matte is what actually cuts it,
+# and pivoting at 0.5 keeps the 50% contour — so the stroke weight doesn't move.
+#
+# Only the 46px social art needs this. The brand/nav scans are natively 600-1700px
+# and come in at 13-28% soft; home_transparent is 0%. Hardening those would cost
+# the typewriter grain for no gain, so they're left alone.
+ALPHA_SHARPEN = {
+    "assets/img/social/youtube.png": 8.0,
+    "assets/img/social/instagram.png": 8.0,
+    "assets/img/social/facebook.png": 8.0,
+    "assets/img/social/tiktok.png": 8.0,
+    "assets/img/social/site.png": 8.0,
+    "assets/img/social/x.png": 8.0,
+    "assets/img/social/email.png": 8.0,
 }
 
 
@@ -150,6 +181,10 @@ def bake(rel, slope, intercept, ink):
     grey = 0.33 * r + 0.33 * g + 0.33 * b          # feColorMatrix desaturate
     t = np.clip(slope * grey + intercept, 0.0, 1.0)  # feComponentTransfer linear
     alpha = (1.0 - t) * a                            # key white out, keep orig alpha
+
+    sharpen = ALPHA_SHARPEN.get(rel)
+    if sharpen:
+        alpha = np.clip(sharpen * (alpha - 0.5) + 0.5, 0.0, 1.0)
 
     k = DILATE.get(rel)
     if k:
