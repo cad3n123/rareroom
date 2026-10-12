@@ -26,7 +26,7 @@ import os
 import shutil
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageFilter
 
 # Paths are relative to the `site/` directory (this script lives in site/tools).
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -60,6 +60,7 @@ IMAGES = [
     "assets/img/social/x.png",
     "assets/img/social/site.png",
     "assets/img/social/email.png",
+    "assets/img/social/spotify.png",
     # Header UI glyphs — the light/sound toggles and the menu hamburger. These are
     # masked to currentColor in CSS, so all the bake has to give us is a clean
     # alpha channel (the ink colour is thrown away by the mask).
@@ -103,6 +104,17 @@ CROP = {
 }
 
 
+# Grow the baked ink outward by (k-1)/2 px. Only needed where a scan was struck
+# lighter than the rest of the set — the threshold can thin a stroke but never
+# thicken one, so a faint strike can't be brought up to weight by --intercept
+# alone (pushing it far enough starts pulling in paper noise instead).
+# Measured as median stroke width over cap height, the set runs 0.16 (YOUTUBE)
+# to 0.20 (FACEBOOK); SPOTIFY lands at 0.13 and k=5 puts it back on 0.16.
+DILATE = {
+    "assets/img/social/spotify.png": 5,
+}
+
+
 def crop_box(size, fraction, anchor):
     w, h = size
     cw, ch = round(w * fraction), round(h * fraction)
@@ -138,6 +150,12 @@ def bake(rel, slope, intercept, ink):
     grey = 0.33 * r + 0.33 * g + 0.33 * b          # feColorMatrix desaturate
     t = np.clip(slope * grey + intercept, 0.0, 1.0)  # feComponentTransfer linear
     alpha = (1.0 - t) * a                            # key white out, keep orig alpha
+
+    k = DILATE.get(rel)
+    if k:
+        grown = Image.fromarray((alpha * 255.0 + 0.5).astype(np.uint8), "L")
+        grown = grown.filter(ImageFilter.MaxFilter(k))
+        alpha = np.asarray(grown).astype(np.float32) / 255.0
 
     out = np.zeros_like(arr)
     out[..., 0] = ink[0] / 255.0

@@ -83,6 +83,7 @@ export const SOCIAL_IMG = {
   facebook: 'assets/img/social/facebook.png',
   x: 'assets/img/social/x.png',
   tiktok: 'assets/img/social/tiktok.png',
+  spotify: 'assets/img/social/spotify.png',
 };
 
 export const socialImg = (label) => SOCIAL_IMG[String(label).toLowerCase()] || null;
@@ -165,6 +166,11 @@ export async function hydrateFromRemote() {
     const order = [
       ['instagram', 'Instagram'],
       ['youtube', 'YouTube'],
+      // Spotify is read the same way as the rest, but there is no `spotify` key in
+      // data.json yet and no stamped wordmark for it — so until both land the row
+      // is unchanged, and when the key appears it renders as its text label (see
+      // SOCIAL_IMG) rather than a broken image.
+      ['spotify', 'Spotify'],
       ['tiktok', 'TikTok'],
       ['facebook', 'Facebook'],
       ['twitter', 'X'],
